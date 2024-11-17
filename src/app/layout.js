@@ -1,9 +1,8 @@
-import localFont from "next/font/local";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import { Roboto, Nunito } from 'next/font/google';
-import { Typography } from "@mui/material";
+import Box from "@mui/material/Box";
 
 // const roboto = Roboto({
 //   weight: ['300', '400', '500', '700'],
@@ -20,17 +19,19 @@ const nunito = Nunito({
   });
 
 export const metadata = {
-    title: "Simply PLC",
-    description: "Simply PLC",
+    title: "LearnEd",
+    description: "LearnEd",
 };
 
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-        <body className={nunito.className}>
+        <body className={nunito.className} style={{margin:0}}>
             <AppRouterCacheProvider>
                 <ThemeProvider theme={theme}>
-                    {children}
+                    <Box sx={{width:'100vw', height:'100vh'}}>
+                        {children}
+                    </Box>
                 </ThemeProvider>
             </AppRouterCacheProvider>
         </body>
