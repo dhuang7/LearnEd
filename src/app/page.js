@@ -5,9 +5,17 @@ import TextField from '@mui/material/TextField';
 import NextLink from 'next/link';
 import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
+import { createClient } from '@/utils/supabase/server';
 
 
-export default function Home() {
+export default async function Login() {
+
+    const supabase = await createClient();
+    const { data } = await supabase.from("test").select();
+    console.log('cool');
+    console.log(data);
+
+
     return (
         <Box 
             sx={{
@@ -49,7 +57,9 @@ export default function Home() {
                         </Typography>
                     </Divider>
                     {/* other logins */}
-                    
+                    <Box>
+                        {data}
+                    </Box>
                 </Paper>
             </Box>
         </Box>
