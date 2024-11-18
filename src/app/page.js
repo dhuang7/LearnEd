@@ -49,6 +49,7 @@ export default function Home() {
                         </Typography>
                     </Divider>
                     {/* other logins */}
+                    
                 </Paper>
             </Box>
         </Box>
