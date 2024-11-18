@@ -5,16 +5,12 @@ import TextField from '@mui/material/TextField';
 import NextLink from 'next/link';
 import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
-import { createClient } from '@/utils/supabase/server';
+
 
 
 export default async function Login() {
 
-    const supabase = await createClient();
-    const { data } = await supabase.from("test").select();
-    console.log('cool');
-    console.log(data);
-
+    
 
     return (
         <Box 
@@ -39,12 +35,12 @@ export default async function Login() {
                     <TextField label="Email" sx={{mb:'1rem'}} />
                     <TextField label="Password" sx={{mb:'1rem'}} />
                     <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', mb:'1rem'}}>
-                        <Link href='#' component={Link}>
+                        <Link href='#' component={NextLink}>
                             <Typography variant='caption'>
                                 Forgot password
                             </Typography>
                         </Link>
-                        <Link href='#' component={Link}>
+                        <Link href='#' component={NextLink}>
                             <Typography variant='caption'>
                                 Create account
                             </Typography>
@@ -57,9 +53,6 @@ export default async function Login() {
                         </Typography>
                     </Divider>
                     {/* other logins */}
-                    <Box>
-                        {data}
-                    </Box>
                 </Paper>
             </Box>
         </Box>
