@@ -28,7 +28,7 @@ export default async function Login() {
                 {/* login paper */}
                 <Paper elevation={3} sx={{width:'20rem', p:'1rem', borderRadius:'1rem', display:'flex', flexDirection:'column'}}>
                     {/* title */}
-                    <Typography variant='h5' color='secondary' sx={{mb:'1rem', fontWeight:'bold'}}>
+                    <Typography variant='h6' align='center' color='secondary' sx={{mb:'1rem', fontWeight:'bold'}}>
                         Login
                     </Typography>
                     {/* normal */}
