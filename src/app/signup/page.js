@@ -4,10 +4,11 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import NextLink from 'next/link';
 import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
 
 
 
-export default async function Login() {
+export default async function Signup() {
 
     
 
@@ -28,20 +29,19 @@ export default async function Login() {
                 <Paper elevation={3} sx={{width:'20rem', p:'1rem', borderRadius:'1rem', display:'flex', flexDirection:'column'}}>
                     {/* title */}
                     <Typography variant='h6' align='center' color='secondary' sx={{mb:'1rem', fontWeight:'bold'}}>
-                        Login
+                        Create account
                     </Typography>
                     {/* normal */}
                     <TextField label="Email" sx={{mb:'1rem'}} />
                     <TextField label="Password" sx={{mb:'1rem'}} />
-                    <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', mb:'1rem'}}>
-                        <Link href='#' component={NextLink}>
+                    <TextField label="Confirm" sx={{mb:'1rem'}} />
+                    <Box sx={{mb:'1rem', width:'100%', display:'flex', justifyContent:'center'}}>
+                        <Button>Signup</Button>
+                    </Box>
+                    <Box sx={{width:'100%', display:'flex', justifyContent:'right', mb:'1rem'}}>
+                        <Link href='../' component={NextLink}>
                             <Typography variant='caption'>
-                                Forgot password
-                            </Typography>
-                        </Link>
-                        <Link href='#' component={NextLink}>
-                            <Typography variant='caption'>
-                                Create account
+                                Login
                             </Typography>
                         </Link>
                     </Box>
