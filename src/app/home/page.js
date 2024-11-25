@@ -1,11 +1,15 @@
-import { createClient } from '@/utils/supabase/server';
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
-export default async function Home() {
 
-    const supabase = await createClient();
-    const { data, error } = await supabase.from("test").select();
+
+export default function Home() {
+
+    
 
     return (
-        <div>{JSON.stringify(data)}</div>
+        <Box>
+            <Button>Signout</Button>
+        </Box>
     )
 }

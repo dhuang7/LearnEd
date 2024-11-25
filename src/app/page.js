@@ -1,3 +1,5 @@
+"use client"
+
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -6,11 +8,50 @@ import NextLink from 'next/link';
 import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+
+import { useRouter } from 'next/navigation'; 
+import { useState } from 'react';
+import createClient from '@/utils/supabase/client';
 
 
 
-export default async function Login() {
+export default function Login() {
+    const router = useRouter(); // Initialize the router
+    // state
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [disabled, setDisabled] = useState(false);
+    const [helperText, setHelperText] = useState('');
 
+    // Handlers
+    function handleEmail({target}) {
+        setEmail(target.value);
+    }
+
+    function handlePassword({target}) {
+        setPassword(target.value);
+    }
+
+    async function signInWithEmail(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        setDisabled(true);
+
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        })
+
+        if (error) {
+            setDisabled(false);
+            setHelperText(error.code);
+            return;
+        }
+
+        router.push('/home');
+    }
     
 
     return (
@@ -33,11 +74,33 @@ export default async function Login() {
                         Login
                     </Typography>
                     {/* normal */}
-                    <TextField label="Email" sx={{mb:'1rem'}} />
-                    <TextField label="Password" sx={{mb:'1rem'}} />
-                    <Box sx={{mb:'1rem', width:'100%', display:'flex', justifyContent:'center'}}>
-                        <Button>Login</Button>
-                    </Box>
+                    <form onSubmit={signInWithEmail}>
+                        <TextField 
+                            required
+                            label="Email" 
+                            type='email'
+                            onChange={handleEmail}
+                            value={email}
+                            error={helperText !== ''}
+                            sx={{mb:'1rem', width:'100%'}} 
+                            />
+                        <TextField 
+                            required
+                            label="Password"
+                            type='password'
+                            onChange={handlePassword}
+                            value={password}
+                            error={helperText !== ''}
+                            helperText={helperText}
+                            sx={{mb:'1rem', width:'100%'}} 
+                            />
+                        <Box sx={{mb:'1rem', width:'100%', display:'flex', justifyContent:'center'}}>
+                            {(disabled)
+                                ? <CircularProgress />
+                                : <Button disabled={disabled} type='submit'>Login</Button>
+                            }
+                        </Box>
+                    </form>
                     <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', mb:'1rem'}}>
                         <Link href='#' component={NextLink}>
                             <Typography variant='caption'>
