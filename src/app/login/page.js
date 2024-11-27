@@ -106,7 +106,10 @@ export default function Login() {
                 </Typography>
             </Divider>
             {/* other logins */}
-            <OneTapComponent />
+            <Box sx={{justifyContent:'center'}}>
+                <OneTapComponent />
+                
+            </Box>
         </>
     );
 }
