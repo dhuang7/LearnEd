@@ -1,3 +1,5 @@
+'use client'
+
 import Box from "@mui/material/Box";
 
 import TopNav from './topNav';
@@ -8,7 +10,7 @@ export default function Navbars({children}) {
     
 
     return (
-        <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
+        <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
             {/* top navbar */}
             <Box sx={{width:'100%'}}>
                 <TopNav />
