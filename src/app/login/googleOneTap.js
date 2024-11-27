@@ -9,6 +9,7 @@ export default function OneTapComponent() {
     const supabase = createClient()
     const router = useRouter()
 
+    // sign in callback
     async function handleSignInWithGoogle(response) {
         const { data, error } = await supabase.auth.signInWithIdToken({
             provider: 'google',
@@ -23,6 +24,7 @@ export default function OneTapComponent() {
         router.push('/u')
     }
 
+    // Initializes the button itself
     function handleInitializeGoogle() {
         if (window.google) {
             window.google.accounts.id.initialize({
@@ -46,6 +48,7 @@ export default function OneTapComponent() {
         }
     }
 
+    // loads the button when component is rendered
     useEffect(() => {
         handleInitializeGoogle()
     }, [handleInitializeGoogle])
@@ -54,7 +57,7 @@ export default function OneTapComponent() {
     return (
         <>
             <Script src="https://accounts.google.com/gsi/client" onLoad={handleInitializeGoogle} />
-            <div id="google-signin-button" />
+            <div id="google-signin-button" style={{width:'100%'}} />
         </>
     )
 }

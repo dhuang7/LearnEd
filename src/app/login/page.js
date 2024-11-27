@@ -8,11 +8,13 @@ import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
 
 import { useRouter } from 'next/navigation'; 
 import { useState } from 'react';
 import createClient from '@/utils/supabase/client';
 import OneTapComponent from './googleOneTap';
+import MicrosoftLoginComponent from './microsoftLogin';
 
 
 export default function Login() {
@@ -87,6 +89,7 @@ export default function Login() {
                     }
                 </Box>
             </form>
+            {/* links */}
             <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', mb:'1rem'}}>
                 <Link href='./login/reset' component={NextLink}>
                     <Typography variant='caption'>
@@ -106,9 +109,10 @@ export default function Login() {
                 </Typography>
             </Divider>
             {/* other logins */}
-            <Box sx={{alignItems:'center', display:'flex', flexDirection:'column'}}>
+            <Stack sx={{alignItems:'center'}} direction='column' spacing={1}>
                 <OneTapComponent />
-            </Box>
+                <MicrosoftLoginComponent />
+            </Stack>
         </>
     );
 }
