@@ -6,16 +6,16 @@ import SpaceDashboardRoundedIcon from '@mui/icons-material/SpaceDashboardRounded
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
+import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 
 import NextLink from 'next/link';
-import { usePathname } from "next/navigation";
 
 export default function SideNav({children}) {
 
     return (
-        <Box sx={{height:'100%', borderTop: '1px solid', borderColor:'primary.light', boxSizing:'border-box'}}>
+        <Box sx={{height:'100%'}}>
             <AppBar color='primary' position="relative" elevation={0} sx={{height:'100%'}}>
-                <List>
+                <List sx={{borderTop: '1px solid', borderColor:'primary.light', boxSizing:'border-box'}}>
                     <ListItemButton disableGutters sx={{pr:'1rem'}} component={NextLink} href='/u/dashboard'>
                         <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Dashboard
@@ -31,6 +31,10 @@ export default function SideNav({children}) {
                     <ListItemButton disableGutters sx={{pr:'1rem'}} component={NextLink} href='/u/cycles'>
                         <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Cycles
+                    </ListItemButton>
+                    <ListItemButton disableGutters sx={{pr:'1rem'}} component={NextLink} href='/u/teams'>
+                        <GroupsRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                        Teams
                     </ListItemButton>
                 </List>
             </AppBar>
