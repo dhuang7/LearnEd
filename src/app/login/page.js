@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useRouter } from 'next/navigation'; 
 import { useState } from 'react';
 import createClient from '@/utils/supabase/client';
-
+import OneTapComponent from './googleOneTap';
 
 
 export default function Login() {
@@ -100,12 +100,13 @@ export default function Login() {
                 </Link>
             </Box>
             {/* or */}
-            <Divider>
+            <Divider sx={{mb:'1rem'}}>
                 <Typography variant='caption'>
                     or
                 </Typography>
             </Divider>
             {/* other logins */}
+            <OneTapComponent />
         </>
     );
 }
