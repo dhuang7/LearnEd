@@ -29,6 +29,7 @@ export default function OneTapComponent() {
                 client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
                 callback: handleSignInWithGoogle, // Directly pass the callback function
                 ux_mode: 'popup',
+                use_fedcm_for_prompt: true,
             })
 
             // Render the Google Sign-In button

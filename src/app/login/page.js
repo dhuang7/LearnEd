@@ -106,9 +106,8 @@ export default function Login() {
                 </Typography>
             </Divider>
             {/* other logins */}
-            <Box sx={{justifyContent:'center'}}>
+            <Box sx={{alignItems:'center', display:'flex', flexDirection:'column'}}>
                 <OneTapComponent />
-                
             </Box>
         </>
     );
