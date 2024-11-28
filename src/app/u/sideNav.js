@@ -19,7 +19,6 @@ export default function SideNav({children, open}) {
 
     // custom navbar button for the lists below
     const CustomNavButton = (props) => {
-        console.log(props);
         return (
             <Tooltip title={!open && props.tip} placement="right" arrow>
                 <ListItemButton 

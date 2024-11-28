@@ -51,7 +51,7 @@ export default function OneTapComponent() {
     // loads the button when component is rendered
     useEffect(() => {
         handleInitializeGoogle()
-    }, [handleInitializeGoogle])
+    }, [])
     
 
     return (
