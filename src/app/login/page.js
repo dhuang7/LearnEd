@@ -51,7 +51,7 @@ export default function Login() {
             return;
         }
 
-        router.push('/u');
+        router.push('/u/dashboard');
     }
     
 

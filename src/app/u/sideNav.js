@@ -7,35 +7,71 @@ import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import Tooltip from "@mui/material/Tooltip";
 
 import NextLink from 'next/link';
+import { usePathname } from "next/navigation";
+import { Typography } from "@mui/material";
 
-export default function SideNav({children}) {
+export default function SideNav({children, open}) {
+    const pathname = usePathname();
+
+    // custom navbar button for the lists below
+    const CustomNavButton = (props) => {
+        console.log(props);
+        return (
+            <Tooltip title={!open && props.tip} placement="right" arrow>
+                <ListItemButton 
+                    disableGutters 
+                    disableRipple
+                    component={NextLink} 
+                    href={props.path} 
+                    selected={pathname===props.path}
+                    {...props}
+                    >
+                    {props.children}
+                </ListItemButton>
+            </Tooltip>
+        )
+    }
 
     return (
         <Box sx={{height:'100%'}}>
-            <AppBar color='primary' position="relative" elevation={0} sx={{height:'100%'}}>
-                <List sx={{borderTop: '1px solid', borderColor:'primary.light', boxSizing:'border-box'}}>
-                    <ListItemButton disableGutters sx={{pr:'1rem'}} component={NextLink} href='/u/dashboard'>
+            <AppBar 
+                color='inherit' 
+                position="relative" 
+                elevation={0} 
+                sx={{
+                    height:'100%', width:open ? '10rem' : '2.75rem', overflow: 'hidden',
+                    borderRight: '1px solid', borderColor:'grey.300', boxSizing:'border-box',
+                    transition: 'width 0.3s ease',
+                }}
+                >
+                <List>
+                    <CustomNavButton path='/u/dashboard' tip='Dashboard'>
                         <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Dashboard
-                    </ListItemButton>
-                    <ListItemButton disableGutters sx={{pr:'1rem'}} component={NextLink} href='/u/calendar'>
+                    </CustomNavButton>
+                    <CustomNavButton path='/u/calendar' tip='Calendar'>
                         <CalendarMonthRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Calendar
-                    </ListItemButton>
-                    <ListItemButton disableGutters sx={{pr:'1rem'}} component={NextLink} href='/u/tasks'>
+                    </CustomNavButton>
+                    <CustomNavButton path='/u/tasks' tip='Tasks'>
                         <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Tasks
-                    </ListItemButton>
-                    <ListItemButton disableGutters sx={{pr:'1rem'}} component={NextLink} href='/u/cycles'>
+                    </CustomNavButton>
+                    <CustomNavButton path='/u/cycles' divider tip='Cycles'>
                         <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Cycles
-                    </ListItemButton>
-                    <ListItemButton disableGutters sx={{pr:'1rem'}} component={NextLink} href='/u/teams'>
+                    </CustomNavButton>
+                    <CustomNavButton path='/u/teams' divider tip='Teams'>
                         <GroupsRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
-                        Teams
-                    </ListItemButton>
+                        <Typography noWrap>
+                            Teams
+                        </Typography>
+                        <ChevronRightRoundedIcon sx={{ml:'auto'}} />
+                    </CustomNavButton>
                 </List>
             </AppBar>
         </Box>

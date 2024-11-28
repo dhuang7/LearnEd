@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import createClient from "@/utils/supabase/client";
 
-export default function TopNav() {
+export default function TopNav({handleOpen}) {
     const router = useRouter(); // Initialize the router
 
     // state for menu
@@ -57,12 +57,12 @@ export default function TopNav() {
     
 
     return (
-        <AppBar position="relative" elevation={0}>
+        <AppBar color='inherit' position="relative" elevation={0} sx={{borderBottom: '1px solid', borderColor:'grey.300', boxSizing:'border-box'}}>
             <Toolbar variant="dense" disableGutters sx={{px:'.5rem'}}>
                 <Box sx={{display:'flex', width:'100%'}}>
                     {/* start */}
                     <Box sx={{alignContent:'center'}}>
-                        <IconButton color="inherit" size="small">
+                        <IconButton color="inherit" size="small" onClick={handleOpen}>
                             <MenuRoundedIcon />
                         </IconButton>
                         

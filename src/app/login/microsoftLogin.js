@@ -14,7 +14,7 @@ export default function MicrosoftLoginComponent() {
             provider: 'azure',
             options: {
                 scopes: 'email',
-                redirectTo: `http://localhost:3000/auth/callback`,
+                redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URL,
             },
         })
 
