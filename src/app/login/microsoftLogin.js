@@ -10,7 +10,6 @@ export default function MicrosoftLoginComponent() {
 
     // sign in callback
     async function handleSignInWithMicrosoft() {
-        console.log(process.env.NEXT_PUBLIC_REDIRECT_URL)
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'azure',
             options: {
