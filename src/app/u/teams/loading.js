@@ -1,30 +1,27 @@
 import Box from "@mui/material/Box";
-import createClient from "@/utils/supabase/server";
 import Paper from "@mui/material/Paper";
-import Image from "next/image";
 import Typography from "@mui/material/Typography";
 import NextLink from 'next/link';
-import Modal from "./modal";
+import Button from "@mui/material/Button";
+import Skeleton from "@mui/material/Skeleton";
 
 
 
-export default async function Teams() {
-    const supabase = await createClient();
-    let { data: teams, error } = await supabase
-        .from('teams')
-        .select('*');
+export default function Loading() {
 
-    const TeamCard = (team) => {
+    const TeamCard = () => {
         return (
-            <Paper elevation={3} sx={{m:'1rem', width:'20rem', p:'1rem', borderRadius:3, textDecoration:'none'}} component={NextLink} href='#'>
+            <Paper elevation={0} sx={{m:'1rem', width:'20rem', p:'1rem', borderRadius:3, textDecoration:'none'}} component={NextLink} href='#'>
                 <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
                     <Box sx={{p:'1rem'}}>
-                        <Image src={'/icon.svg'} alt={'icon'} width={100} height={100} />
+                        <Skeleton variant="rounded" width={300} height={100} />
                     </Box>
                 </Box>
                 <Box>
                     <Typography variant="h4" align="center">
-                        {team.team.name}
+                        <Skeleton />
+                        <Skeleton />
+                        <Skeleton />
                     </Typography>
                 </Box>
             </Paper>
@@ -35,11 +32,13 @@ export default async function Teams() {
         <Box sx={{p:'1rem'}}>
             <Box sx={{width:'100%', display:'flex'}}>
                 <Typography variant="h4">Select a team</Typography>
-                <Modal />
+                <Button variant="outlined" sx={{mx:'1rem', textTransform:'none'}}>
+                    Create Team
+                </Button>
             </Box>
             <Box sx={{display:'flex', justifyContent:'center', flexWrap:'wrap'}}>
-                {teams.map((team, i) => (
-                    <TeamCard key={i} team={team} />
+                {[0,0,0].map((team, i) => (
+                    <TeamCard key={i} />
                 ))}
             </Box>
         </Box>
