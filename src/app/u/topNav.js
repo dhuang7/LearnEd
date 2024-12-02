@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import createClient from "@/utils/supabase/client";
+import NextLink from 'next/link';
 
 export default function TopNav({handleOpen}) {
     const router = useRouter(); // Initialize the router
@@ -85,8 +86,8 @@ export default function TopNav({handleOpen}) {
                             open={open}
                             onClose={handleClose}
                             >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                            <MenuItem onClick={handleClose} href='/u/profile' component={NextLink}>Profile</MenuItem>
+                            {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
                             <MenuItem onClick={handleLogout}>Logout</MenuItem>
                         </Menu>
                     </Box>
