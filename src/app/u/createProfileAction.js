@@ -9,7 +9,7 @@ export async function createProfile(profile) {
     const { data, error } = await supabase
         .from('profiles')
         .insert([
-            { id: session.user.id, first_name: profile.firstName, last_name: profile.lastName },
+            { id: session.user.id, first_name: profile.firstName, last_name: profile.lastName, email: session.user.email },
         ])
         .select();
 
