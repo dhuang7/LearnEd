@@ -63,6 +63,7 @@ export default function Login() {
             </Typography>
             {/* normal */}
             <form onSubmit={signInWithEmail}>
+                {/* email */}
                 <TextField 
                     required
                     label="Email" 
@@ -72,6 +73,7 @@ export default function Login() {
                     error={helperText !== ''}
                     sx={{mb:'1rem', width:'100%'}} 
                     />
+                {/* password */}
                 <TextField 
                     required
                     label="Password"
@@ -82,6 +84,7 @@ export default function Login() {
                     helperText={helperText}
                     sx={{mb:'1rem', width:'100%'}} 
                     />
+                    {/* button login */}
                 <Box sx={{mb:'1rem', width:'100%', display:'flex', justifyContent:'center'}}>
                     {(disabled)
                         ? <CircularProgress />
@@ -91,11 +94,13 @@ export default function Login() {
             </form>
             {/* links */}
             <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', mb:'1rem'}}>
+                {/* forgot password */}
                 <Link href='./login/reset' component={NextLink}>
                     <Typography variant='caption'>
                         Forgot password
                     </Typography>
                 </Link>
+                {/* create account */}
                 <Link href='./login/signup' component={NextLink}>
                     <Typography variant='caption'>
                         Create account

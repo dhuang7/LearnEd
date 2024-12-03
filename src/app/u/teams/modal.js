@@ -41,24 +41,30 @@ export default function Modal() {
     const router = useRouter();
     
 
+    // handlers
     function handleOpen() {
+        // open modal
         setOpen(true);
     }
 
     function handleClose(e) {
+        // close modal
         setOpen(false);
     }
 
     function handleName({target}) {
+        // team name
         setName(target.value);
     }
 
     function handleMemberText({target}) {
+        // member text
         setMemberText(target.value);
         if (errorText.length > 0) setErrorText('');
     }
 
     function handleKeyDown(e) {
+        // remove form enter for handling adding members
         if (e.key === "Enter") {
             e.preventDefault(); // Prevent form submission
             handleAddMember();
@@ -67,6 +73,7 @@ export default function Modal() {
     }
 
     function handleRemoveMember({currentTarget}) {
+        // removes a member
         const value = currentTarget.dataset.value;
         console.log(value)
         console.log(members.slice(value+1))
@@ -77,6 +84,7 @@ export default function Modal() {
     }
 
     async function handleAddMember() {
+        // check if member exist then adds it to the list
         setDisableType(true);
 
         if (members.includes(memberText)) {
@@ -100,9 +108,11 @@ export default function Modal() {
     }
 
     async function handleSubmit(e) {
+        // handle submit
         e.preventDefault();
         setLoading(true);
         await createTeam({name, members});
+        // reset everything
         router.push('/u/teams')
         handleClose();
         setLoading(false);

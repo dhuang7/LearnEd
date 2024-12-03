@@ -47,6 +47,7 @@ export default function SideNav({children, open}) {
                     transition: 'width 0.3s ease',
                 }}
                 >
+                {/* navigation */}
                 <List>
                     <CustomNavButton path='/u/dashboard' tip='Dashboard'>
                         <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />

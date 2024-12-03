@@ -15,9 +15,11 @@ export default function Confirm() {
             <Typography variant='h6' align='center' color='secondary' sx={{mb:'1rem', fontWeight:'bold'}}>
                 Reset Password
             </Typography>
+            {/* content */}
             <Typography variant='body1' align='left' color='info' sx={{mb:'1rem'}}>
                 Please confirm your password reset in the link sent to your email.
             </Typography>
+            {/* back to login */}
             <Box sx={{width:'100%', display:'flex', justifyContent:'right', mb:'1rem'}}>
                 <Link href='..' component={NextLink}>
                     <Typography variant='caption'>

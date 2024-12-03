@@ -55,6 +55,7 @@ export default function Update() {
             </Typography>
             {/* normal */}
             <form onSubmit={handleUpdatePassword}>
+                {/* password */}
                 <TextField 
                     required
                     label="Password"
@@ -63,6 +64,7 @@ export default function Update() {
                     value={password}
                     sx={{mb:'1rem', width:'100%'}} 
                     />
+                {/* confirm password */}
                 <TextField 
                     required
                     label="Confirm" 
@@ -73,6 +75,7 @@ export default function Update() {
                     helperText={(password !== confirm) && 'Password does not match'}
                     sx={{mb:'1rem', width:'100%'}} 
                     />
+                {/* button update */}
                 <Box sx={{mb:'1rem', width:'100%', display:'flex', justifyContent:'center'}}>
                     {(disabled)
                         ? <CircularProgress />

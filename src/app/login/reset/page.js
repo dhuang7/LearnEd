@@ -48,6 +48,7 @@ export default function Reset() {
             </Typography>
             {/* normal */}
             <form onSubmit={handleReset}>
+                {/* email */}
                 <TextField 
                     required
                     label="Email" 
@@ -56,6 +57,7 @@ export default function Reset() {
                     value={email}
                     sx={{mb:'1rem', width:'100%'}} 
                     />
+                {/* button submit */}
                 <Box sx={{mb:'1rem', width:'100%', display:'flex', justifyContent:'center'}}>
                     {(disabled)
                         ? <CircularProgress />
@@ -63,6 +65,7 @@ export default function Reset() {
                     }
                 </Box>
             </form>
+            {/* back to login */}
             <Box sx={{width:'100%', display:'flex', justifyContent:'right', mb:'1rem'}}>
                 <Link href='.' component={NextLink}>
                     <Typography variant='caption'>

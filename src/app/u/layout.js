@@ -24,23 +24,29 @@ export default function Navbars({children}) {
     const [lastName, setLastName] = useState('');
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+    // handlers
     function handleOpen() {
+        // toggles the side bar
         setOpen(o=>!o);
     }
 
     function handleCloseDialog(e) {
+        // profile dialog
         setHasProfile(true);
     }
 
     function handleFirstName({target}) {
+        // profile
         setFirstName(target.value);
     }
 
     function handleLastName({target}) {
+        // profile
         setLastName(target.value);
     }
 
     async function handleSubmit(e) {
+        // profile
         e.preventDefault();
         await createProfile({firstName, lastName});
         handleCloseDialog();
@@ -68,12 +74,14 @@ export default function Navbars({children}) {
             <Box sx={{width:'100%'}}>
                 <TopNav handleOpen={handleOpen} />
             </Box>
+            {/* rest */}
             <Box flexGrow={1} sx={{overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex'}}>
                     {/* side drawer */}
                     <Box sx={{height:'100%'}}>
                         <SideNav open={open} />
                     </Box>
+                    {/* rest */}
                     <Box flexGrow={1} sx={{ overflow:'hidden' }}>
                         {/* content */}
                         <Box sx={{width:'100%', height:'100%'}}>
@@ -82,6 +90,7 @@ export default function Navbars({children}) {
                     </Box>
                 </Box>
             </Box>
+            {/* profile completion dialog */}
             <Dialog
                 open={!hasProfile}
                 maxWidth='sm'
@@ -91,11 +100,14 @@ export default function Navbars({children}) {
                 aria-describedby="alert-dialog-description"
                 >
                 <form onSubmit={handleSubmit}>
+                    {/* title */}
                     <DialogTitle id="alert-dialog-title">
                         Finish your profile
                     </DialogTitle>
+                    {/* content */}
                     <DialogContent>
                         <Box sx={{pt:1}}>
+                            {/* first name */}
                             <TextField 
                                 required
                                 label='First Name'
@@ -103,6 +115,7 @@ export default function Navbars({children}) {
                                 onChange={handleFirstName}
                                 sx={{width:'100%', mb:'1rem'}}
                                 />
+                            {/* last name */}
                             <TextField 
                                 required
                                 label='Last Name'
@@ -112,6 +125,7 @@ export default function Navbars({children}) {
                                 />
                         </Box>
                     </DialogContent>
+                    {/* button save */}
                     <DialogActions>
                         <Button type='submit' autoFocus>
                             Save

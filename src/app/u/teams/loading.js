@@ -8,7 +8,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 
 export default function Loading() {
-
+    // custom team card
     const TeamCard = () => {
         return (
             <Paper elevation={0} sx={{m:'1rem', width:'20rem', p:'1rem', borderRadius:3, textDecoration:'none'}} component={NextLink} href='#'>
@@ -30,12 +30,16 @@ export default function Loading() {
     
     return (
         <Box sx={{p:'1rem'}}>
+            {/* title */}
             <Box sx={{width:'100%', display:'flex'}}>
+                {/* title */}
                 <Typography variant="h4">Select a team</Typography>
+                {/* button create */}
                 <Button variant="outlined" sx={{mx:'1rem', textTransform:'none'}}>
                     Create Team
                 </Button>
             </Box>
+            {/* team cards */}
             <Box sx={{display:'flex', justifyContent:'center', flexWrap:'wrap'}}>
                 {[0,0,0].map((team, i) => (
                     <TeamCard key={i} />

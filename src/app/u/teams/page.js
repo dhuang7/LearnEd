@@ -14,6 +14,7 @@ export default async function Teams() {
         .from('teams')
         .select('*');
 
+    // custom team card
     const TeamCard = (team) => {
         return (
             <Paper elevation={3} sx={{m:'1rem', width:'20rem', p:'1rem', borderRadius:3, textDecoration:'none'}} component={NextLink} href='#'>
@@ -33,11 +34,15 @@ export default async function Teams() {
     
     return (
         <Box sx={{p:'1rem', height:'100%', boxSizing:'border-box'}}>
+            {/* title */}
             <Box sx={{display:'flex', flexDirection:'column', height:'100%'}}>
                 <Box sx={{width:'100%', display:'flex'}}>
+                    {/* title */}
                     <Typography variant="h4">Select a team</Typography>
+                    {/* dialog create team */}
                     <Modal />
                 </Box>
+                {/* teams list */}
                 <Box sx={{flexGrow:1, overflow:'hidden'}}>
                     <Box sx={{height:'100%', overflow:'scroll'}}>
                         <Box sx={{display:'flex', justifyContent:'center', flexWrap:'wrap'}}>

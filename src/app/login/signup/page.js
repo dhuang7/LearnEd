@@ -66,6 +66,7 @@ export default function Signup() {
             </Typography>
             {/* normal */}
             <form onSubmit={signUpNewUser}>
+                {/* email */}
                 <TextField 
                     required
                     label="Email" 
@@ -74,6 +75,7 @@ export default function Signup() {
                     value={email}
                     sx={{mb:'1rem', width:'100%'}} 
                     />
+                {/* password */}
                 <TextField 
                     required
                     label="Password"
@@ -82,6 +84,7 @@ export default function Signup() {
                     value={password}
                     sx={{mb:'1rem', width:'100%'}} 
                     />
+                {/* confirm */}
                 <TextField 
                     required
                     label="Confirm" 
@@ -92,6 +95,7 @@ export default function Signup() {
                     helperText={(password !== confirm) && 'Password does not match'}
                     sx={{mb:'1rem', width:'100%'}} 
                     />
+                {/* button signup */}
                 <Box sx={{mb:'1rem', width:'100%', display:'flex', justifyContent:'center'}}>
                     {(disabled)
                         ? <CircularProgress />
@@ -99,6 +103,7 @@ export default function Signup() {
                     }
                 </Box>
             </form>
+            {/* link to login */}
             <Box sx={{width:'100%', display:'flex', justifyContent:'right', mb:'1rem'}}>
                 <Link href='.' component={NextLink}>
                     <Typography variant='caption'>
