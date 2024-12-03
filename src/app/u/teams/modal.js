@@ -24,17 +24,21 @@ import theme from "@/app/theme";
 import { useState } from "react";
 import {createTeam} from './createTeamAction';
 import createClient from "@/utils/supabase/client";
+import { CircularProgress } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 
 
 export default function Modal() {
     const [name, setName] = useState('');
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [memberText, setMemberText] = useState('');
     const [errorText, setErrorText] = useState('');
     const [members, setMembers] = useState([]);
     const [disableType, setDisableType] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const router = useRouter();
     
 
     function handleOpen() {
@@ -95,11 +99,15 @@ export default function Modal() {
         setMemberText('');
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+        setLoading(true);
+        await createTeam({name, members});
+        router.push('/u/teams')
         handleClose();
-        createTeam(name);
+        setLoading(false);
         setName('');
+        setMemberText('');
     }
 
     return (
@@ -175,9 +183,12 @@ export default function Modal() {
                     </DialogContent>
                     {/* buttons */}
                     <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type='submit'>
-                            Create
+                        <Button disabled={loading} onClick={handleClose}>Cancel</Button>
+                        <Button disabled={loading} type='submit'>
+                            {(loading)
+                                ? <CircularProgress />
+                                : 'Create'
+                            }
                         </Button>
                     </DialogActions>
                 </form>

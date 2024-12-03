@@ -32,15 +32,21 @@ export default async function Teams() {
     }
     
     return (
-        <Box sx={{p:'1rem'}}>
-            <Box sx={{width:'100%', display:'flex'}}>
-                <Typography variant="h4">Select a team</Typography>
-                <Modal />
-            </Box>
-            <Box sx={{display:'flex', justifyContent:'center', flexWrap:'wrap'}}>
-                {teams.map((team, i) => (
-                    <TeamCard key={i} team={team} />
-                ))}
+        <Box sx={{p:'1rem', height:'100%', boxSizing:'border-box'}}>
+            <Box sx={{display:'flex', flexDirection:'column', height:'100%'}}>
+                <Box sx={{width:'100%', display:'flex'}}>
+                    <Typography variant="h4">Select a team</Typography>
+                    <Modal />
+                </Box>
+                <Box sx={{flexGrow:1, overflow:'hidden'}}>
+                    <Box sx={{height:'100%', overflow:'scroll'}}>
+                        <Box sx={{display:'flex', justifyContent:'center', flexWrap:'wrap'}}>
+                            {teams.map((team, i) => (
+                                <TeamCard key={i} team={team} />
+                            ))}
+                        </Box>
+                    </Box>
+                </Box>
             </Box>
         </Box>
     )

@@ -6,10 +6,11 @@ import Box from "@mui/material/Box";
 
 export default async function Profile() {
     const supabase = await createClient();
-    // const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    const { data: { user } } = await supabase.auth.getUser();
     let { data: [profile], error } = await supabase
         .from('profiles')
         .select('*')
+        .eq('email', user.email);
     
     return (
         <Box sx={{pt:'1rem', px:'1rem'}}>

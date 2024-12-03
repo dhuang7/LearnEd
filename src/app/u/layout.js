@@ -49,9 +49,11 @@ export default function Navbars({children}) {
     useEffect(() => {
         async function getProfile() {
             const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
             let { data: profiles, error } = await supabase
                 .from('profiles')
-                .select('*');
+                .select('*')
+                .eq('id', user.id);
 
             setHasProfile(profiles.length > 0);
         }
@@ -66,13 +68,13 @@ export default function Navbars({children}) {
             <Box sx={{width:'100%'}}>
                 <TopNav handleOpen={handleOpen} />
             </Box>
-            <Box flexGrow={1}>
+            <Box flexGrow={1} sx={{overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex'}}>
                     {/* side drawer */}
                     <Box sx={{height:'100%'}}>
                         <SideNav open={open} />
                     </Box>
-                    <Box flexGrow={1}>
+                    <Box flexGrow={1} sx={{ overflow:'hidden' }}>
                         {/* content */}
                         <Box sx={{width:'100%', height:'100%'}}>
                             {children}
