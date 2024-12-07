@@ -14,7 +14,7 @@ import NextLink from 'next/link';
 import { usePathname } from "next/navigation";
 import { Typography } from "@mui/material";
 
-export default function SideNav({children, open}) {
+export default function SideNav({open, teamInfo}) {
     const pathname = usePathname();
 
     // custom navbar button for the lists below
@@ -71,6 +71,10 @@ export default function SideNav({children, open}) {
                             Teams
                         </Typography>
                         <ChevronRightRoundedIcon sx={{ml:'auto'}} />
+                    </CustomNavButton>
+                    <CustomNavButton path='/u/tasks' tip='Tasks'>
+                        <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                        {JSON.stringify(teamInfo)}
                     </CustomNavButton>
                 </List>
             </AppBar>

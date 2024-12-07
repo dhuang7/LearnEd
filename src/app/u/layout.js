@@ -23,6 +23,7 @@ export default function Navbars({children}) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    // const [teamInfo, setTeamInfo] = useState({});
 
     // handlers
     function handleOpen() {
@@ -69,6 +70,12 @@ export default function Navbars({children}) {
         }
 
         getProfile();
+
+        // function useParentContext() {
+        //     const context = useContext(ParentContext);
+        //     if (!context) throw new Error('useParentContext must be used within ParentProvider');
+        //     return context;
+        // }
     }, [])
     
 
