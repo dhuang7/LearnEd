@@ -3,6 +3,8 @@ import createClient from "@/utils/supabase/server";
 import Paper from "@mui/material/Paper";
 import Image from "next/image";
 import Typography from "@mui/material/Typography";
+import Icon from '@mui/material/Icon';
+
 import NextLink from 'next/link';
 import Modal from "./modal";
 
@@ -23,9 +25,9 @@ export default async function Teams() {
         return (
             <Paper elevation={3} sx={{m:'1rem', width:'20rem', p:'1rem', borderRadius:3, textDecoration:'none'}} component={NextLink} href={'/u/t/'+team.team.id}>
                 <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
-                    <Box sx={{p:'1rem'}}>
-                        <Image src={'/icon.svg'} alt={'icon'} width={100} height={100} />
-                    </Box>
+                    <Icon sx={{p:'1rem', width:'100%', height:'7.5rem'}}>
+                        <Image src={'/icon.svg'} alt={'icon'} width={1} height={1} style={{width:'auto', height:'100%'}} />
+                    </Icon>
                 </Box>
                 <Box>
                     <Typography noWrap variant="h4" align="center">
@@ -35,7 +37,7 @@ export default async function Teams() {
             </Paper>
         )
     }
-    
+
     return (
         <Box sx={{p:'1rem', height:'100%', boxSizing:'border-box'}}>
             {/* title */}
@@ -53,6 +55,13 @@ export default async function Teams() {
                             {teams.map((team, i) => (
                                 <TeamCard key={i} team={team} />
                             ))}
+                            {/* if no teams then display message */}
+                            {teams.length !== 0
+                            || <>
+                                <Box sx={{width:'100%', justifyContent:'center', display:'flex', mt:'2rem'}}>
+                                    <Typography color="textSecondary">Please create a team.</Typography>
+                                </Box>
+                            </>}
                         </Box>
                     </Box>
                 </Box>

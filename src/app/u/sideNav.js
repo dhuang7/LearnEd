@@ -1,3 +1,5 @@
+'use client'
+
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton"
 import Box from "@mui/material/Box";
@@ -9,13 +11,18 @@ import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithCh
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Tooltip from "@mui/material/Tooltip";
+import Icon from '@mui/material/Icon';
+import HandshakeRoundedIcon from '@mui/icons-material/HandshakeRounded';
 
 import NextLink from 'next/link';
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Typography } from "@mui/material";
+import { useTeamContext } from "./layout";
 
-export default function SideNav({open, teamInfo}) {
+export default function SideNav({open}) {
     const pathname = usePathname();
+    const [teamInfo, setTeamInfo] = useTeamContext();
 
     // custom navbar button for the lists below
     const CustomNavButton = (props) => {
@@ -66,16 +73,40 @@ export default function SideNav({open, teamInfo}) {
                         Cycles
                     </CustomNavButton>
                     <CustomNavButton path='/u/teams' divider tip='Teams'>
-                        <GroupsRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
-                        <Typography noWrap>
-                            Teams
-                        </Typography>
+                        {/* renames the Teams to a Team name when a team is selected */}
+                        {(teamInfo)
+                            ? <>
+                                <Icon sx={{px:'.5rem', pr:'.75rem'}}>
+                                    <Image src={'/icon.svg'} alt={'icon'} width={1} height={1} style={{width:'100%', height:'100%'}} />
+                                </Icon>
+                                <Typography noWrap>
+                                    {teamInfo.name}
+                                </Typography>
+                            </>
+                            : <>
+                                <GroupsRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                                <Typography noWrap>
+                                    Teams
+                                </Typography>
+                            </>
+                        }
                         <ChevronRightRoundedIcon sx={{ml:'auto'}} />
                     </CustomNavButton>
-                    <CustomNavButton path='/u/tasks' tip='Tasks'>
-                        <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
-                        {JSON.stringify(teamInfo)}
-                    </CustomNavButton>
+                    {/* Team side navigation */}
+                    {(teamInfo)
+                        ? <>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/norms`} tip='Norms'>
+                                <HandshakeRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                                <Typography noWrap>
+                                    Norms
+                                </Typography>
+                            </CustomNavButton>
+                        </>
+                        : <Box sx={{width:'100%', justifyContent:'center', display:'flex', mt:'.5rem'}}>
+                            {/* text if no team is selected */}
+                            <Typography color="textSecondary">Select a team.</Typography>
+                        </Box>
+                    }
                 </List>
             </AppBar>
         </Box>
