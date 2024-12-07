@@ -100,14 +100,16 @@ export default function Modal() {
             if (user.email === memberText) {
                 setErrorText('This is your email');
             } else {
-                let { data: profiles, error } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('email', memberText);
-
-                if (profiles.length === 1) {
+                // let { data: profiles, error } = await supabase
+                //     .from('profiles')
+                //     .select('*')
+                //     .eq('email', memberText);
+                const { data, error } = await supabase.rpc('email_exists', { checked_email: memberText })
+                console.log(data)
+                console.log(error)
+                if (data) {
                     setMemberEmails(m=>m.concat([memberText]));
-                    setMemberIds(m=>m.concat([profiles[0].id]));
+                    setMemberIds(m=>m.concat([data[0].id]));
                 } else {
                     setErrorText('User does not exist');
                 }

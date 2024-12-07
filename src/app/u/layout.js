@@ -48,7 +48,11 @@ export default function Navbars({children}) {
     async function handleSubmit(e) {
         // profile
         e.preventDefault();
-        await createProfile({firstName, lastName});
+        const {data, error} = await createProfile({firstName, lastName});
+        if (error) {
+            console.log(error);
+            return;
+        }
         handleCloseDialog();
     }
 
@@ -59,7 +63,7 @@ export default function Navbars({children}) {
             let { data: profiles, error } = await supabase
                 .from('profiles')
                 .select('*')
-                .eq('id', user.id);
+                .eq('user_id', user.id);
 
             setHasProfile(profiles.length > 0);
         }

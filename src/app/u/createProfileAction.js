@@ -9,11 +9,10 @@ export async function createProfile(profile) {
     const { data, error } = await supabase
         .from('profiles')
         .insert([
-            { id: user.id, first_name: profile.firstName, last_name: profile.lastName, email: user.email },
+            { user_id: user.id, first_name: profile.firstName, last_name: profile.lastName, email: user.email },
         ])
         .select();
 
-    if (error) console.log(error);
     
-    return;
+    return {data, error};
 }
