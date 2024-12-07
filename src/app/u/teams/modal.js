@@ -35,7 +35,8 @@ export default function Modal() {
     const [loading, setLoading] = useState(false);
     const [memberText, setMemberText] = useState('');
     const [errorText, setErrorText] = useState('');
-    const [members, setMembers] = useState([]);
+    const [memberEmails, setMemberEmails] = useState([]);
+    const [memberIds, setMemberIds] = useState([]);
     const [disableType, setDisableType] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const router = useRouter();
@@ -76,8 +77,12 @@ export default function Modal() {
         // removes a member
         const value = currentTarget.dataset.value;
         console.log(value)
-        console.log(members.slice(value+1))
-        setMembers(m => [
+        console.log(memberEmail.slice(value+1))
+        setMemberEmails(m => [
+            ...m.slice(0, value),
+            ...m.slice(value+1),
+        ]);
+        setMemberIds(m => [
             ...m.slice(0, value),
             ...m.slice(value+1),
         ]);
@@ -87,20 +92,26 @@ export default function Modal() {
         // check if member exist then adds it to the list
         setDisableType(true);
 
-        if (members.includes(memberText)) {
+        if (memberEmails.includes(memberText)) {
             setErrorText('User is already added');
         } else {
             const supabase = createClient();
-            let { data: profiles, error } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('email', memberText);
-
-            if (profiles.length === 1) {
-                setMembers(m=>m.concat([memberText]))
+            const {data: {user}} = await supabase.auth.getUser();
+            if (user.email === memberText) {
+                setErrorText('This is your email');
             } else {
-                setErrorText('User does not exist');
-            }
+                let { data: profiles, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('email', memberText);
+
+                if (profiles.length === 1) {
+                    setMemberEmails(m=>m.concat([memberText]));
+                    setMemberIds(m=>m.concat([profiles[0].id]));
+                } else {
+                    setErrorText('User does not exist');
+                }
+            }            
         }
 
         setDisableType(false);
@@ -111,13 +122,15 @@ export default function Modal() {
         // handle submit
         e.preventDefault();
         setLoading(true);
-        await createTeam({name, members});
+        await createTeam({name, memberEmails, memberIds});
         // reset everything
         router.push('/u/teams')
         handleClose();
         setLoading(false);
         setName('');
         setMemberText('');
+        setMemberEmails([]);
+        setMemberIds([]);
     }
 
     return (
@@ -177,7 +190,7 @@ export default function Modal() {
                             {/* list of users */}
                             <Typography variant="h6">Members:</Typography>
                             <List>
-                                {members.map((m, i) => (
+                                {memberEmails.map((m, i) => (
                                     <ListItem key={i}>
                                         <AccountCircleRoundedIcon fontSize='large' sx={{mr:'1rem'}} />
                                         <Typography>{m}</Typography>

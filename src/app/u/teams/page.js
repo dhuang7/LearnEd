@@ -14,6 +14,10 @@ export default async function Teams() {
         .from('teams')
         .select('*');
 
+    if (error) {
+        console.log(error);
+    }
+
     // custom team card
     const TeamCard = (team) => {
         return (
@@ -24,7 +28,7 @@ export default async function Teams() {
                     </Box>
                 </Box>
                 <Box>
-                    <Typography variant="h4" align="center">
+                    <Typography noWrap variant="h4" align="center">
                         {team.team.name}
                     </Typography>
                 </Box>

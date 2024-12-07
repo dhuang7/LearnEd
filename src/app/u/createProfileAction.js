@@ -13,6 +13,7 @@ export async function createProfile(profile) {
         ])
         .select();
 
+    if (error) console.log(error);
     
     return;
 }
