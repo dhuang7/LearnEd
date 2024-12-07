@@ -105,8 +105,6 @@ export default function Modal() {
                 //     .select('*')
                 //     .eq('email', memberText);
                 const { data, error } = await supabase.rpc('email_exists', { checked_email: memberText })
-                console.log(data)
-                console.log(error)
                 if (data) {
                     setMemberEmails(m=>m.concat([memberText]));
                     setMemberIds(m=>m.concat([data[0].id]));
@@ -124,6 +122,7 @@ export default function Modal() {
         // handle submit
         e.preventDefault();
         setLoading(true);
+        // add yourself
         await createTeam({name, memberEmails, memberIds});
         // reset everything
         router.push('/u/teams')
