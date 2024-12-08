@@ -4,6 +4,8 @@ import MemberList from "./memberList";
 import NormsList from "./normsList";
 import AgendaList from "./agendaList";
 
+import Button from '@mui/material/Button';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 
 
@@ -15,7 +17,12 @@ export default async function Agenda({params}) {
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
             {/* title */}
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
-                <Typography variant='h4'>Agenda</Typography>
+                <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                    <Typography variant='h4'>Agenda</Typography>
+                    <Button color='info' variant='contained' disableElevation sx={{borderRadius:3, textTransform:'none'}} startIcon={<AddRoundedIcon />}>
+                        New
+                    </Button>
+                </Box>
             </Box>
             {/* norms */}
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>

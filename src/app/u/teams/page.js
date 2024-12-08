@@ -28,7 +28,11 @@ export default async function Teams() {
                 sx={{
                     m:'1rem', width:'20rem', p:'1rem', 
                     borderRadius:3, border: '1px solid', borderColor: 'grey.300',
-                    textDecoration:'none'
+                    textDecoration:'none',
+                    transition: 'border-color 0.25s',
+                    '&:hover': {
+                        borderColor: 'info.main', // Change the border color on hover
+                    },
                 }} 
                 component={NextLink} 
                 href={'/u/t/'+team.team.id}
