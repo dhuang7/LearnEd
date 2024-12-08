@@ -95,10 +95,34 @@ export default function SideNav({open}) {
                     {/* Team side navigation */}
                     {(teamInfo)
                         ? <>
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/norms`} tip='Norms'>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/dashboard`} tip='Dashboard'>
+                                <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                                <Typography noWrap>
+                                    Dashboard
+                                </Typography>
+                            </CustomNavButton>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/agenda`} tip='Agenda'>
                                 <HandshakeRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
-                                    Norms
+                                    Agenda
+                                </Typography>
+                            </CustomNavButton>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/calendar`} tip='Calendar'>
+                                <CalendarMonthRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                                <Typography noWrap>
+                                    Calendar
+                                </Typography>
+                            </CustomNavButton>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/tasks`} tip='Tasks'>
+                                <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                                <Typography noWrap>
+                                    Tasks
+                                </Typography>
+                            </CustomNavButton>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/cycles`} tip='Cycles'>
+                                <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                                <Typography noWrap>
+                                    Cycles
                                 </Typography>
                             </CustomNavButton>
                         </>

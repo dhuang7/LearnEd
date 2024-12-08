@@ -2,13 +2,13 @@ import Box from "@mui/material/Box";
 
 
 
-export default function Norms() {
+export default function Cycles() {
 
     
 
     return (
         <Box>
-            Norms
+            cycles
         </Box>
     )
 }

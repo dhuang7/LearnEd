@@ -92,8 +92,8 @@ export default function Navbars({children}) {
                         </Box>
                         {/* rest */}
                         <Box flexGrow={1} sx={{ overflow:'hidden' }}>
-                            {/* content */}
-                            <Box sx={{width:'100%', height:'100%'}}>
+                            {/* ------ MAIN CONTENT ------ */}
+                            <Box sx={{width:'100%', height:'100%', backgroundColor:'grey.100'}}>
                                 {children}
                             </Box>
                         </Box>

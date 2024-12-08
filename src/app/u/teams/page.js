@@ -58,7 +58,7 @@ export default async function Teams() {
                             {/* if no teams then display message */}
                             {teams.length !== 0
                             || <>
-                                <Box sx={{width:'100%', justifyContent:'center', display:'flex', mt:'2rem'}}>
+                                <Box sx={{width:'100%', justifyContent:'center', display:'flex', pt:'2rem'}}>
                                     <Typography color="textSecondary">Please create a team.</Typography>
                                 </Box>
                             </>}
