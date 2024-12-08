@@ -4,8 +4,7 @@ import MemberList from "./memberList";
 import NormsList from "./normsList";
 import AgendaList from "./agendaList";
 
-import Button from '@mui/material/Button';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AddAgendaModal from "./addAgendaModal";
 
 
 
@@ -19,9 +18,7 @@ export default async function Agenda({params}) {
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                     <Typography variant='h4'>Agenda</Typography>
-                    <Button color='info' variant='contained' disableElevation sx={{borderRadius:3, textTransform:'none'}} startIcon={<AddRoundedIcon />}>
-                        New
-                    </Button>
+                    <AddAgendaModal teamId={teamId} />
                 </Box>
             </Box>
             {/* norms */}

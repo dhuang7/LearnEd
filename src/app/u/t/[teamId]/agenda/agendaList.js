@@ -30,19 +30,19 @@ export default function AgendaList({teamId}) {
     
     
     const columns = [
-        {field: 'id', headerName: 'id', flex:0 },
+        // {field: 'id', headerName: 'id', flex:0 },
+        { field: 'focus', headerName: 'Focus', flex:2 },
         { field: 'date', headerName: 'Date', flex:1 },
         { field: 'start_time', headerName: 'Start', valueFormatter: readableTime, flex:1 },
         { field: 'end_time', headerName: 'End', valueFormatter: readableTime, flex:1 },
-        { field: 'name', headerName: 'Name', flex:2 },
     ]
 
-    const rows = agendas?.map(({date, start_time, end_time, name}, i) => ({
+    const rows = agendas?.map(({date, start_time, end_time, focus}, i) => ({
         id:i,
         date,
         start_time,
         end_time,
-        name,
+        focus,
     }));
 
     // converts time to readable time
@@ -59,6 +59,7 @@ export default function AgendaList({teamId}) {
         <Box sx={{height:'100%', width:'100%'}}>
             <DataGrid 
                 columns={columns} rows={rows} 
+                checkboxSelection
                 autoPageSize
                 sx={{
                     '& .MuiDataGrid-cell:hover': {
