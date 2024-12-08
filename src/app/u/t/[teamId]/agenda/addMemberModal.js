@@ -45,7 +45,6 @@ export default function AddMemberModal({profiles, teamId}) {
     useEffect(() => {
         setMemberEmails(profiles.map(p => p.email));
         setMemberIds(profiles.map(p => p.id))
-        console.log(profiles)
     }, [profiles]);
 
     // handlers
@@ -82,21 +81,27 @@ export default function AddMemberModal({profiles, teamId}) {
         // removes a member
         const value = Number(currentTarget.dataset.value);
         const {data: {user}} = await supabase.auth.getUser();
+        const {data: team_memberships, error} = await supabase
+            .from('team_memberships')
+            .select()
+            .eq('team_id', teamId)
+            .eq('user_id', )
 
-        // check if you are removing self
         if (memberEmails[value] === user.email) {
+            // check if you are removing self
             setErrorText("You can't remove yourself");
-            return;
+        } else {
+            // remove
+            setMemberEmails(m => [
+                ...m.slice(0, value),
+                ...m.slice(value+1),
+            ]);
+            setMemberIds(m => [
+                ...m.slice(0, value),
+                ...m.slice(value+1),
+            ]);
         }
-        // remove
-        setMemberEmails(m => [
-            ...m.slice(0, value),
-            ...m.slice(value+1),
-        ]);
-        setMemberIds(m => [
-            ...m.slice(0, value),
-            ...m.slice(value+1),
-        ]);
+        
     }
 
     async function handleAddMember() {
@@ -131,7 +136,7 @@ export default function AddMemberModal({profiles, teamId}) {
         // handle submit
         e.preventDefault();
         setLoading(true);
-        const {data, error} = await supabase.rpc('manage_team_memberships', {tid: teamId, member_ids: memberIds})
+        const {data, error} = await supabase.rpc('manage_team_memberships', {tid: teamId, member_ids: memberIds});
         // reset everything
         router.refresh();
         handleClose();
