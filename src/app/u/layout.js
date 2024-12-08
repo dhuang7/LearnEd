@@ -88,7 +88,7 @@ export default function Navbars({children}) {
                     <Box sx={{width:'100%', height:'100%', display:'flex'}}>
                         {/* side drawer */}
                         <Box sx={{height:'100%'}}>
-                            <SideNav open={open} />
+                            <SideNav open={open} teamInfo={teamInfo} />
                         </Box>
                         {/* rest */}
                         <Box flexGrow={1} sx={{ overflow:'hidden' }}>

@@ -20,9 +20,8 @@ import { usePathname } from "next/navigation";
 import { Typography } from "@mui/material";
 import { useTeamContext } from "./layout";
 
-export default function SideNav({open}) {
+export default function SideNav({open, teamInfo}) {
     const pathname = usePathname();
-    const [teamInfo, setTeamInfo] = useTeamContext();
 
     // custom navbar button for the lists below
     const CustomNavButton = (props) => {
@@ -128,7 +127,7 @@ export default function SideNav({open}) {
                         </>
                         : <Box sx={{width:'100%', justifyContent:'center', display:'flex', mt:'.5rem'}}>
                             {/* text if no team is selected */}
-                            <Typography color="textSecondary">Select a team.</Typography>
+                            {!open || <Typography color="textSecondary">Select a team.</Typography>}
                         </Box>
                     }
                 </List>
