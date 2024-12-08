@@ -11,7 +11,7 @@ export default function LayoutRedirect({params, children}) {
     const [teamInfo, setTeamInfo] = useTeamContext();
     const supabase = createClient();
     const router = useRouter();
-
+    
     useEffect(() => {
         async function getTeamId() {
             // get team info if team exists
