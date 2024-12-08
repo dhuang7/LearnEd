@@ -21,26 +21,32 @@ import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 
 
 import theme from "@/app/theme";
-import { useState } from "react";
-import {createTeam} from './createTeamAction';
+import { useEffect, useState } from "react";
 import createClient from "@/utils/supabase/client";
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 
 
-export default function Modal() {
-    const [name, setName] = useState('');
+export default function AddMemberModal({profiles, teamId}) {
+    const supabase = createClient();
+    const router = useRouter();
+    const originalEmails = profiles.map(p => p.email);
+    const originalIds = profiles.map(p => p.id);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [memberText, setMemberText] = useState('');
     const [errorText, setErrorText] = useState('');
-    const [memberEmails, setMemberEmails] = useState([]);
-    const [memberIds, setMemberIds] = useState([]);
+    const [memberEmails, setMemberEmails] = useState(originalEmails);
+    const [memberIds, setMemberIds] = useState(originalIds);
     const [disableType, setDisableType] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const router = useRouter();
-    
+
+    useEffect(() => {
+        setMemberEmails(profiles.map(p => p.email));
+        setMemberIds(profiles.map(p => p.id))
+        console.log(profiles)
+    }, [profiles]);
 
     // handlers
     function handleOpen() {
@@ -51,11 +57,10 @@ export default function Modal() {
     function handleClose(e) {
         // close modal
         setOpen(false);
-    }
-
-    function handleName({target}) {
-        // team name
-        setName(target.value);
+        setMemberText('');
+        setMemberEmails(originalEmails);
+        setMemberIds(originalIds);
+        setErrorText('');
     }
 
     function handleMemberText({target}) {
@@ -73,9 +78,17 @@ export default function Modal() {
       
     }
 
-    function handleRemoveMember({currentTarget}) {
+    async function handleRemoveMember({currentTarget}) {
         // removes a member
         const value = Number(currentTarget.dataset.value);
+        const {data: {user}} = await supabase.auth.getUser();
+
+        // check if you are removing self
+        if (memberEmails[value] === user.email) {
+            setErrorText("You can't remove yourself");
+            return;
+        }
+        // remove
         setMemberEmails(m => [
             ...m.slice(0, value),
             ...m.slice(value+1),
@@ -91,19 +104,17 @@ export default function Modal() {
         setDisableType(true);
 
         if (memberEmails.includes(memberText)) {
+            // checks if user is already added
             setErrorText('User is already added');
         } else {
-            const supabase = createClient();
             const {data: {user}} = await supabase.auth.getUser();
             if (user.email === memberText) {
+                // checks if this is your email
                 setErrorText('This is your email');
             } else {
-                // let { data: profiles, error } = await supabase
-                //     .from('profiles')
-                //     .select('*')
-                //     .eq('email', memberText);
                 const { data, error } = await supabase.rpc('email_exists', { checked_email: memberText })
                 if (data[0]) {
+                    // checks if user exists
                     setMemberEmails(m=>m.concat([memberText]));
                     setMemberIds(m=>m.concat([data[0].id]));
                 } else {
@@ -120,24 +131,17 @@ export default function Modal() {
         // handle submit
         e.preventDefault();
         setLoading(true);
-        // add yourself
-        await createTeam({name, memberEmails, memberIds});
+        const {data, error} = await supabase.rpc('manage_team_memberships', {tid: teamId, member_ids: memberIds})
         // reset everything
         router.refresh();
         handleClose();
         setLoading(false);
-        setName('');
-        setMemberText('');
-        setMemberEmails([]);
-        setMemberIds([]);
     }
 
     return (
         <>
-            {/* create team button to open dialog */}
-            <Button variant="outlined" sx={{mx:'1rem', textTransform:'none'}} onClick={handleOpen}>
-                Create Team
-            </Button>
+            {/* add member button to open dialog */}
+            <IconButton color='primary' onClick={handleOpen} disabled={loading}><PersonAddRoundedIcon /></IconButton>
             {/* open dialog */}
             <Dialog
                 open={open}
@@ -151,19 +155,11 @@ export default function Modal() {
                 <form onSubmit={handleSubmit}>
                     {/* title */}
                     <DialogTitle id="alert-dialog-title">
-                        Create Team
+                        Add Member
                     </DialogTitle>
                     {/* content */}
                     <DialogContent>
                         <Box sx={{pt:1}}>
-                            {/* team name */}
-                            <TextField 
-                                required
-                                label='Name'
-                                value={name}
-                                onChange={handleName}
-                                sx={{width:'100%', mb:'1rem'}}
-                                />
                             {/* add users */}
                             <TextField 
                                 disabled={disableType}
@@ -209,7 +205,7 @@ export default function Modal() {
                         <Button disabled={loading} type='submit'>
                             {(loading)
                                 ? <CircularProgress />
-                                : 'Create'
+                                : 'Add'
                             }
                         </Button>
                     </DialogActions>

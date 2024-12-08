@@ -37,7 +37,7 @@ export default async function LoadingAgenda() {
                                 {/* data grid */}
                                 <Box sx={{flexGrow:1, overflow:'hidden'}}>
                                     <Box sx={{height:'100%'}}>
-                                        {Array(4).fill(<Skeleton height='20%' />)}
+                                        {Array(4).fill(0).map((v, i) => <Skeleton key={i} height='20%' />)}
                                     </Box>
                                 </Box>
                                 
@@ -71,7 +71,7 @@ export default async function LoadingAgenda() {
                                         display:'flex', flexDirection:'column'
                                     }}
                                     >
-                                    {Array(9).fill(<Skeleton height='10%' />)}
+                                    {Array(9).fill(0).map((v, i) => <Skeleton key={i} height='10%' />)}
                                 </Paper>
                             </Box>
                         </Box>

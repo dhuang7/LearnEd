@@ -1,12 +1,11 @@
 import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
 
 import { DataGrid } from '@mui/x-data-grid';
 
 import createClient from "@/utils/supabase/server";
+import AddMemberModal from "./addMemberModal";
 
 
 
@@ -42,7 +41,7 @@ export default async function MemberList({teamId}) {
                 {/* title */}
                 <Typography variant="h6">Members:</Typography>
                 {/* button */}
-                <IconButton color='primary'><PersonAddRoundedIcon /></IconButton>
+                <AddMemberModal profiles={data} teamId={teamId} />
             </Box>
             {/* data grid */}
             <Box sx={{flexGrow:1, overflow:'hidden'}}>
