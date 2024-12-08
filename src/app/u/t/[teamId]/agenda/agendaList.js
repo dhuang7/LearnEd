@@ -2,8 +2,6 @@
 
 import createClient from "@/utils/supabase/client";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 
 
 import { DataGrid } from '@mui/x-data-grid';
@@ -15,6 +13,7 @@ export default function AgendaList({teamId}) {
     const supabase = createClient();
     const [agendas, setAgendas] = useState();
 
+    // get agendas
     useEffect(() => {
         async function getAgendas() {
             const {data: a, error} = await supabase
@@ -46,6 +45,7 @@ export default function AgendaList({teamId}) {
         name,
     }));
 
+    // converts time to readable time
     function readableTime(timestampz) {
         // Convert to a Date object
         const date = new Date(timestampz);
@@ -67,11 +67,7 @@ export default function AgendaList({teamId}) {
                     '& .MuiDataGrid-container--top [role=row]': {
                         borderTopRadius:3,
                     },
-                    '& .MuiDataGrid-row--borderBottom .MuiDataGrid-columnHeader': {
-                        // borderBottom:0,
-                    },
-                    border:0,
-                    boxShadow:3,
+                    border:'1px solid', borderColor: 'grey.300',
                     borderRadius:3,
                     backgroundColor:'common.white',
                 }}

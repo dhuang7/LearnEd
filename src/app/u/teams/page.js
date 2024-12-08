@@ -23,7 +23,16 @@ export default async function Teams() {
     // custom team card
     const TeamCard = (team) => {
         return (
-            <Paper elevation={3} sx={{m:'1rem', width:'20rem', p:'1rem', borderRadius:3, textDecoration:'none'}} component={NextLink} href={'/u/t/'+team.team.id}>
+            <Paper 
+                elevation={0} 
+                sx={{
+                    m:'1rem', width:'20rem', p:'1rem', 
+                    borderRadius:3, border: '1px solid', borderColor: 'grey.300',
+                    textDecoration:'none'
+                }} 
+                component={NextLink} 
+                href={'/u/t/'+team.team.id}
+                >
                 <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
                     <Icon sx={{p:'1rem', width:'100%', height:'7.5rem'}}>
                         <Image src={'/icon.svg'} alt={'icon'} width={1} height={1} style={{width:'auto', height:'100%'}} />

@@ -13,6 +13,7 @@ import createClient from "@/utils/supabase/server";
 export default async function MemberList({teamId}) {
     const supabase = await createClient();
 
+    // get email of team members
     const { data, error } = await supabase.rpc('get_team_members_emails', { tid: teamId });
 
     const columns = [
@@ -29,17 +30,21 @@ export default async function MemberList({teamId}) {
 
     return (
         <Paper 
-            elevation={3} 
+            elevation={0} 
             sx={{
-                borderRadius:3, boxSizing:'border-box', 
+                borderRadius:3, boxSizing:'border-box', border:'1px solid', borderColor: 'grey.300',
                 p:'1rem', height:'100%', 
                 display:'flex', flexDirection:'column'
             }}
             >
+            {/* Title section */}
             <Box sx={{display:'flex', alignItems:'center'}}>
+                {/* title */}
                 <Typography variant="h6">Members:</Typography>
+                {/* button */}
                 <IconButton color='primary'><PersonAddRoundedIcon /></IconButton>
             </Box>
+            {/* data grid */}
             <Box sx={{flexGrow:1, overflow:'hidden'}}>
                 <Box sx={{height:'100%'}}>
                     <DataGrid 
@@ -62,7 +67,11 @@ export default async function MemberList({teamId}) {
                             },
                             '& .MuiTablePagination-displayedRows': {
                                 m:0
-                            }
+                            },
+                            '& .MuiDataGrid-withBorderColor': {
+                                border:0
+                            },
+                            border:0
                         }}
                         />
                 </Box>
