@@ -12,11 +12,15 @@ import IconButton from "@mui/material/IconButton";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 
+import TopicListItem from './topicListItem';
+
 
 
 export default function TopicList({params}) {
     const [topics, setTopics] = useState([]);
 
+
+    
 
     function handleAddTopic() {
         setTopics(ts => ts.concat([{
@@ -27,7 +31,7 @@ export default function TopicList({params}) {
     }
 
     function handleDeleteTopic({currentTarget}) {
-        const value = Number(currentTarget.dataset.ordernum)-1;
+        const value = Number(currentTarget.dataset.order)-1;
         if (topics.length === 1) {
             setTopics([]);
         } else {
@@ -39,47 +43,7 @@ export default function TopicList({params}) {
         
     }
 
-    function TopicListItem({orderNum, name}) {
-        return (
-            <ListItem 
-                divider
-                >
-                <Box sx={{display:'flex', alignItems:'center', width:'100%'}}>
-                    <Typography variant="h6" sx={{boxSizing:'border-box', pr:'.5rem'}}>Topic #{orderNum}:</Typography>
-                    {/* <TextField 
-                        label='topic'
-                        sx={{
-                            pr:'.5rem',
-                            flexGrow:1,
-                        }}
-                        /> */}
-                    <Box sx={{boxSizing:'border-box', pr:'.5rem', flexGrow:1}}>
-                        <Button
-                            sx={{
-                                width:'100%',
-                                textTransform:'none',
-                                justifyContent:'left'
-                            }}
-                            >
-                            {name}
-                        </Button>
-                    </Box>
-                    <Autocomplete 
-                        options={[{label:'test'}]}
-                        sx={{width:'9rem', boxSizing:'border-box', pr:'.5rem'}} 
-                        size='small'
-                        renderInput={(params) => (
-                            <TextField 
-                                {...params} 
-                                label="Cycles" 
-                                />
-                        )}
-                        />
-                    <IconButton data-ordernum={orderNum} onClick={handleDeleteTopic}><DeleteRoundedIcon /></IconButton>
-                </Box>
-            </ListItem>
-        );
-    }
+    
 
     return (
         <>
@@ -89,7 +53,7 @@ export default function TopicList({params}) {
                     {/* Topic lists */}
                     <List disablePadding sx={{borderTop:'1px solid', borderColor:'grey.300'}}>
                         {topics.map((topic, i) => (
-                            <TopicListItem key={i} {...topic} orderNum={i+1} />
+                            <TopicListItem key={i} topic={topic} setTopics={setTopics} listOrder={i+1} handleDeleteTopic={handleDeleteTopic} />
                         ))}
                         <ListItem>
                             <Button 

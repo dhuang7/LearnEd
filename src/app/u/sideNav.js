@@ -55,7 +55,7 @@ export default function SideNav({open, teamInfo}) {
                 >
                 {/* navigation */}
                 <List>
-                    <CustomNavButton path='/u/dashboard' tip='Dashboard'>
+                    {/* <CustomNavButton path='/u/dashboard' tip='Dashboard'>
                         <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Dashboard
                     </CustomNavButton>
@@ -66,7 +66,7 @@ export default function SideNav({open, teamInfo}) {
                     <CustomNavButton path='/u/tasks' tip='Tasks'>
                         <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Tasks
-                    </CustomNavButton>
+                    </CustomNavButton> */}
                     <CustomNavButton path='/u/cycles' divider tip='Cycles'>
                         <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Cycles
@@ -106,7 +106,7 @@ export default function SideNav({open, teamInfo}) {
                                     Agenda
                                 </Typography>
                             </CustomNavButton>
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/calendar`} tip='Calendar'>
+                            {/* <CustomNavButton path={`/u/t/${teamInfo.id}/calendar`} tip='Calendar'>
                                 <CalendarMonthRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Calendar
@@ -123,7 +123,7 @@ export default function SideNav({open, teamInfo}) {
                                 <Typography noWrap>
                                     Cycles
                                 </Typography>
-                            </CustomNavButton>
+                            </CustomNavButton> */}
                         </>
                         : <Box sx={{width:'100%', justifyContent:'center', display:'flex', mt:'.5rem'}}>
                             {/* text if no team is selected */}
