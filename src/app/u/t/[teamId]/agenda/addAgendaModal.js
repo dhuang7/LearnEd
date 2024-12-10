@@ -27,8 +27,9 @@ import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRou
 import theme from "@/app/theme";
 import { useEffect, useState } from "react";
 import createClient from "@/utils/supabase/client";
-import { CircularProgress, InputLabel } from "@mui/material";
+import { Autocomplete, CircularProgress, InputLabel, ListItemText } from "@mui/material";
 import { useRouter } from "next/navigation";
+import TopicList from "./topicList";
 
 
 
@@ -134,6 +135,7 @@ export default function AddAgendaModal({teamId}) {
         setLoading(false);
     }
 
+
     return (
         <>
             {/* add member button to open dialog */}
@@ -174,7 +176,7 @@ export default function AddAgendaModal({teamId}) {
                     </DialogTitle>
                     {/* content */}
                     <DialogContent>
-                        <Box sx={{pt:1}}>
+                        <Box sx={{pt:1, display:'flex', flexDirection:'column', height:'100%', boxSizing:'border-box',}}>
                             {/* add focus */}
                             <TextField 
                                 disabled={disableType}
@@ -198,7 +200,7 @@ export default function AddAgendaModal({teamId}) {
                                     mb:'1rem'
                                 }}
                                 />
-                            {/* add times */}
+                            {/* add date */}
                             <Box sx={{display:'flex', mb:'1rem'}}>
                                 <Box sx={{width:'50%', boxSizing:'border-box', pr:'.5rem'}}>
                                     <TextField 
@@ -219,6 +221,7 @@ export default function AddAgendaModal({teamId}) {
                                         
                                         />
                                 </Box>
+                                {/* add start time */}
                                 <Box sx={{width:'25%', boxSizing:'border-box', pr:'.25rem'}}>
                                     <TextField 
                                         disabled={disableType}
@@ -237,6 +240,7 @@ export default function AddAgendaModal({teamId}) {
                                         }}
                                         />
                                 </Box>
+                                {/* add end time */}
                                 <Box sx={{width:'25%', boxSizing:'border-box', pl:'.25rem'}}>
                                     <TextField 
                                         disabled={disableType}
@@ -256,21 +260,8 @@ export default function AddAgendaModal({teamId}) {
                                         />
                                 </Box>
                             </Box>
-                            
-                            {/* list of users */}
-                            {/* <Typography variant="h6">Members:</Typography>
-                            <List>
-                                {memberEmails.map((m, i) => (
-                                    <ListItem key={i}>
-                                        <AccountCircleRoundedIcon fontSize='large' sx={{mr:'1rem'}} />
-                                        <Typography>{m}</Typography>
-                                        <IconButton data-value={i} sx={{ml:'auto'}} onClick={handleRemoveMember}>
-                                            <PersonRemoveRoundedIcon fontSize="medium" />
-                                        </IconButton>
-                                    </ListItem>
-                                ))}
-                            </List> */}
-                            
+                            {/* Content */}
+                            <TopicList />                            
                         </Box>
                     </DialogContent>
                     {/* buttons */}
