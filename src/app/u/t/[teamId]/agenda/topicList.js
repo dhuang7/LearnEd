@@ -25,13 +25,13 @@ export default function TopicList({params}) {
     function handleAddTopic() {
         setTopics(ts => ts.concat([{
             orderNum: ts.length + 1,
-            name: 'Enter text...',
-            
+            name: '',
         }]))
     }
 
     function handleDeleteTopic({currentTarget}) {
         const value = Number(currentTarget.dataset.order)-1;
+        console.log(value);
         if (topics.length === 1) {
             setTopics([]);
         } else {
@@ -49,12 +49,14 @@ export default function TopicList({params}) {
         <>
             {/* Content */}
             <Box sx={{flexGrow:1, overflow:'hidden', }}>
-                <Box sx={{height:'100%', overflow:'scroll'}}>
+                <Box sx={{height:'100%', overflowX:'hidden', borderTop:'1px solid', borderColor:'grey.300', boxSizing:'border-box'}}>
                     {/* Topic lists */}
-                    <List disablePadding sx={{borderTop:'1px solid', borderColor:'grey.300'}}>
+                    <List disablePadding>
+                        {/* topic list items */}
                         {topics.map((topic, i) => (
                             <TopicListItem key={i} topic={topic} setTopics={setTopics} listOrder={i+1} handleDeleteTopic={handleDeleteTopic} />
                         ))}
+                        {/* add new topic */}
                         <ListItem>
                             <Button 
                                 color='info' 

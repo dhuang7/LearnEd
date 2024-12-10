@@ -20,6 +20,7 @@ import Drawer from "@mui/material/Drawer";
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
+import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
 
 
 
@@ -164,18 +165,26 @@ export default function AddAgendaModal({teamId}) {
                 aria-describedby="alert-dialog-description"
                 PaperProps={{
                     sx: {
-                        width:'40%'
+                        width:'40%',
+                        display:'flex',
+                        flexDirection:'row',
+                        alignItems:'flex-start',
+                        overflow:'hidden'
                     }
                 }}
                 >
+                {/* close arrow button */}
+                <Box sx={{px:'.25rem', boxSizing:'border-box'}}>
+                    <IconButton size='small' onClick={handleClose} sx={{mt:'.9rem', borderRadius:1}}><LastPageRoundedIcon /></IconButton>
+                </Box>
                 {/* form */}
-                <form onSubmit={handleSubmit} style={{height:'100%', display:'flex', flexDirection:'column'}}>
+                <form onSubmit={handleSubmit} style={{height:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
                     {/* title */}
-                    <DialogTitle id="alert-dialog-title">
+                    <DialogTitle id="alert-dialog-title" sx={{pl:0}}>
                         Add Agenda
                     </DialogTitle>
                     {/* content */}
-                    <DialogContent>
+                    <DialogContent sx={{pb:0, pl:0}}>
                         <Box sx={{pt:1, display:'flex', flexDirection:'column', height:'100%', boxSizing:'border-box',}}>
                             {/* add focus */}
                             <TextField 
