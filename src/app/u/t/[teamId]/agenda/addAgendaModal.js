@@ -39,6 +39,11 @@ export default function AddAgendaModal({teamId}) {
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [focusText, setFocusText] = useState('');
+    const [dateText, setDateText] = useState('');
+    const [endTimeText, setEndTimeText] = useState('');
+    const [startTimeText, setStartTimeText] = useState('');
+    const [topics, setTopics] = useState([]);
     // const [memberText, setMemberText] = useState('');
     const [errorText, setErrorText] = useState('');
     const [disableType, setDisableType] = useState(false);
@@ -55,75 +60,30 @@ export default function AddAgendaModal({teamId}) {
         setErrorText('');
     }
 
-    // function handleMemberText({target}) {
-    //     // member text
-    //     setMemberText(target.value);
-    //     if (errorText.length > 0) setErrorText('');
-    // }
+    function handleCancel(e) {
+        handleClose();
+        setFocusText('');
+        setDateText('');
+        setEndTimeText('');
+        setStartTimeText('');
+        setTopics([]);
+    }
 
-    // function handleKeyDown(e) {
-    //     // remove form enter for handling adding members
-    //     if (e.key === "Enter") {
-    //         e.preventDefault(); // Prevent form submission
-    //         handleAddMember();
-    //     }
-      
-    // }
+    function handleFocusText({target}) {
+        setFocusText(target.value);
+    }
 
-    // async function handleRemoveMember({currentTarget}) {
-    //     // removes a member
-    //     const value = Number(currentTarget.dataset.value);
-    //     const {data: {user}} = await supabase.auth.getUser();
-    //     const {data: team_memberships, error} = await supabase
-    //         .from('team_memberships')
-    //         .select()
-    //         .eq('team_id', teamId)
-    //         .eq('user_id', )
+    function handleDateText({target}) {
+        setDateText(target.value);
+    }
 
-    //     if (memberEmails[value] === user.email) {
-    //         // check if you are removing self
-    //         setErrorText("You can't remove yourself");
-    //     } else {
-    //         // remove
-    //         setMemberEmails(m => [
-    //             ...m.slice(0, value),
-    //             ...m.slice(value+1),
-    //         ]);
-    //         setMemberIds(m => [
-    //             ...m.slice(0, value),
-    //             ...m.slice(value+1),
-    //         ]);
-    //     }
-        
-    // }
+    function handleStartTimeText({target}) {
+        setStartTimeText(target.value);
+    }
 
-    // async function handleAddMember() {
-    //     // check if member exist then adds it to the list
-    //     setDisableType(true);
-
-    //     if (memberEmails.includes(memberText)) {
-    //         // checks if user is already added
-    //         setErrorText('User is already added');
-    //     } else {
-    //         const {data: {user}} = await supabase.auth.getUser();
-    //         if (user.email === memberText) {
-    //             // checks if this is your email
-    //             setErrorText('This is your email');
-    //         } else {
-    //             const { data, error } = await supabase.rpc('email_exists', { checked_email: memberText })
-    //             if (data[0]) {
-    //                 // checks if user exists
-    //                 setMemberEmails(m=>m.concat([memberText]));
-    //                 setMemberIds(m=>m.concat([data[0].id]));
-    //             } else {
-    //                 setErrorText('User does not exist');
-    //             }
-    //         }            
-    //     }
-
-    //     setDisableType(false);
-    //     setMemberText('');
-    // }
+    function handleEndTimeText({target}) {
+        setEndTimeText(target.value);
+    }
 
     async function handleSubmit(e) {
         // handle submit
@@ -190,9 +150,8 @@ export default function AddAgendaModal({teamId}) {
                             <TextField 
                                 disabled={disableType}
                                 label='Focus Area'
-                                // value={memberText}
-                                // onChange={handleMemberText}
-                                // onKeyDown={handleKeyDown}
+                                value={focusText}
+                                onChange={handleFocusText}
                                 fullWidth
                                 error={errorText}
                                 helperText={errorText}
@@ -216,9 +175,8 @@ export default function AddAgendaModal({teamId}) {
                                         disabled={disableType}
                                         label='Date'
                                         type='date'
-                                        // value={memberText}
-                                        // onChange={handleMemberText}
-                                        // onKeyDown={handleKeyDown}
+                                        value={dateText}
+                                        onChange={handleDateText}
                                         fullWidth
                                         error={errorText}
                                         helperText={errorText}
@@ -236,9 +194,8 @@ export default function AddAgendaModal({teamId}) {
                                         disabled={disableType}
                                         label='Start Time'
                                         type='time'
-                                        // value={memberText}
-                                        // onChange={handleMemberText}
-                                        // onKeyDown={handleKeyDown}
+                                        value={startTimeText}
+                                        onChange={handleStartTimeText}
                                         fullWidth
                                         error={errorText}
                                         helperText={errorText}
@@ -255,9 +212,8 @@ export default function AddAgendaModal({teamId}) {
                                         disabled={disableType}
                                         label='End Time'
                                         type='time'
-                                        // value={memberText}
-                                        // onChange={handleMemberText}
-                                        // onKeyDown={handleKeyDown}
+                                        value={endTimeText}
+                                        onChange={handleEndTimeText}
                                         fullWidth
                                         error={errorText}
                                         helperText={errorText}
@@ -270,12 +226,12 @@ export default function AddAgendaModal({teamId}) {
                                 </Box>
                             </Box>
                             {/* Content */}
-                            <TopicList />                            
+                            <TopicList topics={topics} setTopics={setTopics} />                            
                         </Box>
                     </DialogContent>
                     {/* buttons */}
                     <DialogActions>
-                        <Button disabled={loading} onClick={handleClose}>Cancel</Button>
+                        <Button disabled={loading} onClick={handleCancel}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)
                                 ? <CircularProgress />

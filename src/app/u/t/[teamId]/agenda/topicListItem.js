@@ -18,12 +18,14 @@ import { useState } from "react";
 
 
 export default function TopicListItem({topic, setTopics, listOrder, handleDeleteTopic}) {
-    const [showText, setShowText] = useState(false);
+    const [editTitle, setEditTitle] = useState(false);
+    const [editOutcomes, setEditOutcomes] = useState(false);
+    const [editDiscussions, setEditDiscussions] = useState(false);
 
     function handleName({target}) {
         setTopics(ts => {
             ts[listOrder-1] = {
-                ...ts[listOrder],
+                ...ts[listOrder-1],
                 name: target.value,
             }
 
@@ -31,15 +33,38 @@ export default function TopicListItem({topic, setTopics, listOrder, handleDelete
         })
     }
 
-    function handleCancelEnter(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            event.target.blur();
-        }
+    function handleOutcomes({target}) {
+        setTopics(ts => {
+            ts[listOrder-1] = {
+                ...ts[listOrder-1],
+                outcomes: target.value,
+            }
+
+            return [...ts];
+        })
     }
 
-    function handleButtonEdit() {
-        setShowText(s=>!s);
+    function handleDiscussions({target}) {
+        setTopics(ts => {
+            ts[listOrder-1] = {
+                ...ts[listOrder-1],
+                discussions: target.value,
+            }
+
+            return [...ts];
+        })
+    }
+
+    function handleEditTitle() {
+        setEditTitle(s=>!s);
+    }
+
+    function handleEditOutcomes() {
+        setEditOutcomes(s=>!s);
+    }
+
+    function handleEditDiscussions() {
+        setEditDiscussions(s=>!s);
     }
 
     return (
@@ -50,50 +75,50 @@ export default function TopicListItem({topic, setTopics, listOrder, handleDelete
                 display:'flex'
             }}
             >
-            {/* list item titles */}
+            {/* TITLE */}
             <Box sx={{display:'flex', alignItems:'center', width:'100%'}}>
                 {/* Topic number */}
                 <Typography variant="h6" sx={{boxSizing:'border-box', whiteSpace:'nowrap'}}>Topic #{listOrder}:</Typography>
                 {/* Button Edit Text */}
-                {(showText)
-                ? <Box sx={{boxSizing:'border-box', pr:'.5rem', flexGrow:1}}>
-                    {/* text */}
-                    <TextField 
-                        size='small'
-                        fullWidth
-                        autoFocus
-                        value={topic.name}
-                        onChange={handleName}
-                        onKeyDown={handleCancelEnter}
-                        onBlur={handleButtonEdit}
-                        multiline
-                        slotProps={{
-                            input: {
-                                sx: theme => ({
-                                    p:'6px 8px',
-                                    lineHeight:'1.5',
-                                    fontSize:theme.typography.h6
-                                })
-                            },
-                        }}
-                        />
-                </Box>
-                : <Box sx={{boxSizing:'border-box', pr:'.5rem', flexGrow:1, overflow:'hidden'}}>
-                    {/* button */}
-                    <Button
-                        onClick={handleButtonEdit}
-                        sx={{
-                            width:'100%',
-                            textTransform:'none',
-                        }}
-                        >
-                        <Box sx={{width:'100%', overflow:'hidden'}}>
-                            <Typography align='left' variant='h6' sx={{wordWrap: 'break-word'}}>
-                                {topic.name || 'Enter text...'}
-                            </Typography>
-                        </Box>
-                    </Button>
-                </Box>
+                {(editTitle)
+                    ? <Box sx={{boxSizing:'border-box', pr:'.5rem', flexGrow:1}}>
+                        {/* text */}
+                        <TextField 
+                            size='small'
+                            fullWidth
+                            autoFocus
+                            value={topic.name}
+                            onChange={handleName}
+                            onBlur={handleEditTitle}
+                            multiline
+                            slotProps={{
+                                input: {
+                                    sx: theme => ({
+                                        p:'6px 8px',
+                                        lineHeight:'1.5',
+                                        fontSize:theme.typography.h6
+                                    })
+                                },
+                            }}
+                            />
+                    </Box>
+                    : <Box sx={{boxSizing:'border-box', pr:'.5rem', flexGrow:1, overflow:'hidden'}}>
+                        {/* button */}
+                        <Button
+                            onClick={handleEditTitle}
+                            sx={{
+                                width:'100%',
+                                textTransform:'none',
+                                whiteSpace:'pre-wrap',
+                            }}
+                            >
+                            <Box sx={{width:'100%', overflow:'hidden'}}>
+                                <Typography align='left' variant='h6' sx={{wordWrap: 'break-word'}}>
+                                    {topic.name || 'Enter text...'}
+                                </Typography>
+                            </Box>
+                        </Button>
+                    </Box>
                 }
                 {/* cycles */}
                 <Autocomplete 
@@ -111,36 +136,78 @@ export default function TopicListItem({topic, setTopics, listOrder, handleDelete
                 {/* trash */}
                 <IconButton data-order={listOrder} onClick={handleDeleteTopic}><DeleteRoundedIcon /></IconButton>
             </Box>
+
+            {/* THE REST */}
             {/* outcomes */}
-            <Box sx={{width:'100%', display:'flex', justifyContent:'left'}}>
-                {/* arrow icon */}
-                {/* <SubdirectoryArrowRightRoundedIcon /> */}
-                {/* content */}
-                <Box sx={{flexGrow:1, overflow:'hidden', boxSizing:'border-box', pt:'.23rem'}}>
-                    {/* title */}
-                    <Typography sx={{fontWeight:'bold'}}>Outcomes:</Typography>
-                    {/* writing box and button */}
-                    <Button sx={{width:'100%', textTransform:'none'}}>
+            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                {/* title */}
+                <Typography sx={{fontWeight:'bold'}}>Outcomes:</Typography>
+                {/* writing box and button */}
+                {(editOutcomes)
+                    ? <Box sx={{boxSizing:'border-box', pr:'.5rem', flexGrow:1}}>
+                        {/* text */}
+                        <TextField 
+                            size='small'
+                            fullWidth
+                            autoFocus
+                            value={topic.outcomes}
+                            onChange={handleOutcomes}
+                            onBlur={handleEditOutcomes}
+                            multiline
+                            slotProps={{
+                                input: {
+                                    sx: {
+                                        p:'6px 8px',
+                                        lineHeight:'1.5',
+                                    }
+                                },
+                            }}
+                            />
+                    </Box>
+                    : <Button onClick={handleEditOutcomes} sx={{width:'100%', textTransform:'none', whiteSpace:'pre-wrap',}}>
                         <Box sx={{width:'100%', overflow:'hidden'}}>
-                            <Typography align='left' sx={{wordWrap: 'break-word'}}>woei3jeoiiweofijwwefwfnwejkfnwefeofiwjeofijwoefjwoejfowiefjowiejfowijefoiwjefowjoefjwoejfowjefw3</Typography>
+                            <Typography align='left' color='textSecondary' sx={{wordWrap: 'break-word'}}>
+                                {topic.outcomes || 'Enter text...'}
+                            </Typography>
                         </Box>
                     </Button>
-                </Box>
+                }
             </Box>
-            <Box sx={{width:'100%', display:'flex', justifyContent:'left'}}>
-                {/* arrow icon */}
-                {/* <SubdirectoryArrowRightRoundedIcon /> */}
-                {/* content */}
-                <Box sx={{flexGrow:1, overflow:'hidden', boxSizing:'border-box', pt:'.23rem'}}>
-                    {/* title */}
-                    <Typography sx={{fontWeight:'bold'}}>Discussion:</Typography>
-                    {/* writing box and button */}
-                    <Button sx={{width:'100%', textTransform:'none'}}>
+
+            {/* Discussions */}
+            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                {/* title */}
+                <Typography sx={{fontWeight:'bold'}}>Discussions:</Typography>
+                {/* writing box and button */}
+                {(editDiscussions)
+                    ? <Box sx={{boxSizing:'border-box', pr:'.5rem', flexGrow:1}}>
+                        {/* text */}
+                        <TextField 
+                            size='small'
+                            fullWidth
+                            autoFocus
+                            value={topic.discussions}
+                            onChange={handleDiscussions}
+                            onBlur={handleEditDiscussions}
+                            multiline
+                            slotProps={{
+                                input: {
+                                    sx: {
+                                        p:'6px 8px',
+                                        lineHeight:'1.5',
+                                    }
+                                },
+                            }}
+                            />
+                    </Box>
+                    : <Button onClick={handleEditDiscussions} sx={{width:'100%', textTransform:'none', whiteSpace:'pre-wrap',}}>
                         <Box sx={{width:'100%', overflow:'hidden'}}>
-                            <Typography align='left' sx={{wordWrap: 'break-word'}}>woei3jeoiiweofijwwefwfnwejkfnwefeofiwjeofijwoefjwoejfowiefjowiejfowijefoiwjefowjoefjwoejfowjefw3</Typography>
+                            <Typography align='left' color='textSecondary' sx={{wordWrap: 'break-word'}}>
+                                {topic.discussions || 'Enter text...'}
+                            </Typography>
                         </Box>
                     </Button>
-                </Box>
+                }
             </Box>
         </ListItem>
     );

@@ -16,8 +16,7 @@ import TopicListItem from './topicListItem';
 
 
 
-export default function TopicList({params}) {
-    const [topics, setTopics] = useState([]);
+export default function TopicList({topics, setTopics}) {
 
 
     
@@ -26,6 +25,8 @@ export default function TopicList({params}) {
         setTopics(ts => ts.concat([{
             orderNum: ts.length + 1,
             name: '',
+            outcomes:'',
+            discussions:'',
         }]))
     }
 
