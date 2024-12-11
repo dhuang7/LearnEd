@@ -27,6 +27,7 @@ export default function TopicList({topics, setTopics}) {
             name: '',
             outcomes:'',
             discussions:'',
+            cycle:'',
         }]))
     }
 

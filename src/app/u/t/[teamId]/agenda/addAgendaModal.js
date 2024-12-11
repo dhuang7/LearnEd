@@ -8,27 +8,17 @@ import DialogActions from "@mui/material/DialogActions";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
-import InputAdornment from "@mui/material/InputAdornment";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import Typography from "@mui/material/Typography";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Drawer from "@mui/material/Drawer";
-import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
-import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
-import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
 import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 
 
-import theme from "@/app/theme";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import createClient from "@/utils/supabase/client";
-import { Autocomplete, CircularProgress, InputLabel, ListItemText } from "@mui/material";
 import { useRouter } from "next/navigation";
 import TopicList from "./topicList";
 
@@ -44,7 +34,6 @@ export default function AddAgendaModal({teamId}) {
     const [endTimeText, setEndTimeText] = useState('');
     const [startTimeText, setStartTimeText] = useState('');
     const [topics, setTopics] = useState([]);
-    // const [memberText, setMemberText] = useState('');
     const [errorText, setErrorText] = useState('');
     const [disableType, setDisableType] = useState(false);
 
@@ -89,10 +78,20 @@ export default function AddAgendaModal({teamId}) {
         // handle submit
         e.preventDefault();
         setLoading(true);
-        // const {data, error} = await supabase.rpc('manage_team_memberships', {tid: teamId, member_ids: memberIds});
+        console.log([focusText, dateText, startTimeText, endTimeText, topics])
+        // const {data, error} = await supabase.rpc('insert_agenda_with_topics', {
+        //     focus: focusText,
+        //     date: dateText,
+        //     team_id: teamId,
+        //     start_time: startTimeText,
+        //     end_time: endTimeText,
+        //     topics: topics,
+        // });
+
+        console.log(error);
         // reset everything
         router.refresh();
-        handleClose();
+        handleCancel();
         setLoading(false);
     }
 
