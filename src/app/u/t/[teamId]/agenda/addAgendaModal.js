@@ -178,7 +178,7 @@ export default function AddAgendaModal({teamId}) {
                     <IconButton size='small' onClick={handleClose} sx={{mt:'.9rem', borderRadius:1}}><LastPageRoundedIcon /></IconButton>
                 </Box>
                 {/* form */}
-                <form onSubmit={handleSubmit} style={{height:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
+                <form onSubmit={handleSubmit} style={{height:'100%', width:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
                     {/* title */}
                     <DialogTitle id="alert-dialog-title" sx={{pl:0}}>
                         Add Agenda
