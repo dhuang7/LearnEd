@@ -3,14 +3,11 @@
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import IconButton from "@mui/material/IconButton";
 import Autocomplete from "@mui/material/Autocomplete";
-import SubdirectoryArrowRightRoundedIcon from '@mui/icons-material/SubdirectoryArrowRightRounded';
 import { useState } from "react";
 
 
@@ -22,6 +19,7 @@ export default function TopicListItem({topic, setTopics, listOrder, handleDelete
     const [editOutcomes, setEditOutcomes] = useState(false);
     const [editDiscussions, setEditDiscussions] = useState(false);
 
+    // handle typing
     function handleName({target}) {
         setTopics(ts => {
             ts[listOrder-1] = {

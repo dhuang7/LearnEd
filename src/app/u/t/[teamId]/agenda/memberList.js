@@ -15,6 +15,7 @@ export default async function MemberList({teamId}) {
     // get email of team members
     const { data, error } = await supabase.rpc('get_team_members_emails', { tid: teamId });
 
+    // rows and columns
     const columns = [
         { field: 'name', headerName: 'Name', flex:0, minWidth:150 },
         { field: 'email', headerName: 'Email', flex:1, minWidth:150 },

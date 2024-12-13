@@ -1,31 +1,18 @@
-'use client'
-
-import createClient from "@/utils/supabase/client";
+import createClient from "@/utils/supabase/server";
 import Box from "@mui/material/Box";
 
 
 import { DataGrid } from '@mui/x-data-grid';
-import { useEffect, useState } from "react";
 
 
 
-export default function AgendaList({teamId}) {
-    const supabase = createClient();
-    const [agendas, setAgendas] = useState();
+export default async function AgendaList({teamId}) {
+    const supabase = await createClient();
 
-    // get agendas
-    useEffect(() => {
-        async function getAgendas() {
-            const {data: a, error} = await supabase
-                .from('agendas')
-                .select()
-                .eq('team_id', teamId);
-
-            setAgendas(a);
-        }
-
-        getAgendas();
-    }, []);
+    const {data: agendas, error} = await supabase
+        .from('agendas')
+        .select()
+        .eq('team_id', teamId);
 
     
     
@@ -33,15 +20,15 @@ export default function AgendaList({teamId}) {
         // {field: 'id', headerName: 'id', flex:0 },
         { field: 'focus', headerName: 'Focus', flex:2 },
         { field: 'date', headerName: 'Date', flex:1 },
-        { field: 'start_time', headerName: 'Start', valueFormatter: readableTime, flex:1 },
-        { field: 'end_time', headerName: 'End', valueFormatter: readableTime, flex:1 },
+        { field: 'start_time', headerName: 'Start', flex:1 },
+        { field: 'end_time', headerName: 'End', flex:1 },
     ]
 
     const rows = agendas?.map(({date, start_time, end_time, focus}, i) => ({
         id:i,
         date,
-        start_time,
-        end_time,
+        start_time: readableTime(start_time),
+        end_time: readableTime(end_time),
         focus,
     }));
 

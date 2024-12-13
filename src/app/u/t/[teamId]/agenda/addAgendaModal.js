@@ -1,7 +1,6 @@
 'use client'
 
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
@@ -17,10 +16,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 
 
+
 import { useState } from "react";
 import createClient from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
 import TopicList from "./topicList";
+import { useRouter } from "next/navigation";
 
 
 
@@ -30,12 +30,10 @@ export default function AddAgendaModal({teamId}) {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [focusText, setFocusText] = useState('');
-    const [dateText, setDateText] = useState('');
     const [endTimeText, setEndTimeText] = useState('');
     const [startTimeText, setStartTimeText] = useState('');
     const [topics, setTopics] = useState([]);
     const [errorText, setErrorText] = useState('');
-    const [disableType, setDisableType] = useState(false);
 
     // handlers
     function handleOpen() {
@@ -50,20 +48,17 @@ export default function AddAgendaModal({teamId}) {
     }
 
     function handleCancel(e) {
+        // handle remove everything
         handleClose();
         setFocusText('');
-        setDateText('');
         setEndTimeText('');
         setStartTimeText('');
         setTopics([]);
     }
 
+    // typing handlers
     function handleFocusText({target}) {
         setFocusText(target.value);
-    }
-
-    function handleDateText({target}) {
-        setDateText(target.value);
     }
 
     function handleStartTimeText({target}) {
@@ -74,21 +69,21 @@ export default function AddAgendaModal({teamId}) {
         setEndTimeText(target.value);
     }
 
+    // handle submit
     async function handleSubmit(e) {
         // handle submit
         e.preventDefault();
         setLoading(true);
-        console.log([focusText, dateText, startTimeText, endTimeText, topics])
-        // const {data, error} = await supabase.rpc('insert_agenda_with_topics', {
-        //     focus: focusText,
-        //     date: dateText,
-        //     team_id: teamId,
-        //     start_time: startTimeText,
-        //     end_time: endTimeText,
-        //     topics: topics,
-        // });
+        
+        // load to database
+        const {data, error} = await supabase.rpc('insert_agenda_with_topics', {
+            focus: focusText,
+            team_id: teamId,
+            start_time: (new Date(startTimeText).toISOString()),
+            end_time: (new Date(endTimeText).toISOString()),
+            topics: topics,
+        });
 
-        console.log(error);
         // reset everything
         router.refresh();
         handleCancel();
@@ -147,7 +142,7 @@ export default function AddAgendaModal({teamId}) {
                         <Box sx={{pt:1, display:'flex', flexDirection:'column', height:'100%', boxSizing:'border-box',}}>
                             {/* add focus */}
                             <TextField 
-                                disabled={disableType}
+                                disabled={loading}
                                 label='Focus Area'
                                 value={focusText}
                                 onChange={handleFocusText}
@@ -156,6 +151,7 @@ export default function AddAgendaModal({teamId}) {
                                 helperText={errorText}
                                 multiline
                                 rows={2}
+                                required
                                 slotProps={{
                                     htmlInput: {
                                         style:{
@@ -167,15 +163,16 @@ export default function AddAgendaModal({teamId}) {
                                     mb:'1rem'
                                 }}
                                 />
-                            {/* add date */}
+                            {/* add start time */}
                             <Box sx={{display:'flex', mb:'1rem'}}>
-                                <Box sx={{width:'50%', boxSizing:'border-box', pr:'.5rem'}}>
+                                <Box sx={{width:'50%', boxSizing:'border-box', pr:'.25rem'}}>
                                     <TextField 
-                                        disabled={disableType}
-                                        label='Date'
-                                        type='date'
-                                        value={dateText}
-                                        onChange={handleDateText}
+                                        disabled={loading}
+                                        label='Start Time'
+                                        type='datetime-local'
+                                        value={startTimeText}
+                                        required
+                                        onChange={handleStartTimeText}
                                         fullWidth
                                         error={errorText}
                                         helperText={errorText}
@@ -187,33 +184,16 @@ export default function AddAgendaModal({teamId}) {
                                         
                                         />
                                 </Box>
-                                {/* add start time */}
-                                <Box sx={{width:'25%', boxSizing:'border-box', pr:'.25rem'}}>
-                                    <TextField 
-                                        disabled={disableType}
-                                        label='Start Time'
-                                        type='time'
-                                        value={startTimeText}
-                                        onChange={handleStartTimeText}
-                                        fullWidth
-                                        error={errorText}
-                                        helperText={errorText}
-                                        slotProps={{
-                                            inputLabel: {
-                                                shrink:true,
-                                            }
-                                        }}
-                                        />
-                                </Box>
                                 {/* add end time */}
-                                <Box sx={{width:'25%', boxSizing:'border-box', pl:'.25rem'}}>
+                                <Box sx={{width:'50%', boxSizing:'border-box', pl:'.25rem'}}>
                                     <TextField 
-                                        disabled={disableType}
+                                        disabled={loading}
                                         label='End Time'
-                                        type='time'
+                                        type='datetime-local'
                                         value={endTimeText}
                                         onChange={handleEndTimeText}
                                         fullWidth
+                                        required
                                         error={errorText}
                                         helperText={errorText}
                                         slotProps={{
@@ -221,6 +201,7 @@ export default function AddAgendaModal({teamId}) {
                                                 shrink:true,
                                             }
                                         }}
+                                        
                                         />
                                 </Box>
                             </Box>
