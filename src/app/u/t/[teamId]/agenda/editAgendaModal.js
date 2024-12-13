@@ -116,6 +116,10 @@ export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
+    function handleShowPicker({target}) {
+        target.showPicker?.();
+    }
+
 
     return (
         <>
@@ -188,6 +192,7 @@ export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
                                         value={startTimeText}
                                         required
                                         onChange={handleStartTimeText}
+                                        onFocus={handleShowPicker}
                                         fullWidth
                                         error={errorText}
                                         helperText={errorText}
@@ -207,6 +212,7 @@ export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
                                         type='datetime-local'
                                         value={endTimeText}
                                         onChange={handleEndTimeText}
+                                        onFocus={handleShowPicker}
                                         fullWidth
                                         required
                                         error={errorText}

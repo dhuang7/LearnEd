@@ -91,6 +91,10 @@ export default function AddAgendaModal({teamId}) {
         setLoading(false);
     }
 
+    function handleShowPicker({target}) {
+        target.showPicker?.();
+    }
+
 
     return (
         <>
@@ -174,6 +178,7 @@ export default function AddAgendaModal({teamId}) {
                                         value={startTimeText}
                                         required
                                         onChange={handleStartTimeText}
+                                        onFocus={handleShowPicker}
                                         fullWidth
                                         error={errorText}
                                         helperText={errorText}
@@ -193,6 +198,7 @@ export default function AddAgendaModal({teamId}) {
                                         type='datetime-local'
                                         value={endTimeText}
                                         onChange={handleEndTimeText}
+                                        onFocus={handleShowPicker}
                                         fullWidth
                                         required
                                         error={errorText}
