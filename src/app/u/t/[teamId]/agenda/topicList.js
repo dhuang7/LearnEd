@@ -27,13 +27,12 @@ export default function TopicList({topics, setTopics}) {
             name: '',
             outcomes:'',
             discussions:'',
-            cycle:'',
+            cycle_id:'',
         }]))
     }
 
     function handleDeleteTopic({currentTarget}) {
         const value = Number(currentTarget.dataset.order)-1;
-        console.log(value);
         if (topics.length === 1) {
             setTopics([]);
         } else {

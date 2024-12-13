@@ -17,29 +17,39 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import createClient from "@/utils/supabase/client";
 import TopicList from "./topicList";
 import { useRouter } from "next/navigation";
 
 
 
-export default function AddAgendaModal({teamId}) {
+export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
     const supabase = createClient();
     const router = useRouter();
-    const [open, setOpen] = useState(false);
+    // const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [focusText, setFocusText] = useState('');
-    const [endTimeText, setEndTimeText] = useState('');
-    const [startTimeText, setStartTimeText] = useState('');
+    const [focusText, setFocusText] = useState();
+    const [endTimeText, setEndTimeText] = useState();
+    const [startTimeText, setStartTimeText] = useState();
     const [topics, setTopics] = useState([]);
     const [errorText, setErrorText] = useState('');
 
-    // handlers
-    function handleOpen() {
-        // open modal
-        setOpen(true);
-    }
+    useEffect(() => {
+        setFocusText(agenda?.focus);
+        setEndTimeText(formatDateField(agenda?.end_time));
+        setStartTimeText(formatDateField(agenda?.start_time));
+
+        async function getTopics() {
+            const {data: t, error} = await supabase
+                .from('topics')
+                .select()
+                .eq('agenda_id', agenda.id);
+
+            setTopics(t);
+        }
+        if (agenda) getTopics();
+    }, [agenda])
 
     function handleClose(e) {
         // close modal
@@ -76,35 +86,39 @@ export default function AddAgendaModal({teamId}) {
         setLoading(true);
         
         // load to database
-        const {data, error} = await supabase.rpc('insert_agenda_with_topics', {
+        const {data, error} = await supabase.rpc('update_agenda_with_topics', {
+            agenda_id: agenda.id,
             focus: focusText,
             team_id: teamId,
             start_time: (new Date(startTimeText).toISOString()),
             end_time: (new Date(endTimeText).toISOString()),
             topics: topics,
         });
-
-        // console.log(error);
         // reset everything
         router.refresh();
         handleCancel();
         setLoading(false);
     }
 
+    // format date correctly
+    function formatDateField(timestampz) {
+        // Convert the timestamp to a Date object
+        const date = new Date(timestampz);
+    
+        // Get components in the user's local timezone
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+        // Construct the formatted string
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
 
     return (
         <>
-            {/* add member button to open dialog */}
-            <Button 
-                color='info' 
-                variant='contained' disableElevation 
-                sx={{borderRadius:3, textTransform:'none'}} 
-                startIcon={<AddRoundedIcon />}
-                onClick={handleOpen}
-                disabled={loading}
-                >
-                New
-            </Button>
             {/* open dialog */}
             <Drawer
                 open={open}
@@ -216,7 +230,7 @@ export default function AddAgendaModal({teamId}) {
                         <Button disabled={loading} type='submit'>
                             {(loading)
                                 ? <CircularProgress />
-                                : 'Add'
+                                : 'Save'
                             }
                         </Button>
                     </DialogActions>

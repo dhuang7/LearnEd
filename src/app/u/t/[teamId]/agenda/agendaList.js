@@ -1,34 +1,40 @@
-import createClient from "@/utils/supabase/server";
+'use client'
+
+import createClient from "@/utils/supabase/client";
 import Box from "@mui/material/Box";
 
 
 import { DataGrid } from '@mui/x-data-grid';
+import { useEffect, useState } from "react";
+import EditAgendaModal from "./editAgendaModal";
 
 
 
-export default async function AgendaList({teamId}) {
-    const supabase = await createClient();
+export default function AgendaList({teamId, agendas}) {
+    const supabase = createClient();
+    // const [agendas, setAgendas] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [agenda, setAgenda] = useState(null);
 
-    const {data: agendas, error} = await supabase
-        .from('agendas')
-        .select()
-        .eq('team_id', teamId);
-
-    
+    // handlers
+    function handleOpenAgenda(params, event, details) {
+        setOpen(true);
+        setAgenda(params.row)
+    } 
     
     const columns = [
         // {field: 'id', headerName: 'id', flex:0 },
         { field: 'focus', headerName: 'Focus', flex:2 },
-        { field: 'date', headerName: 'Date', flex:1 },
-        { field: 'start_time', headerName: 'Start', flex:1 },
-        { field: 'end_time', headerName: 'End', flex:1 },
+        { field: 'date', headerName: 'Date', valueFormatter: readableDate, flex:1 },
+        { field: 'start_time', headerName: 'Start', valueFormatter: readableTime, flex:1 },
+        { field: 'end_time', headerName: 'End', valueFormatter: readableTime, flex:1 },
     ]
 
-    const rows = agendas?.map(({date, start_time, end_time, focus}, i) => ({
-        id:i,
-        date,
-        start_time: readableTime(start_time),
-        end_time: readableTime(end_time),
+    const rows = agendas?.map(({id, date, start_time, end_time, focus}) => ({
+        id,
+        date: start_time,
+        start_time,
+        end_time,
         focus,
     }));
 
@@ -42,12 +48,31 @@ export default async function AgendaList({teamId}) {
         return date.toLocaleTimeString('en-US', options);
     }
 
+    // converts time to readable date
+    function readableDate(timestampz) {
+        // Convert to a Date object
+        const date = new Date(timestampz);
+    
+        // Get month, day, and year
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+    
+        // Return formatted date
+        return `${month}-${day}-${year}`;
+    }
+
+    
+
+
+
     return (
         <Box sx={{height:'100%', width:'100%'}}>
             <DataGrid 
                 columns={columns} rows={rows} 
-                checkboxSelection
+                // checkboxSelection
                 autoPageSize
+                onRowClick={handleOpenAgenda}
                 sx={{
                     '& .MuiDataGrid-cell:hover': {
                         color: 'primary.main',
@@ -60,6 +85,7 @@ export default async function AgendaList({teamId}) {
                     backgroundColor:'common.white',
                 }}
                 />
+            <EditAgendaModal teamId={teamId} open={open} setOpen={setOpen} agenda={agenda} />
         </Box>
     )
 }

@@ -5,12 +5,20 @@ import NormsList from "./normsList";
 import AgendaList from "./agendaList";
 
 import AddAgendaModal from "./addAgendaModal";
+import createClient from "@/utils/supabase/server";
 
 
 
 
 export default async function Agenda({params}) {
     const teamId = (await params).teamId;
+
+    const supabase = await createClient();
+
+    const {data: agendas, error} = await supabase
+        .from('agendas')
+        .select()
+        .eq('team_id', teamId);
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
@@ -40,7 +48,7 @@ export default async function Agenda({params}) {
                     {/* Agenda list */}
                     <Box sx={{flexGrow:1, height:'100%', overflow:'hidden'}}>
                         <Box sx={{width:'100%', height:'100%', pt:'.5rem', pr:'1rem', pl:'.5rem', boxSizing:'border-box', pb:'1rem'}}>
-                            <AgendaList teamId={teamId} />
+                            <AgendaList teamId={teamId} agendas={agendas} />
                         </Box>
                     </Box>
                 </Box>
