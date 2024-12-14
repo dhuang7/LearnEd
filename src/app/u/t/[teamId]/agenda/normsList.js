@@ -6,16 +6,37 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
 import IconButton from "@mui/material/IconButton";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import NormsListItem from "./normsListItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import createClient from "@/utils/supabase/client";
 
 
 export default function NormsList() {
-    const [norms, setNorms] = useState([1,2,3,4]);
+    const [norms, setNorms] = useState([]);
+    const [toggleDelete, setToggleDelete] = useState(false);
+    const supabase = createClient();
+
+    useEffect(() => {
+        async function getNorms() {
+            let { data: norms, error } = await supabase
+                .from('norms')
+                .select('*');
+
+            setNorms(norms);
+        }
+
+        getNorms();
+        
+    }, []);
 
     function handleAddNorm() {
-        // setNorms()
+        setNorms(n => n.concat([n.length]));
+    }
+
+    function handleToggleDelete() {
+        setToggleDelete(t=>!t);
     }
 
     return (
@@ -32,15 +53,16 @@ export default function NormsList() {
                 {/* add new norm */}
                 <IconButton
                     color='info' 
-                    // onClick={handleAddTopic}
+                    onClick={handleAddNorm}
                     >
                     <BookmarkAddRoundedIcon />
                 </IconButton>
+                <IconButton onClick={handleToggleDelete} sx={{ml:'auto'}}><DeleteRoundedIcon /></IconButton>
             </Box>
             <Box sx={{flexGrow:1, overflow:'hidden', pt:'.5rem', boxSizing:'border-box'}}>
                 <List disablePadding sx={{height:'100%', overflowY:'scroll'}}>
                     {norms.map((norm, i) => (
-                        <NormsListItem key={i} norm={norm} />
+                        <NormsListItem key={i} norm={norm} toggleDelete={toggleDelete} orderNum={i} setNorms={setNorms} />
                     ))}
                     
                 </List>
