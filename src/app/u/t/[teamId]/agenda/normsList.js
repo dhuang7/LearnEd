@@ -1,18 +1,22 @@
+'use client'
+
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import SubdirectoryArrowRightRoundedIcon from '@mui/icons-material/SubdirectoryArrowRightRounded';
+import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
+import IconButton from "@mui/material/IconButton";
 
-
-
+import NormsListItem from "./normsListItem";
+import { useState } from "react";
 
 
 export default function NormsList() {
+    const [norms, setNorms] = useState([1,2,3,4]);
 
-    const testList = [1,2,3,4,5,6,7,8,9,10,11,12];
+    function handleAddNorm() {
+        // setNorms()
+    }
 
     return (
         <Paper 
@@ -23,21 +27,22 @@ export default function NormsList() {
                 display:'flex', flexDirection:'column'
             }}
             >
-            <Typography variant="h6">Norms:</Typography>
+            <Box sx={{display:'flex', alignItems:'center'}}>
+                <Typography variant="h6">Norms:</Typography>
+                {/* add new norm */}
+                <IconButton
+                    color='info' 
+                    // onClick={handleAddTopic}
+                    >
+                    <BookmarkAddRoundedIcon />
+                </IconButton>
+            </Box>
             <Box sx={{flexGrow:1, overflow:'hidden', pt:'.5rem', boxSizing:'border-box'}}>
                 <List disablePadding sx={{height:'100%', overflowY:'scroll'}}>
-                    {testList.map((v, i) => (
-                        <ListItem key={i}>
-                            <SubdirectoryArrowRightRoundedIcon sx={{position:'relative', top:-3.5}} />
-                            <Button sx={{width:'100%', textTransform:'none', whiteSpace:'pre-wrap',}}>
-                                <Box sx={{width:'100%', overflow:'hidden'}}>
-                                    <Typography align='left' color='inherit' sx={{wordWrap: 'break-word'}}>
-                                        {v}
-                                    </Typography>
-                                </Box>
-                            </Button>
-                        </ListItem>
+                    {norms.map((norm, i) => (
+                        <NormsListItem key={i} norm={norm} />
                     ))}
+                    
                 </List>
             </Box>
         </Paper>
