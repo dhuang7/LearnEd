@@ -17,12 +17,13 @@ export default async function Agenda({params}) {
 
     const {data: agendas, error: agendasError} = await supabase
         .from('agendas')
-        .select();
-        // .eq('team_id', teamId);
+        .select()
+        .eq('team_id', teamId);
 
     let { data: normsList, error: normsError } = await supabase
         .from('norms')
-        .select('*');
+        .select('*')
+        .eq('team_id', teamId);
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>

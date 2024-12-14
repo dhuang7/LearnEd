@@ -20,7 +20,6 @@ export default function NormsList({teamId, normsList}) {
     const [saving, setSaving] = useState('');
     const supabase = createClient();
 
-
     function handleAddNorm() {
         setNorms(n => n.concat([{team_id: teamId}]));
     }
