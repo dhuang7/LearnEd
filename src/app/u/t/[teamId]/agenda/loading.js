@@ -4,6 +4,9 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
 import Skeleton from "@mui/material/Skeleton";
+import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 
 export default async function LoadingAgenda() {
     return (
@@ -54,7 +57,22 @@ export default async function LoadingAgenda() {
                                         display:'flex', flexDirection:'column'
                                     }}
                                     >
-                                    <Typography variant="h6">Norms:</Typography>
+                                    <Box sx={{display:'flex', alignItems:'center'}}>
+                                        <Typography variant="h6">Norms:</Typography>
+                                        {/* add new norm */}
+                                        <IconButton
+                                            color='info' 
+                                            >
+                                            <BookmarkAddRoundedIcon />
+                                        </IconButton>
+                                        {/* delete */}
+                                        <IconButton size='small' sx={{ml:'auto'}}><DeleteRoundedIcon /></IconButton>
+                                        {/* save */}
+                                        <IconButton size='small'><SaveRoundedIcon /></IconButton>
+                                    </Box>
+                                    <Box sx={{flexGrow:1, overflow:'hidden', pt:'.5rem', boxSizing:'border-box'}}>
+                                        {Array(7).fill(0).map((v, i) => <Skeleton key={i} height='12%' />)}
+                                    </Box>
                                 </Paper>
                             </Box>
                         </Box>

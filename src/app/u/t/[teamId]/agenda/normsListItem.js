@@ -15,12 +15,30 @@ import { IconButton } from "@mui/material";
 
 
 
-export default function NormsListItem({norm, toggleDelete, orderNum, setNorms}) {
+export default function NormsListItem({norm, toggleDelete, orderNum, setNorms, setSaving, saving}) {
     const [edit, setEdit] = useState(false);
 
 
     function handleEdit() {
-        setEdit(e=>!e)
+        setEdit(true);
+    }
+
+    function handleLeaveFocus() {
+        setEdit(false);
+    }
+
+    function handleChange({target}) {
+        setNorms(n => {
+            const newNorms = [...n];
+            newNorms[orderNum] = {
+                ...newNorms[orderNum],
+                description: target.value,
+            }
+
+            return newNorms;
+        });
+
+        setSaving('');
     }
 
     function handleDelete() {
@@ -35,6 +53,7 @@ export default function NormsListItem({norm, toggleDelete, orderNum, setNorms}) 
             {toggleDelete && 
                 <IconButton 
                     size='small'
+                    disabled={saving==='Saving...'}
                     onClick={handleDelete}
                     sx={{position:'relative', top:-3.5}} 
                     >
@@ -49,9 +68,10 @@ export default function NormsListItem({norm, toggleDelete, orderNum, setNorms}) 
                         size='small'
                         fullWidth
                         autoFocus
-                        // value={topic.outcomes}
-                        // onChange={handleOutcomes}
-                        onBlur={handleEdit}
+                        disabled={saving==='Saving...'}
+                        value={norm.description}
+                        onChange={handleChange}
+                        onBlur={handleLeaveFocus}
                         multiline
                         slotProps={{
                             input: {
@@ -63,10 +83,13 @@ export default function NormsListItem({norm, toggleDelete, orderNum, setNorms}) 
                         }}
                         />
                 </Box>
-                : <Button onClick={handleEdit} sx={{width:'100%', textTransform:'none', whiteSpace:'pre-wrap',}}>
-                    <Box sx={{width:'100%', overflow:'hidden'}}>
-                        <Typography align='left' color='inherit' sx={{wordWrap: 'break-word'}}>
-                            {norm.description}
+                : <Button disabled={toggleDelete} onClick={handleEdit} sx={{width:'100%', textTransform:'none', whiteSpace:'pre-wrap',}}>
+                    <Box disabled={saving==='Saving...'} sx={{width:'100%', overflow:'hidden'}}>
+                        <Typography 
+                            align='left' 
+                            color={norm.description ? 'inherit' : 'textSecondary'} 
+                            sx={{wordWrap: 'break-word'}}>
+                            {norm.description || 'Enter text...'}
                         </Typography>
                     </Box>
                 </Button>

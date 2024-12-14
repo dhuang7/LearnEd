@@ -7,36 +7,40 @@ import Typography from "@mui/material/Typography";
 import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
 import IconButton from "@mui/material/IconButton";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 
 import NormsListItem from "./normsListItem";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import createClient from "@/utils/supabase/client";
 
 
-export default function NormsList() {
-    const [norms, setNorms] = useState([]);
+export default function NormsList({teamId, normsList}) {
+    const [norms, setNorms] = useState(normsList);
     const [toggleDelete, setToggleDelete] = useState(false);
+    const [saving, setSaving] = useState('');
     const supabase = createClient();
 
-    useEffect(() => {
-        async function getNorms() {
-            let { data: norms, error } = await supabase
-                .from('norms')
-                .select('*');
-
-            setNorms(norms);
-        }
-
-        getNorms();
-        
-    }, []);
 
     function handleAddNorm() {
-        setNorms(n => n.concat([n.length]));
+        setNorms(n => n.concat([{team_id: teamId}]));
     }
 
     function handleToggleDelete() {
         setToggleDelete(t=>!t);
+    }
+
+    async function handleSave() {
+        setSaving('Saving...');
+        setToggleDelete(false);
+        console.log(norms);
+        // const { data, error } = await supabase
+        //     .from('norms')
+        //     .upsert(norms, { onConflict: ['id'], defaultToNull: false });
+        const { data, error } = await supabase.rpc('batch_upsert_norms', {norms_list:norms});
+
+        console.log(error);
+
+        setSaving('Saved!');
     }
 
     return (
@@ -54,15 +58,29 @@ export default function NormsList() {
                 <IconButton
                     color='info' 
                     onClick={handleAddNorm}
+                    disabled={saving==='Saving...'}
                     >
                     <BookmarkAddRoundedIcon />
                 </IconButton>
-                <IconButton onClick={handleToggleDelete} sx={{ml:'auto'}}><DeleteRoundedIcon /></IconButton>
+                {/* Save text */}
+                <Typography variant='caption'>{saving}</Typography>
+                {/* delete */}
+                <IconButton disabled={saving==='Saving...'} onClick={handleToggleDelete} size='small' sx={{ml:'auto'}}><DeleteRoundedIcon /></IconButton>
+                {/* save */}
+                <IconButton disabled={saving==='Saving...'} onClick={handleSave} size='small'><SaveRoundedIcon /></IconButton>
             </Box>
             <Box sx={{flexGrow:1, overflow:'hidden', pt:'.5rem', boxSizing:'border-box'}}>
                 <List disablePadding sx={{height:'100%', overflowY:'scroll'}}>
                     {norms.map((norm, i) => (
-                        <NormsListItem key={i} norm={norm} toggleDelete={toggleDelete} orderNum={i} setNorms={setNorms} />
+                        <NormsListItem 
+                            key={i} 
+                            norm={norm} 
+                            toggleDelete={toggleDelete} 
+                            orderNum={i} 
+                            setNorms={setNorms} 
+                            setSaving={setSaving}
+                            saving={saving}
+                            />
                     ))}
                     
                 </List>

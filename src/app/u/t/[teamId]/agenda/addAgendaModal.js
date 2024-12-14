@@ -87,8 +87,8 @@ export default function AddAgendaModal({teamId}) {
         // console.log(error);
         // reset everything
         router.refresh();
-        handleCancel();
         setLoading(false);
+        handleCancel();
     }
 
     function handleShowPicker({target}) {

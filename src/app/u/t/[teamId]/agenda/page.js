@@ -15,10 +15,14 @@ export default async function Agenda({params}) {
 
     const supabase = await createClient();
 
-    const {data: agendas, error} = await supabase
+    const {data: agendas, error: agendasError} = await supabase
         .from('agendas')
-        .select()
-        .eq('team_id', teamId);
+        .select();
+        // .eq('team_id', teamId);
+
+    let { data: normsList, error: normsError } = await supabase
+        .from('norms')
+        .select('*');
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
@@ -41,7 +45,7 @@ export default async function Agenda({params}) {
                         {/* Norms */}
                         <Box sx={{boxSizing:'border-box', width:'100%', flexGrow:1, overflow:'hidden'}}>
                             <Box sx={{width:'100%', height:'100%', pl:'1rem', pr:'.5rem', boxSizing:'border-box', pb:'1rem'}}>
-                                <NormsList />
+                                <NormsList teamId={teamId} normsList={normsList} />
                             </Box>
                         </Box>
                     </Box>
