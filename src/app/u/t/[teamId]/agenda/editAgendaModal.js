@@ -19,7 +19,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import createClient from "@/utils/supabase/client";
 import TopicList from "./topicList";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,7 @@ import { useRouter } from "next/navigation";
 export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
     const supabase = createClient();
     const router = useRouter();
-    // const [open, setOpen] = useState(false);
+    const [isPending, startTransition] = useTransition();
     const [loading, setLoading] = useState(false);
     const [focusText, setFocusText] = useState();
     const [endTimeText, setEndTimeText] = useState();
@@ -51,7 +51,15 @@ export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
             setTopics(t);
         }
         if (agenda) getTopics();
-    }, [agenda])
+    }, [agenda]);
+
+    // makes sure that the info is loaded before finishing.
+    useEffect(() => {
+        if (!isPending) {
+            handleCancel();
+            setLoading(false);
+        }
+    }, [isPending])
 
     function handleClose(e) {
         // close modal
@@ -97,9 +105,9 @@ export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
             topics: topics,
         });
         // reset everything
-        router.refresh();
-        handleCancel();
-        setLoading(false);
+        startTransition(() => {
+            router.refresh();
+        })
     }
 
     async function handleDelete() {
@@ -109,9 +117,9 @@ export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
             .delete()
             .eq('id', agenda.id);
 
-        router.refresh();
-        handleCancel();
-        setLoading(false);
+        startTransition(() => {
+            router.refresh();
+        })
     }
 
     // format date correctly

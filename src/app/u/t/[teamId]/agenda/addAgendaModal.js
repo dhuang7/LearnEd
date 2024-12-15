@@ -18,7 +18,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
 
-import { useState } from "react";
+import { useState, useTransition, useEffect } from "react";
 import createClient from "@/utils/supabase/client";
 import TopicList from "./topicList";
 import { useRouter } from "next/navigation";
@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 export default function AddAgendaModal({teamId}) {
     const supabase = createClient();
     const router = useRouter();
+    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [focusText, setFocusText] = useState('');
@@ -35,6 +36,14 @@ export default function AddAgendaModal({teamId}) {
     const [startTimeText, setStartTimeText] = useState('');
     const [topics, setTopics] = useState([]);
     const [errorText, setErrorText] = useState('');
+
+    // makes sure that the info is loaded before finishing.
+    useEffect(() => {
+        if (!isPending) {
+            handleCancel();
+            setLoading(false);
+        }
+    }, [isPending])
 
     // handlers
     function handleOpen() {
@@ -87,9 +96,9 @@ export default function AddAgendaModal({teamId}) {
 
         // console.log(error);
         // reset everything
-        router.refresh();
-        setLoading(false);
-        handleCancel();
+        startTransition(() => {
+            router.refresh();
+        })
     }
 
     function handleShowPicker({target}) {

@@ -21,7 +21,7 @@ import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 
 
 import theme from "@/app/theme";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import createClient from "@/utils/supabase/client";
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -31,6 +31,7 @@ import { useRouter } from "next/navigation";
 export default function AddMemberModal({profiles, teamId}) {
     const supabase = createClient();
     const router = useRouter();
+    const [isPending, startTransition] = useTransition();
     const originalEmails = profiles.map(p => p.email);
     const originalIds = profiles.map(p => p.id);
     const [open, setOpen] = useState(false);
@@ -46,6 +47,14 @@ export default function AddMemberModal({profiles, teamId}) {
         setMemberEmails(profiles.map(p => p.email));
         setMemberIds(profiles.map(p => p.id))
     }, [profiles]);
+
+    // makes sure that the info is loaded before finishing.
+    useEffect(() => {
+        if (!isPending) {
+            handleClose();
+            setLoading(false);
+        }
+    }, [isPending])
 
     // handlers
     function handleOpen() {
@@ -138,9 +147,9 @@ export default function AddMemberModal({profiles, teamId}) {
         setLoading(true);
         const {data, error} = await supabase.rpc('manage_team_memberships', {tid: teamId, member_ids: memberIds});
         // reset everything
-        router.refresh();
-        handleClose();
-        setLoading(false);
+        startTransition(() => {
+            router.refresh();
+        })
     }
 
     return (
