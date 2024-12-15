@@ -69,7 +69,7 @@ export default function SideNav({open, teamInfo}) {
                     </CustomNavButton> */}
                     <CustomNavButton path='/u/cycles' divider tip='Cycles'>
                         <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
-                        Cycles
+                        All Cycles
                     </CustomNavButton>
                     <CustomNavButton path='/u/teams' divider tip='Teams'>
                         {/* renames the Teams to a Team name when a team is selected */}
@@ -117,13 +117,13 @@ export default function SideNav({open, teamInfo}) {
                                 <Typography noWrap>
                                     Tasks
                                 </Typography>
-                            </CustomNavButton>
+                            </CustomNavButton> */}
                             <CustomNavButton path={`/u/t/${teamInfo.id}/cycles`} tip='Cycles'>
                                 <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Cycles
                                 </Typography>
-                            </CustomNavButton> */}
+                            </CustomNavButton>
                         </>
                         : <Box sx={{width:'100%', justifyContent:'center', display:'flex', mt:'.5rem'}}>
                             {/* text if no team is selected */}

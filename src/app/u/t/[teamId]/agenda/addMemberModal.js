@@ -36,6 +36,7 @@ export default function AddMemberModal({profiles, teamId}) {
     const originalIds = profiles.map(p => p.id);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [notAdmin, setNotAdmin] = useState('');
     const [memberText, setMemberText] = useState('');
     const [errorText, setErrorText] = useState('');
     const [memberEmails, setMemberEmails] = useState(originalEmails);
@@ -43,6 +44,7 @@ export default function AddMemberModal({profiles, teamId}) {
     const [disableType, setDisableType] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+    // get all member emails and member ids
     useEffect(() => {
         setMemberEmails(profiles.map(p => p.email));
         setMemberIds(profiles.map(p => p.id))
@@ -54,10 +56,24 @@ export default function AddMemberModal({profiles, teamId}) {
             handleClose();
             setLoading(false);
         }
-    }, [isPending])
+    }, [isPending]);
 
     // handlers
-    function handleOpen() {
+    async function handleOpen() {
+        // checks if user is an admin then disables if not
+        const {data: profile, error: profileError} = await supabase
+            .from('profiles')
+            .select('*');
+
+        const {data: admin, error: adminError} = await supabase
+            .from('team_memberships')
+            .select('*')
+            .eq('team_id', teamId)
+            .eq('user_id', profile[0].id)
+            .in('role', ['admin', 'owner']);
+
+        setNotAdmin(admin.length ? '' : 'You do not have permission to manage users.')
+
         // open modal
         setOpen(true);
     }
@@ -152,6 +168,8 @@ export default function AddMemberModal({profiles, teamId}) {
         })
     }
 
+    console.log(notAdmin);
+
     return (
         <>
             {/* add member button to open dialog */}
@@ -182,13 +200,13 @@ export default function AddMemberModal({profiles, teamId}) {
                                 onChange={handleMemberText}
                                 onKeyDown={handleKeyDown}
                                 sx={{width:'100%', mb:'1rem'}}
-                                error={errorText}
-                                helperText={errorText}
+                                error={errorText||notAdmin}
+                                helperText={errorText||notAdmin}
                                 slotProps={{
                                     input:{
                                         endAdornment:(
                                             <InputAdornment position='end'>
-                                                <IconButton size='large' edge="end" onClick={handleAddMember}>
+                                                <IconButton disabled={notAdmin} size='large' edge="end" onClick={handleAddMember}>
                                                     <PersonAddRoundedIcon />
                                                 </IconButton>
                                             </InputAdornment>
@@ -204,7 +222,7 @@ export default function AddMemberModal({profiles, teamId}) {
                                         <AccountCircleRoundedIcon fontSize='large' sx={{mr:'1rem'}} />
                                         <Typography>{m}</Typography>
                                         {/* remove user */}
-                                        <IconButton data-value={i} sx={{ml:'auto'}} onClick={handleRemoveMember}>
+                                        <IconButton data-value={i} sx={{ml:'auto'}} disabled={notAdmin} onClick={handleRemoveMember}>
                                             <PersonRemoveRoundedIcon fontSize="medium" />
                                         </IconButton>
                                     </ListItem>
@@ -216,7 +234,7 @@ export default function AddMemberModal({profiles, teamId}) {
                     {/* buttons */}
                     <DialogActions>
                         <Button disabled={loading} onClick={handleClose}>Cancel</Button>
-                        <Button disabled={loading} type='submit'>
+                        <Button disabled={loading||notAdmin} type='submit'>
                             {(loading)
                                 ? <CircularProgress />
                                 : 'Add'
