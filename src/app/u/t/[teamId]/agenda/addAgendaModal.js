@@ -11,7 +11,8 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Drawer from "@mui/material/Drawer";
 import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
 import CircularProgress from "@mui/material/CircularProgress";
-
+import Typography from "@mui/material/Typography";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
 
@@ -134,13 +135,16 @@ export default function AddAgendaModal({teamId}) {
                 >
                 {/* close arrow button */}
                 <Box sx={{px:'.25rem', boxSizing:'border-box'}}>
-                    <IconButton size='small' onClick={handleClose} sx={{mt:'.9rem', borderRadius:1}}><LastPageRoundedIcon /></IconButton>
+                    <IconButton size='small' onClick={handleClose} sx={{mt:'1.1rem', borderRadius:1}}><LastPageRoundedIcon /></IconButton>
                 </Box>
                 {/* form */}
                 <form onSubmit={handleSubmit} style={{height:'100%', width:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
                     {/* title */}
-                    <DialogTitle id="alert-dialog-title" sx={{pl:0}}>
-                        Add Agenda
+                    <DialogTitle id="alert-dialog-title" sx={{pl:0, display:'flex', alignItems:'center'}}>
+                        {/* title */}
+                        <Typography variant='inherit'>Add Agenda</Typography>
+                        {/* delete button */}
+                        <IconButton onClick={handleCancel} sx={{ml:'auto'}}><CloseRoundedIcon /></IconButton>
                     </DialogTitle>
                     {/* content */}
                     <DialogContent sx={{pb:0, pl:0}}>
