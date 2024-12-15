@@ -194,7 +194,7 @@ export default function AddMemberModal({profiles, teamId}) {
                         <Box sx={{pt:1}}>
                             {/* add users */}
                             <TextField 
-                                disabled={disableType}
+                                disabled={disableType||notAdmin}
                                 label='Add Member'
                                 value={memberText}
                                 onChange={handleMemberText}
