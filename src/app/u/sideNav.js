@@ -31,8 +31,8 @@ export default function SideNav({open, teamInfo}) {
                     disableGutters 
                     disableRipple
                     component={NextLink} 
-                    href={props.path} 
-                    selected={pathname===props.path}
+                    href={props.path.concat(props.addpath||'')} 
+                    selected={pathname.includes(props.path)}
                     {...props}
                     >
                     {props.children}
@@ -118,7 +118,7 @@ export default function SideNav({open, teamInfo}) {
                                     Tasks
                                 </Typography>
                             </CustomNavButton> */}
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/cycles`} tip='Cycles'>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/cycles`} addpath='/drivers' tip='Cycles'>
                                 <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Cycles

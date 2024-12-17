@@ -1,14 +1,6 @@
-import Box from "@mui/material/Box";
+import { redirect } from 'next/navigation'
 
-
-
-export default function Cycles() {
-
-    
-
-    return (
-        <Box>
-            cycles
-        </Box>
-    )
+export default function CyclesRdirect() {
+    // redirects if no team is selected in the url
+    redirect('./cycles/drivers');
 }
