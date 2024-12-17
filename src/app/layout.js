@@ -29,7 +29,8 @@ export default function RootLayout({ children }) {
         <body className={nunito.className} style={{margin:0}}>
             <AppRouterCacheProvider>
                 <ThemeProvider theme={theme}>
-                    <Box sx={{width:'100vw', height:'100vh'}}>
+                    <Box sx={{width:'100vw', height:'100vh', minWidth:'1000px', minHeight:'700px', overflow:'hidden'}}>
+                    {/* <Box sx={{width:'100vw', height:'100vh'}}> */}
                         {children}
                     </Box>
                 </ThemeProvider>

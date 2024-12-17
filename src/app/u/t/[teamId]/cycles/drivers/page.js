@@ -1,10 +1,12 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import AimColumn from "./aimColumn";
 
 
 
-export default function Drivers() {
+export default async function Drivers({params}) {
+    const teamId = (await params).teamId;
 
     function ColumnCustomComponent({children, title}) {
 
@@ -13,8 +15,8 @@ export default function Drivers() {
                 <Typography variant="h6" color='textSecondary'>
                     {title}
                 </Typography>
-                <Box sx={{flexGrow:1, overflow:'hidden'}}>
-                    <Box sx={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
+                <Box sx={{flexGrow:1, overflow:'hidden', width:'100%'}}>
+                    <Box sx={{height:'100%', width:'100%', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
                         {children}
                     </Box>
                 </Box>
@@ -33,7 +35,7 @@ export default function Drivers() {
             >
                 <Box sx={{display:'flex', height:'100%'}}>
                     <ColumnCustomComponent title='Aim'>
-                        1
+                        <AimColumn teamId={teamId} />
                     </ColumnCustomComponent>
                     <ColumnCustomComponent title='Primary Drivers'>
                         2
