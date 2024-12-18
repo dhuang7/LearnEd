@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
-export default function CyclesRdirect() {
+export default function ProjectsRedirect() {
     // redirects if no team is selected in the url
-    redirect('./cycles/drivers');
+    redirect('./projects/drivers');
 }

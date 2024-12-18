@@ -118,10 +118,10 @@ export default function SideNav({open, teamInfo}) {
                                     Tasks
                                 </Typography>
                             </CustomNavButton> */}
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/cycles`} addpath='/drivers' tip='Cycles'>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/projects`} addpath='/drivers' tip='Projects'>
                                 <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
-                                    Cycles
+                                    Projects
                                 </Typography>
                             </CustomNavButton>
                         </>

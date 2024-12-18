@@ -2,20 +2,18 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import AimColumn from "./aimColumn";
+import createClient from "@/utils/supabase/server";
 
 
 
 export default async function Drivers({params}) {
     const teamId = (await params).teamId;
+    const supabase = await createClient();
 
-    function ColumnCustomComponent({children}) {
-
-        return (
-            <Box sx={{width:'25%', height:'100%', display:'flex', flexDirection:'column', alignItems:'center'}}>
-                {children}
-            </Box>
-        )
-    }
+    const {data: projects, error} = await supabase
+        .from('projects')
+        .select()
+        .eq('team_id', teamId);
 
     return (
         <Paper 
@@ -37,7 +35,7 @@ export default async function Drivers({params}) {
                     <Box sx={{height:'100%', width:'100%', overflow:'scroll'}}>
                         <Box sx={{display:'flex', alignItems:'center', minHeight:'100%'}}>
                             <Box sx={{width:'25%'}}>
-                                <AimColumn teamId={teamId} />
+                                <AimColumn teamId={teamId} project={projects[0]} />
                             </Box>
                             <Box sx={{width:'25%'}}>
                                 {2}

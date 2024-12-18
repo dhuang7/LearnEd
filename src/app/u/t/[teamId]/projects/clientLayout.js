@@ -25,7 +25,7 @@ export default function ClientPage({children}) {
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center', boxSizing:'border-box', pr:'1rem'}}>
                     {/* title */}
-                    <Typography variant='h4'>Cycles</Typography>
+                    <Typography variant='h4'>Projects</Typography>
                     {/* tabs */}
                     <Tabs 
                         value={pathIndex[currentPath[currentPath.length-1]]} 

@@ -123,11 +123,15 @@ export default function AddAgendaModal({teamId}) {
             <Drawer
                 open={open}
                 anchor='right'
-                hideBackdrop
                 ModalProps={{
-                    sx: {
-                        width:0,
-                    }
+                    slotProps: {
+                        backdrop: {
+                            onClick:handleClose,
+                            sx:{
+                                backgroundColor: 'rgba(0, 0, 0, 0)',
+                            }
+                        }
+                    },
                 }}
                 elevation={5}
                 aria-labelledby="alert-dialog-title"
