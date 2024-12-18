@@ -54,10 +54,26 @@ export default function GraphNode({name, description, onSave}) {
                     variant="contained" disableElevation 
                     sx={{
                         width:'100%', height:'100%', 
-                        textTransform:'none'
+                        textTransform:'none',
+                        boxSizing:'border-box',
                     }}
                     >
-                        <Typography variant="h6">hi</Typography>
+                        <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
+                            <Typography variant="h6" align="left">{name}</Typography>
+                            <Box sx={{flexGrow:1, overflow:'hidden'}}>
+                                <Typography 
+                                    variant="body1" align="left" noWrap 
+                                    sx={{
+                                        whiteSpace: 'pre-wrap',
+                                        overflow:'scroll',
+                                        maxHeight:'100%',
+                                    }}
+                                    >
+                                        {description}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        
                 </Button>
             </Box>
         </>
