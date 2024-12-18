@@ -8,18 +8,11 @@ import AimColumn from "./aimColumn";
 export default async function Drivers({params}) {
     const teamId = (await params).teamId;
 
-    function ColumnCustomComponent({children, title}) {
+    function ColumnCustomComponent({children}) {
 
         return (
             <Box sx={{width:'25%', height:'100%', display:'flex', flexDirection:'column', alignItems:'center'}}>
-                <Typography variant="h6" color='textSecondary'>
-                    {title}
-                </Typography>
-                <Box sx={{flexGrow:1, overflow:'hidden', width:'100%'}}>
-                    <Box sx={{height:'100%', width:'100%', display:'flex', flexDirection:'column', justifyContent:'center'}}>
-                        {children}
-                    </Box>
-                </Box>
+                {children}
             </Box>
         )
     }
@@ -33,19 +26,31 @@ export default async function Drivers({params}) {
                 display:'flex', flexDirection:'column'
             }}
             >
-                <Box sx={{display:'flex', height:'100%'}}>
-                    <ColumnCustomComponent title='Aim'>
-                        <AimColumn teamId={teamId} />
-                    </ColumnCustomComponent>
-                    <ColumnCustomComponent title='Primary Drivers'>
-                        2
-                    </ColumnCustomComponent>
-                    <ColumnCustomComponent title='Secondary Drivers'>
-                        3
-                    </ColumnCustomComponent>
-                    <ColumnCustomComponent title='Change Ideas'>
-                        4
-                    </ColumnCustomComponent>
+                <Box sx={{width:'100%', display:'flex'}}>
+                    {['Aim', 'Primary Drivers', 'Secondary Drivers', 'Change Ideas'].map((title, i) => (
+                        <Typography key={i} variant="h6" color='textSecondary' align="center" sx={{width:'25%'}}>
+                            {title}
+                        </Typography>
+                    ))}
+                </Box>
+                <Box sx={{flexGrow:1, overflow:'hidden'}}>
+                    <Box sx={{height:'100%', width:'100%', overflow:'scroll'}}>
+                        <Box sx={{display:'flex', alignItems:'center', minHeight:'100%'}}>
+                            <Box sx={{width:'25%'}}>
+                                <AimColumn teamId={teamId} />
+                            </Box>
+                            <Box sx={{width:'25%'}}>
+                                {2}
+                            </Box>
+                            <Box sx={{width:'25%'}}>
+                                {3}
+                            </Box>
+                            <Box sx={{width:'25%'}}>
+                                {4}
+                            </Box>
+                        </Box>
+                    </Box>
+                    
                 </Box>
         </Paper>
     )

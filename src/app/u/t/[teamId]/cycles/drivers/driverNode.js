@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 import TextField from "@mui/material/TextField";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import IconButton from "@mui/material/IconButton";
@@ -117,6 +118,9 @@ export default function DriverNode({name, description, onSave}) {
                         </Box>
                         {/* buttons */}
                         <Box sx={{display:'flex', justifyContent:'right'}}>
+                            <IconButton color='inherit' size='small'>
+                                <DeleteRoundedIcon />
+                            </IconButton>
                             {(edit)
                                 ? <IconButton color="inherit" size='small' onClick={handleSave} >
                                     {(loading)
