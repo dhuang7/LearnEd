@@ -55,7 +55,7 @@ export default function DriverNode({name, description, onSave}) {
                         p:'1rem', py:'.5rem', height:'100%', 
                         boxSizing:'border-box',
                         display:'flex', flexDirection:'column',
-                        backgroundColor:'common.black',
+                        backgroundColor:'primary.main',
                         color:'common.white',
                     }}
                     >
