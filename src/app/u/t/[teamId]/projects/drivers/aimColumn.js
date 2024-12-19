@@ -3,34 +3,11 @@
 import Box from "@mui/material/Box";
 
 import GraphNode from "./graphNode";
-import createClient from "@/utils/supabase/client";
 
 
 
 export default function AimColumn({teamId, project}) {
-    const supabase = createClient();
-
-    async function handleSave(id, name, description, measure) {
-        const insertData = {team_id: teamId};
-        const valueList = [id, name, description, measure];
-        // create data for the insert or update depending on what values exist
-        ['id', 'aim_name', 'aim_description', 'aim_outcome_measure'].forEach((v, i) => {
-            if (valueList[i]) {
-                insertData[v] = valueList[i];
-            }
-        })
-        // upsert data
-        const {data: p, error} = await supabase
-            .from('projects')
-            .upsert(
-                [
-                    insertData,
-                ],
-                { onConflict: ['id'] }
-            )
-            .select();
-
-    }
+    
     
     
 
