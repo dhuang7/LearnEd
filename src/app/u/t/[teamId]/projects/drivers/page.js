@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import AimColumn from "./aimColumn";
 import createClient from "@/utils/supabase/server";
+import GraphFlow from "./graphFlow";
 
 
 
@@ -24,16 +25,17 @@ export default async function Drivers({params}) {
                 display:'flex', flexDirection:'column'
             }}
             >
+                <GraphFlow />
                 {/* column titles */}
-                <Box sx={{width:'100%', display:'flex'}}>
+                {/* <Box sx={{width:'100%', display:'flex'}}>
                     {['Aim', 'Primary Drivers', 'Secondary Drivers', 'Change Ideas'].map((title, i) => (
                         <Typography key={i} variant="h6" color='textSecondary' align="center" sx={{width:'25%'}}>
                             {title}
                         </Typography>
                     ))}
-                </Box>
+                </Box> */}
                 {/* containers for the columns of the graph */}
-                <Box sx={{flexGrow:1, overflow:'hidden'}}>
+                {/* <Box sx={{flexGrow:1, overflow:'hidden'}}>
                     <Box sx={{height:'100%', width:'100%', overflow:'scroll'}}>
                         <Box sx={{display:'flex', alignItems:'center', minHeight:'100%'}}>
                             <Box sx={{width:'25%'}}>
@@ -51,7 +53,7 @@ export default async function Drivers({params}) {
                         </Box>
                     </Box>
                     
-                </Box>
+                </Box> */}
         </Paper>
     )
 }
