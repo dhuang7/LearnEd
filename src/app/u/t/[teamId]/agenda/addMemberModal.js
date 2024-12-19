@@ -168,8 +168,6 @@ export default function AddMemberModal({profiles, teamId}) {
         })
     }
 
-    console.log(notAdmin);
-
     return (
         <>
             {/* add member button to open dialog */}

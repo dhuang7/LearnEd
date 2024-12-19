@@ -23,17 +23,19 @@ export default function ClientPage({children}) {
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
             {/* header */}
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
-                <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center', boxSizing:'border-box', pr:'1rem'}}>
+                <Box sx={{width:'100%', display:'flex', alignItems:'center', boxSizing:'border-box', pr:'1rem'}}>
                     {/* title */}
                     <Typography variant='h4'>Projects</Typography>
                     {/* tabs */}
-                    <Tabs 
-                        value={pathIndex[currentPath[currentPath.length-1]]} 
-                        aria-label="basic tabs example"
-                        >
-                        <Tab label="Drivers" component={NextLink} href='drivers' />
-                        <Tab label="Cycles"  component={NextLink} href='cycle-list' />
-                    </Tabs>
+                    <Box sx={{ml:'auto'}}>
+                        <Tabs 
+                            value={pathIndex[currentPath[currentPath.length-1]]} 
+                            aria-label="basic tabs example"
+                            >
+                            <Tab label="Drivers" component={NextLink} href='drivers' />
+                            <Tab label="Cycles"  component={NextLink} href='cycle-list' />
+                        </Tabs>
+                    </Box>
                 </Box>
             </Box>
             {/* Content */}
