@@ -13,6 +13,7 @@ import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
 import InputAdornment from "@mui/material/InputAdornment";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import CircularProgress from "@mui/material/CircularProgress";
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import Typography from "@mui/material/Typography";
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
@@ -23,7 +24,6 @@ import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 import theme from "@/app/theme";
 import { useEffect, useState, useTransition } from "react";
 import createClient from "@/utils/supabase/client";
-import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 
@@ -234,7 +234,7 @@ export default function AddMemberModal({profiles, teamId}) {
                         <Button disabled={loading} onClick={handleClose}>Cancel</Button>
                         <Button disabled={loading||notAdmin} type='submit'>
                             {(loading)
-                                ? <CircularProgress />
+                                ? <CircularProgress size='1rem' />
                                 : 'Add'
                             }
                         </Button>

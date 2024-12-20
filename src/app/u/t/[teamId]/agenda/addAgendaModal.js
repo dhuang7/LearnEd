@@ -240,7 +240,7 @@ export default function AddAgendaModal({teamId}) {
                         <Button disabled={loading} onClick={handleCancel}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)
-                                ? <CircularProgress />
+                                ? <CircularProgress size='1rem' />
                                 : 'Add'
                             }
                         </Button>

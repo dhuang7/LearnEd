@@ -264,7 +264,7 @@ export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
                         <Button disabled={loading} onClick={handleCancel}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)
-                                ? <CircularProgress />
+                                ? <CircularProgress size='1rem' />
                                 : 'Save'
                             }
                         </Button>

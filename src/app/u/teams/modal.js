@@ -15,6 +15,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 
 
@@ -24,7 +25,6 @@ import theme from "@/app/theme";
 import { useState } from "react";
 import {createTeam} from './createTeamAction';
 import createClient from "@/utils/supabase/client";
-import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 
@@ -208,7 +208,7 @@ export default function Modal() {
                         <Button disabled={loading} onClick={handleClose}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)
-                                ? <CircularProgress />
+                                ? <CircularProgress size='1rem' />
                                 : 'Create'
                             }
                         </Button>
