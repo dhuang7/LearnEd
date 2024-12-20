@@ -1,6 +1,7 @@
 'use client'
 
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -19,7 +20,7 @@ import {
 } from '@xyflow/react';
 import Dagre from '@dagrejs/dagre';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import '@xyflow/react/dist/style.css';
 import { AimNode, PrimaryDriverNode, SecondaryDriverNode } from './customNode';
 import createClient from '@/utils/supabase/client';
@@ -36,78 +37,109 @@ export default function GraphFlow(params) {
 }
 
 // Actual Component
-function GraphFlowLayout({teamId, aim, primaryDrivers}) {
+function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
     const { fitView } = useReactFlow();
     const supabase = createClient();
     const router = useRouter();
+    const [isPending, startTransition] = useTransition();
     const nodeTypes = { 
         aimNode: AimNode,
         primaryDriverNode: PrimaryDriverNode,
         secondaryDriverNode: SecondaryDriverNode,
     };
 
-    const [aimNodes, setAimNodes] = useState([]);
-    const [primaryDriverNodes, setPrimaryDriverNodes] = useState([]);
-    const [aimPrimaryEdges, setAimPrimaryEdges] = useState([]);
-    const [nodes, setNodes, onNodesChange] = useNodesState([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-
-    // update and reformat nodes and edges
-    useEffect(() => {
-        // edges
-        setAimNodes([{
+    const [loading, setLoading] = useState(false);
+    
+    // reformat all nodes
+    const aimNodes = [{
+        id: aim.id+',projects',
+        cool:'cool',
+        position: {x: aim.aim_position_x, y: aim.aim_position_y},
+        data: {
             id: aim.id,
-            position: {x: aim.aim_position_x, y: aim.aim_position_y},
-            data: {
-                id: aim.id,
-                name: aim.aim_name,
-                description: aim.aim_description,
-                measure: aim.aim_outcome_measure,
-                teamId: teamId,
-            },
-            type: 'aimNode',
-        }]);
-        setPrimaryDriverNodes(primaryDrivers.map((pn, i) => ({
+            name: aim.aim_name,
+            description: aim.aim_description,
+            measure: aim.aim_outcome_measure,
+            teamId: teamId,
+        },
+        type: 'aimNode',
+    }];
+
+    const primaryDriverNodes = primaryDrivers.map((pn, i) => ({
+        id: pn.id+',primary_drivers',
+        position: {x: pn.position_x, y: pn.position_y},
+        data: {
             id: pn.id,
-            position: {x: pn.position_x, y: pn.position_y},
-            data: {
-                id: pn.id,
-                name: pn.name,
-                description: pn.description,
-                measure: pn.process_measure,
-            },
-            type: 'primaryDriverNode'
-        })));
+            name: pn.name,
+            description: pn.description,
+            measure: pn.process_measure,
+            aimId: pn.aim_id,
+        },
+        type: 'primaryDriverNode'
+    }));
 
-        // edges
-        setAimPrimaryEdges(primaryDrivers.map((pn, i) => ({id: pn.aim_id+','+pn.id, source: pn.aim_id, target: pn.id })));
+    const secondaryDriverNodes = secondaryDrivers.map((sn, i) => ({
+        id: sn.id+',secondary_drivers',
+        position: {x: sn.position_x, y: sn.position_y},
+        data: {
+            id: sn.id,
+            name: sn.name,
+            description: sn.description,
+            measure: sn.process_measure,
+            aimId: sn.aim_id,
+        },
+        type: 'secondaryDriverNode'
+    }));
 
-    }, [aim, primaryDrivers]);
+    // makes sure that the info is loaded before finishing.
+    useEffect(() => {
+        if (!isPending) {
+            setLoading(false);
+        }
+    }, [isPending])
+
+    // reformat all edges
+    const aimPrimaryEdges = primaryDrivers.map((pn, i) => ({id: pn.aim_id+','+pn.id, source: pn.aim_id+',projects', target: pn.id+',primary_drivers' }));
 
     // manage edge and node states
+    const [nodes, setNodes, onNodesChange] = useNodesState([...aimNodes, ...primaryDriverNodes, ...secondaryDriverNodes]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([...aimPrimaryEdges]);
+
     useEffect(() => {
         // set nodes and edges
-        setNodes([...aimNodes, ...primaryDriverNodes]);
+        setNodes([...aimNodes, ...primaryDriverNodes, ...secondaryDriverNodes]);
         setEdges([...aimPrimaryEdges]);
-    }, [aimNodes, primaryDriverNodes, aimPrimaryEdges])
-    
-
-    // adding new nodes won't be all that hard. just add the new node because
-    // each node is already having the saving part for itself in the node itself
+    }, [aim, primaryDrivers])
 
     // add projects
 
     // add drivers
     async function handleAddPrimaryDrivers() {
+        setLoading(true);
         const {data, error} = await supabase
             .from('primary_drivers')
             .insert({aim_id: aim.id});
 
-        router.refresh();
-        // not refreshing properly ///////////////// start transition?
+        // reset everything
+        startTransition(() => {
+            router.refresh();
+        })
     }
 
     // add secondary drivers
+    async function handleAddSecondaryDrivers() {
+        setLoading(true);
+        const {data, error} = await supabase
+            .from('secondary_drivers')
+            .insert({aim_id: aim.id});
+
+        // reset everything
+        startTransition(() => {
+            router.refresh();
+        })
+
+        console.log(error)
+    }
 
     // add change ideas
 
@@ -115,8 +147,23 @@ function GraphFlowLayout({teamId, aim, primaryDrivers}) {
     // aim, primary driver, secondary driver, or change idea
 
     // handlers
-    function handleNodesChange(changes) {
+    async function handleNodesChange(changes) {
         onNodesChange(changes);
+
+        // update node position every time the drag is done
+        changes.forEach(async v => {
+            if (v.type === 'position' && v.dragging === false) {
+                const [id, type] = v.id.split(',');
+                const {data, error} = await supabase
+                    .from(type)
+                    .update({
+                        position_x: v.position.x,
+                        position_y: v.position.y,
+                    })
+                    .eq('id', id)
+                    .select();
+            }
+        })
     }
 
     function handleEdgesChange(changes) {
@@ -127,9 +174,28 @@ function GraphFlowLayout({teamId, aim, primaryDrivers}) {
         setEdges((eds) => addEdge(params, eds))
     }
 
-    function handleLayout(direction) {
+    async function handleLayout(direction) {
         const layouted = getLayoutedElements(nodes, edges, { direction });
     
+        // update the nodes on the backend
+        layouted.nodes.forEach(async v => {
+            const [id, type] = v.id.split(',');
+            const {data, error} = await supabase
+                .from(type)
+                .update({
+                    [type === 'projects'? 'aim_position_x':'position_x']: v.position.x,
+                    [type === 'projects'? 'aim_position_y':'position_y']: v.position.y,
+                })
+                .eq('id', id)
+                .select();
+
+            if (error) {
+                console.log(error);
+                router.refresh();
+            }
+        });
+
+        // update front end nodes
         setNodes([...layouted.nodes]);
         setEdges([...layouted.edges]);
     
@@ -139,66 +205,73 @@ function GraphFlowLayout({teamId, aim, primaryDrivers}) {
     }
 
     return (
-        <ReactFlow 
-            nodeTypes={nodeTypes}
-            nodes={nodes} 
-            edges={edges}
-            onNodesChange={handleNodesChange}
-            onEdgesChange={handleEdgesChange}
-            onConnect={handleConnect}
-            fitView
-            panOnScroll
-            selectionOnDrag
-            // panOnDrag={[1,2]}
-            selectionMode={SelectionMode.Partial}
-            >
-            <Panel position="top-right">
-                <Stack direction={'row'} spacing={'.5rem'}>
-                    <Button 
-                        color='info'
-                        variant='contained' disableElevation 
-                        startIcon={<AccountTreeRoundedIcon />}
-                        onClick={() => handleLayout('LR')}
-                        size='small'
-                        sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
-                        >
-                            Auto
-                    </Button>
-                    <Button  
-                        color='info'
-                        variant='contained' disableElevation 
-                        startIcon={<AddRoundedIcon />}
-                        onClick={handleAddPrimaryDrivers}
-                        size='small'
-                        sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
-                        >
-                            Primary
-                    </Button>
-                    <Button  
-                        color='info'
-                        variant='contained' disableElevation 
-                        startIcon={<AddRoundedIcon />}
-                        onClick={() => handleLayout('LR')}
-                        size='small'
-                        sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
-                        >
-                            Secondary
-                    </Button>
-                    <Button  
-                        color='info'
-                        variant='contained' disableElevation 
-                        startIcon={<AddRoundedIcon />}
-                        onClick={() => handleLayout('LR')}
-                        size='small'
-                        sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
-                        >
-                            Change Idea
-                    </Button>
-                </Stack>
-            </Panel>
-            <Background />
-            <Controls />
-        </ReactFlow>
+        <>
+            <ReactFlow 
+                nodeTypes={nodeTypes}
+                nodes={nodes} 
+                edges={edges}
+                onNodesChange={handleNodesChange}
+                onEdgesChange={handleEdgesChange}
+                onConnect={handleConnect}
+                fitView
+                panOnScroll
+                selectionOnDrag
+                // panOnDrag={[1,2]}
+                selectionMode={SelectionMode.Partial}
+                >
+                <Panel position="top-right">
+                    <Stack direction={'row'} spacing={'.5rem'}>
+                        <Button 
+                            color='info'
+                            variant='contained' disableElevation 
+                            startIcon={<AccountTreeRoundedIcon />}
+                            onClick={() => handleLayout('LR')}
+                            size='small'
+                            sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
+                            >
+                                Auto
+                        </Button>
+                        <Button  
+                            color='info'
+                            variant='contained' disableElevation 
+                            startIcon={<AddRoundedIcon />}
+                            onClick={handleAddPrimaryDrivers}
+                            size='small'
+                            sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
+                            >
+                                Primary
+                        </Button>
+                        <Button  
+                            color='info'
+                            variant='contained' disableElevation 
+                            startIcon={<AddRoundedIcon />}
+                            onClick={handleAddSecondaryDrivers}
+                            size='small'
+                            sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
+                            >
+                                Secondary
+                        </Button>
+                        <Button  
+                            color='info'
+                            variant='contained' disableElevation 
+                            startIcon={<AddRoundedIcon />}
+                            onClick={() => handleLayout('LR')}
+                            size='small'
+                            sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
+                            >
+                                Change Idea
+                        </Button>
+                    </Stack>
+                </Panel>
+                <Background />
+                <Controls />
+            </ReactFlow>
+            {loading && 
+                <Box sx={{width:'100%', height:'100%', position:'absolute', top:0, left:0, p:'1rem', zIndex:1, boxSizing:'border-box'}}>
+                    <Box sx={{backgroundColor:'common.black', opacity: 0.5, width:'100%', height:'100%',}} />
+                </Box>
+            }
+        </>
     )
 }
 
@@ -234,3 +307,18 @@ const getLayoutedElements = (nodes, edges, options) => {
         edges,
     };
 };
+
+
+// function debounce(func, delay) {
+//     let timeout;
+
+//     return function (...args) {
+//         // Clear the existing timeout if the function is called again
+//         clearTimeout(timeout);
+
+//         // Set a new timeout
+//         timeout = setTimeout(() => {
+//             func.apply(this, args); // Call the function with the correct context and arguments
+//         }, delay);
+//     };
+// }

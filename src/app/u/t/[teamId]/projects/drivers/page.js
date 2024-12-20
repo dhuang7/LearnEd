@@ -34,6 +34,10 @@ export default async function Drivers({params}) {
         .eq('aim_id', projects[0].id);
 
     // load secondary drivers
+    const {data: secondaryDrivers, error: secondaryDriverErrors} = await supabase
+        .from('secondary_drivers')
+        .select()
+        .eq('aim_id', projects[0].id);
 
     // load change ideas
 
@@ -43,11 +47,16 @@ export default async function Drivers({params}) {
             elevation={0} 
             sx={{
                 borderRadius:3, boxSizing:'border-box', border:'1px solid', borderColor: 'grey.300',
-                p:'1rem', height:'100%',
-                display:'flex', flexDirection:'column'
+                p:'1rem', height:'100%', width:'100%', overflow:'hidden',
+                display:'flex', flexDirection:'column', position:'relative'
             }}
             >
-                <GraphFlow teamId={teamId} aim={projects[0]} primaryDrivers={primaryDrivers} />
+                <GraphFlow 
+                    teamId={teamId} 
+                    aim={projects[0]} 
+                    primaryDrivers={primaryDrivers} 
+                    secondaryDrivers={secondaryDrivers}
+                    />
         </Paper>
     )
 }

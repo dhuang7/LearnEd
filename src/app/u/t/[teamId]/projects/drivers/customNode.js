@@ -24,7 +24,7 @@ import createClient from '@/utils/supabase/client';
 import ButtonTextfield from '@/components/buttonTextfield';
  
  
-export default function CustomNode({id, title, name, description, measure, measureType, table, teamId, columns, disableDelete, disableSource, disableTarget}) {
+export default function CustomNode({id, title, name, description, measure, measureType, table, aimId, columns, disableDelete, disableSource, disableTarget}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -78,25 +78,24 @@ export default function CustomNode({id, title, name, description, measure, measu
         e.preventDefault();
         setLoading(true);
 
-        // // insert data
-        // const insertData = {team_id: teamId};
-        // const valueList = [id, nameText, descriptionText, measureText];
-        // // create data for the insert or update depending on what values exist
-        // columns.forEach((v, i) => {
-        //     if (valueList[i]) {
-        //         insertData[v] = valueList[i];
-        //     }
-        // })
-        // // upsert data
-        // const {data: p, error} = await supabase
-        //     .from(table)
-        //     .upsert(
-        //         [
-        //             insertData,
-        //         ],
-        //         { onConflict: ['id'] }
-        //     )
-        //     .select();
+        // insert data
+        const insertData = {aim_id: aimId};
+        const valueList = [id, nameText, descriptionText, measureText];
+        // create data for the insert or update depending on what values exist
+        columns.forEach((v, i) => {
+            if (valueList[i]) {
+                insertData[v] = valueList[i];
+            }
+        })
+
+        // update data
+        const {data: p, error} = await supabase
+            .from(table)
+            .update(insertData)
+            .eq('id', id)
+            .select();
+
+        console.log(error);
 
         // reset everything
         startTransition(() => {
