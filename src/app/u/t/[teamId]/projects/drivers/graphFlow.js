@@ -1,5 +1,10 @@
 'use client'
 
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+
 import {
     ReactFlow,
     ReactFlowProvider,
@@ -7,28 +12,58 @@ import {
     useReactFlow,
     Background,
     Controls,
-    applyNodeChanges,
-    applyEdgeChanges,
+    SelectionMode,
     addEdge,
+    useEdgesState,
+    useNodesState,
 } from '@xyflow/react';
 import Dagre from '@dagrejs/dagre';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '@xyflow/react/dist/style.css';
-import CustomNode from './customNode';
+import { AimNode, PrimaryDriverNode, SecondaryDriverNode } from './customNode';
 
 
-function GraphFlowLayout({params}) {
+// Provider
+export default function GraphFlow({params}) {
+    return (
+        <ReactFlowProvider>
+            <GraphFlowLayout {...params} />
+        </ReactFlowProvider>
+    );
+}
+
+// Actual Component
+function GraphFlowLayout({teamId, projects}) {
     const { fitView } = useReactFlow();
-    const [nodes, setNodes] = useState(initialNodes);
-    const [edges, setEdges] = useState(initialEdges);
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const nodeTypes = { 
+        aimNode: AimNode,
+        primaryDriverNode: PrimaryDriverNode,
+        secondaryDriverNode: SecondaryDriverNode,
+    };
+
+    // adding new nodes won't be all that hard. just add the new node because
+    // each node is already having the saving part for itself in the node itself
+
+    // add projects
+
+    // add drivers
+
+    // add secondary drivers
+
+    // add change ideas
+
+    // maybe all the above should just be one function that changes based on an input of 
+    // aim, primary driver, secondary driver, or change idea
 
     function handleNodesChange(changes) {
-        setNodes((nds) => applyNodeChanges(changes, nds))
+        onNodesChange(changes);
     }
 
     function handleEdgesChange(changes) {
-        setEdges((eds) => applyEdgeChanges(changes, eds))
+        onEdgesChange(changes);
     }
 
     function handleConnect(params) {
@@ -55,10 +90,54 @@ function GraphFlowLayout({params}) {
             onEdgesChange={handleEdgesChange}
             onConnect={handleConnect}
             fitView
+            panOnScroll
+            selectionOnDrag
+            // panOnDrag={[1,2]}
+            selectionMode={SelectionMode.Partial}
             >
             <Panel position="top-right">
-                <button onClick={() => handleLayout('TB')}>vertical layout</button>
-                <button onClick={() => handleLayout('LR')}>horizontal layout</button>
+                <Stack direction={'row'} spacing={'.5rem'}>
+                    <Button 
+                        color='info'
+                        variant='contained' disableElevation 
+                        startIcon={<AccountTreeRoundedIcon />}
+                        onClick={() => handleLayout('LR')}
+                        size='small'
+                        sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
+                        >
+                            Auto
+                    </Button>
+                    <Button  
+                        color='info'
+                        variant='contained' disableElevation 
+                        startIcon={<AddRoundedIcon />}
+                        onClick={() => handleLayout('LR')}
+                        size='small'
+                        sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
+                        >
+                            Primary
+                    </Button>
+                    <Button  
+                        color='info'
+                        variant='contained' disableElevation 
+                        startIcon={<AddRoundedIcon />}
+                        onClick={() => handleLayout('LR')}
+                        size='small'
+                        sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
+                        >
+                            Secondary
+                    </Button>
+                    <Button  
+                        color='info'
+                        variant='contained' disableElevation 
+                        startIcon={<AddRoundedIcon />}
+                        onClick={() => handleLayout('LR')}
+                        size='small'
+                        sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
+                        >
+                            Change Idea
+                    </Button>
+                </Stack>
             </Panel>
             <Background />
             <Controls />
@@ -66,13 +145,7 @@ function GraphFlowLayout({params}) {
     )
 }
 
-export default function GraphFlow() {
-    return (
-        <ReactFlowProvider>
-            <GraphFlowLayout />
-        </ReactFlowProvider>
-    );
-}
+
 
 
 
@@ -105,20 +178,37 @@ const getLayoutedElements = (nodes, edges, options) => {
     };
 };
 
-const nodeTypes = { customNode: CustomNode };
+
+
+
+// Extra things
+
+
 
 const initialNodes = [
     {
         id: '1',
         position: { x: 0, y: 0 },
-        data: { label: 'Hello' },
-        type: 'customNode',
+        data: { 
+            id: null,
+            name: 'poop',
+            description: 'i have  a really long obsession with really long names',
+            measure:'cool',
+            teamId: '', 
+        },
+        type: 'aimNode',
     },
     {
         id: '2',
-        position: { x: 100, y: 100 },
-        data: { label: 'World' },
-        type: 'customNode',
+        position: { x: 350, y: 0 },
+        data: { 
+            id: null,
+            name: 'we',
+            description: 'i have  a really long obsession with really long names',
+            measure:'333333',
+            teamId: '', 
+        },
+        type: 'primaryDriverNode',
     },
 ];
 

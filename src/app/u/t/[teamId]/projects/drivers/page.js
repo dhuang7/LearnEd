@@ -1,7 +1,6 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import AimColumn from "./aimColumn";
 import createClient from "@/utils/supabase/server";
 import GraphFlow from "./graphFlow";
 
@@ -10,11 +9,35 @@ import GraphFlow from "./graphFlow";
 export default async function Drivers({params}) {
     const teamId = (await params).teamId;
     const supabase = await createClient();
+    let projects;
 
-    const {data: projects, error} = await supabase
+    // load projects
+    const {data: p, error: selectError} = await supabase
         .from('projects')
         .select()
         .eq('team_id', teamId);
+
+    projects = p;
+
+    // load primary drivers
+
+    // load secondary drivers
+
+    // load change ideas
+
+
+
+    // temp until people get the option to create more projects
+    if (projects.length === 0) {
+        const {data: pi, error: insertError} = await supabase
+            .from('projects')
+            .insert({team_id: teamId})
+            .select();
+        
+        projects = pi;
+    }
+    
+
 
     return (
         <Paper 
@@ -25,35 +48,7 @@ export default async function Drivers({params}) {
                 display:'flex', flexDirection:'column'
             }}
             >
-                <GraphFlow />
-                {/* column titles */}
-                {/* <Box sx={{width:'100%', display:'flex'}}>
-                    {['Aim', 'Primary Drivers', 'Secondary Drivers', 'Change Ideas'].map((title, i) => (
-                        <Typography key={i} variant="h6" color='textSecondary' align="center" sx={{width:'25%'}}>
-                            {title}
-                        </Typography>
-                    ))}
-                </Box> */}
-                {/* containers for the columns of the graph */}
-                {/* <Box sx={{flexGrow:1, overflow:'hidden'}}>
-                    <Box sx={{height:'100%', width:'100%', overflow:'scroll'}}>
-                        <Box sx={{display:'flex', alignItems:'center', minHeight:'100%'}}>
-                            <Box sx={{width:'25%'}}>
-                                <AimColumn teamId={teamId} project={projects[0]} />
-                            </Box>
-                            <Box sx={{width:'25%'}}>
-                                {2}
-                            </Box>
-                            <Box sx={{width:'25%'}}>
-                                {3}
-                            </Box>
-                            <Box sx={{width:'25%'}}>
-                                {4}
-                            </Box>
-                        </Box>
-                    </Box>
-                    
-                </Box> */}
+                <GraphFlow teamId={teamId} projects={projects} />
         </Paper>
     )
 }
