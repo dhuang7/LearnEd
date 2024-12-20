@@ -232,7 +232,7 @@ export default function CustomNode({id, title, name, description, measure, measu
                         <Button disabled={loading} onClick={handleClose}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)
-                                ? <CircularProgress />
+                                ? <CircularProgress size='1rem' />
                                 : 'Save'
                             }
                         </Button>

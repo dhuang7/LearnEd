@@ -3,6 +3,7 @@
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
@@ -268,7 +269,9 @@ function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
             </ReactFlow>
             {loading && 
                 <Box sx={{width:'100%', height:'100%', position:'absolute', top:0, left:0, p:'1rem', zIndex:1, boxSizing:'border-box'}}>
-                    <Box sx={{backgroundColor:'common.black', opacity: 0.5, width:'100%', height:'100%',}} />
+                    <Box sx={{backgroundColor:'common.black', opacity: 0.5, width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center'}} >
+                        <CircularProgress />
+                    </Box>
                 </Box>
             }
         </>
