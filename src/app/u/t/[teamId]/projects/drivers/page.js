@@ -1,5 +1,3 @@
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import createClient from "@/utils/supabase/server";
 import GraphFlow from "./graphFlow";
@@ -19,14 +17,6 @@ export default async function Drivers({params}) {
 
     projects = p;
 
-    // load primary drivers
-
-    // load secondary drivers
-
-    // load change ideas
-
-
-
     // temp until people get the option to create more projects
     if (projects.length === 0) {
         const {data: pi, error: insertError} = await supabase
@@ -36,7 +26,16 @@ export default async function Drivers({params}) {
         
         projects = pi;
     }
-    
+
+    // load primary drivers
+    const {data: primaryDrivers, error: primaryDriverErrors} = await supabase
+        .from('primary_drivers')
+        .select()
+        .eq('aim_id', projects[0].id);
+
+    // load secondary drivers
+
+    // load change ideas
 
 
     return (
@@ -48,7 +47,7 @@ export default async function Drivers({params}) {
                 display:'flex', flexDirection:'column'
             }}
             >
-                <GraphFlow teamId={teamId} projects={projects} />
+                <GraphFlow teamId={teamId} aim={projects[0]} primaryDrivers={primaryDrivers} />
         </Paper>
     )
 }

@@ -126,7 +126,7 @@ export default function CustomNode({id, title, name, description, measure, measu
             <Paper 
                 elevation={0} 
                 sx={{
-                    p:'1rem', py:'.5rem', width:'250px', height:'152',
+                    p:'1rem', py:'.5rem', width:'250px', height:'152px',
                     boxSizing:'border-box',
                     display:'flex', flexDirection:'column',
                     backgroundColor:'primary.main',
@@ -151,13 +151,14 @@ export default function CustomNode({id, title, name, description, measure, measu
                         {/* divider */}
                         <Divider sx={{borderColor:'inherit'}} />
                         {/* Name */}
-                        <Typography noWrap variant="h5" align="left" fontWeight={'bold'}>{nameText}</Typography>
+                        <Typography noWrap variant="h5" align="left" fontWeight={'bold'}>{nameText||'Enter name...'}</Typography>
                         {/* description */}
                         <Box sx={{flexGrow:1, overflow:'hidden', boxSizing:'border-box', pl:'.5rem'}}>
                             <Typography 
-                                variant="body1" align="left" noWrap 
+                                variant="body1" align="left" 
                                 sx={{
                                     whiteSpace: 'pre-wrap',
+                                    wordBreak: 'break-word',
                                     overflow:'scroll',
                                     maxHeight:'100%',
                                     display: '-webkit-box',
@@ -167,7 +168,7 @@ export default function CustomNode({id, title, name, description, measure, measu
                                     WebkitBoxOrient: 'vertical',
                                 }}
                                 >
-                                    {descriptionText}
+                                    {descriptionText||'Enter description...'}
                             </Typography>
                         </Box>
                     </Box>

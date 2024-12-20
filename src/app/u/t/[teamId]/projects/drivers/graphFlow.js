@@ -22,10 +22,12 @@ import Dagre from '@dagrejs/dagre';
 import { useEffect, useState } from 'react';
 import '@xyflow/react/dist/style.css';
 import { AimNode, PrimaryDriverNode, SecondaryDriverNode } from './customNode';
+import createClient from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 
 
 // Provider
-export default function GraphFlow({params}) {
+export default function GraphFlow(params) {
     return (
         <ReactFlowProvider>
             <GraphFlowLayout {...params} />
@@ -34,15 +36,61 @@ export default function GraphFlow({params}) {
 }
 
 // Actual Component
-function GraphFlowLayout({teamId, projects}) {
+function GraphFlowLayout({teamId, aim, primaryDrivers}) {
     const { fitView } = useReactFlow();
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const supabase = createClient();
+    const router = useRouter();
     const nodeTypes = { 
         aimNode: AimNode,
         primaryDriverNode: PrimaryDriverNode,
         secondaryDriverNode: SecondaryDriverNode,
     };
+
+    const [aimNodes, setAimNodes] = useState([]);
+    const [primaryDriverNodes, setPrimaryDriverNodes] = useState([]);
+    const [aimPrimaryEdges, setAimPrimaryEdges] = useState([]);
+    const [nodes, setNodes, onNodesChange] = useNodesState([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+    // update and reformat nodes and edges
+    useEffect(() => {
+        // edges
+        setAimNodes([{
+            id: aim.id,
+            position: {x: aim.aim_position_x, y: aim.aim_position_y},
+            data: {
+                id: aim.id,
+                name: aim.aim_name,
+                description: aim.aim_description,
+                measure: aim.aim_outcome_measure,
+                teamId: teamId,
+            },
+            type: 'aimNode',
+        }]);
+        setPrimaryDriverNodes(primaryDrivers.map((pn, i) => ({
+            id: pn.id,
+            position: {x: pn.position_x, y: pn.position_y},
+            data: {
+                id: pn.id,
+                name: pn.name,
+                description: pn.description,
+                measure: pn.process_measure,
+            },
+            type: 'primaryDriverNode'
+        })));
+
+        // edges
+        setAimPrimaryEdges(primaryDrivers.map((pn, i) => ({id: pn.aim_id+','+pn.id, source: pn.aim_id, target: pn.id })));
+
+    }, [aim, primaryDrivers]);
+
+    // manage edge and node states
+    useEffect(() => {
+        // set nodes and edges
+        setNodes([...aimNodes, ...primaryDriverNodes]);
+        setEdges([...aimPrimaryEdges]);
+    }, [aimNodes, primaryDriverNodes, aimPrimaryEdges])
+    
 
     // adding new nodes won't be all that hard. just add the new node because
     // each node is already having the saving part for itself in the node itself
@@ -50,6 +98,14 @@ function GraphFlowLayout({teamId, projects}) {
     // add projects
 
     // add drivers
+    async function handleAddPrimaryDrivers() {
+        const {data, error} = await supabase
+            .from('primary_drivers')
+            .insert({aim_id: aim.id});
+
+        router.refresh();
+        // not refreshing properly ///////////////// start transition?
+    }
 
     // add secondary drivers
 
@@ -58,6 +114,7 @@ function GraphFlowLayout({teamId, projects}) {
     // maybe all the above should just be one function that changes based on an input of 
     // aim, primary driver, secondary driver, or change idea
 
+    // handlers
     function handleNodesChange(changes) {
         onNodesChange(changes);
     }
@@ -111,7 +168,7 @@ function GraphFlowLayout({teamId, projects}) {
                         color='info'
                         variant='contained' disableElevation 
                         startIcon={<AddRoundedIcon />}
-                        onClick={() => handleLayout('LR')}
+                        onClick={handleAddPrimaryDrivers}
                         size='small'
                         sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
                         >
@@ -148,7 +205,7 @@ function GraphFlowLayout({teamId, projects}) {
 
 
 
-
+// this is for auto layout
 const getLayoutedElements = (nodes, edges, options) => {
     const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
     g.setGraph({ rankdir: options.direction });
@@ -177,39 +234,3 @@ const getLayoutedElements = (nodes, edges, options) => {
         edges,
     };
 };
-
-
-
-
-// Extra things
-
-
-
-const initialNodes = [
-    {
-        id: '1',
-        position: { x: 0, y: 0 },
-        data: { 
-            id: null,
-            name: 'poop',
-            description: 'i have  a really long obsession with really long names',
-            measure:'cool',
-            teamId: '', 
-        },
-        type: 'aimNode',
-    },
-    {
-        id: '2',
-        position: { x: 350, y: 0 },
-        data: { 
-            id: null,
-            name: 'we',
-            description: 'i have  a really long obsession with really long names',
-            measure:'333333',
-            teamId: '', 
-        },
-        type: 'primaryDriverNode',
-    },
-];
-
-const initialEdges = [{ id: '1-2', source: '1', target: '2' }];
