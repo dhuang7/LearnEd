@@ -23,7 +23,7 @@ import Dagre from '@dagrejs/dagre';
 
 import { useEffect, useState, useTransition } from 'react';
 import '@xyflow/react/dist/style.css';
-import { AimNode, PrimaryDriverNode, SecondaryDriverNode } from './customNode';
+import { AimNode, PrimaryDriverNode, SecondaryDriverNode, ChangeIdeaNode } from './customNode';
 import createClient from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 
@@ -38,7 +38,12 @@ export default function GraphFlow(params) {
 }
 
 // Actual Component
-function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
+function GraphFlowLayout({
+    teamId, aim, 
+    primaryDrivers, primarySecondaryEdges,
+    secondaryDrivers, secondaryChangeEdges,
+    changeIdeas,
+}) {
     const { fitView } = useReactFlow();
     const supabase = createClient();
     const router = useRouter();
@@ -47,6 +52,7 @@ function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
         aimNode: AimNode,
         primaryDriverNode: PrimaryDriverNode,
         secondaryDriverNode: SecondaryDriverNode,
+        changeIdeaNode: ChangeIdeaNode,
     };
 
     const [loading, setLoading] = useState(false);
@@ -92,6 +98,18 @@ function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
         type: 'secondaryDriverNode'
     }));
 
+    const changeIdeaNodes = changeIdeas.map((cn, i) => ({
+        id: cn.id+',change_ideas',
+        position: {x: cn.position_x, y: cn.position_y},
+        data: {
+            id: cn.id,
+            name: cn.name,
+            description: cn.description,
+            aimId: cn.aim_id,
+        },
+        type: 'changeIdeaNode'
+    }));
+
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
         if (!isPending) {
@@ -100,17 +118,33 @@ function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
     }, [isPending])
 
     // reformat all edges
-    const aimPrimaryEdges = primaryDrivers.map((pn, i) => ({id: pn.aim_id+','+pn.id, source: pn.aim_id+',projects', target: pn.id+',primary_drivers' }));
+    const ape = primaryDrivers.map((pn, i) => ({
+        id: pn.id+',primary_drivers', 
+        source: pn.aim_id+',projects', 
+        target: pn.id+',primary_drivers' 
+    }));
+
+    const pse = primarySecondaryEdges.map((e, i) => ({
+        id: e.id+',primary_secondary_edges', 
+        source: e.source_id+',primary_drivers', 
+        target: e.target_id+',secondary_drivers', 
+    }));
+
+    const sce = secondaryChangeEdges.map((e, i) => ({
+        id: e.id+',secondary_change_edges', 
+        source: e.source_id+',secondary_drivers', 
+        target: e.target_id+',change_ideas', 
+    }));
 
     // manage edge and node states
-    const [nodes, setNodes, onNodesChange] = useNodesState([...aimNodes, ...primaryDriverNodes, ...secondaryDriverNodes]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([...aimPrimaryEdges]);
+    const [nodes, setNodes, onNodesChange] = useNodesState([...aimNodes, ...primaryDriverNodes, ...secondaryDriverNodes, ...changeIdeaNodes]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([...ape, ...pse, ...sce]);
 
     useEffect(() => {
         // set nodes and edges
-        setNodes([...aimNodes, ...primaryDriverNodes, ...secondaryDriverNodes]);
-        setEdges([...aimPrimaryEdges]);
-    }, [aim, primaryDrivers])
+        setNodes([...aimNodes, ...primaryDriverNodes, ...secondaryDriverNodes, ...changeIdeaNodes]);
+        setEdges([...ape, ...pse,...sce]);
+    }, [aim])
 
     // add projects
 
@@ -138,16 +172,22 @@ function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
         startTransition(() => {
             router.refresh();
         })
-
-        console.log(error)
     }
 
     // add change ideas
+    async function handleAddChangeIdeas() {
+        setLoading(true);
+        const {data, error} = await supabase
+            .from('change_ideas')
+            .insert({aim_id: aim.id});
 
-    // maybe all the above should just be one function that changes based on an input of 
-    // aim, primary driver, secondary driver, or change idea
+        // reset everything
+        startTransition(() => {
+            router.refresh();
+        })
+    }
 
-    // handlers
+    // handler node change
     async function handleNodesChange(changes) {
         onNodesChange(changes);
 
@@ -158,8 +198,8 @@ function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
                 const {data, error} = await supabase
                     .from(type)
                     .update({
-                        position_x: v.position.x,
-                        position_y: v.position.y,
+                        [type === 'projects'? 'aim_position_x':'position_x']: v.position.x,
+                        [type === 'projects'? 'aim_position_y':'position_y']: v.position.y,
                     })
                     .eq('id', id)
                     .select();
@@ -167,14 +207,61 @@ function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
         })
     }
 
-    function handleEdgesChange(changes) {
+    // handle edge change
+    async function handleEdgesChange(changes) {
+        if (changes[0].type === 'remove') {
+            const [id, type] = changes[0].id.split(',');
+
+            if (type === 'primary_drivers') return;
+
+            const {data, error} = await supabase
+                .from(type)
+                .delete()
+                .eq('id', id);
+        }
+
         onEdgesChange(changes);
     }
 
-    function handleConnect(params) {
-        setEdges((eds) => addEdge(params, eds))
+    // handle new connection
+    async function handleConnect(params) {
+        // get correct table dictionary
+        const types = {
+            'primary_drivers': {'secondary_drivers': 'primary_secondary_edges'},
+            'secondary_drivers': {'change_ideas': 'secondary_change_edges'},
+        }
+
+        // get info
+        const [sourceId, sourceType] = params.source.split(',');
+        const [targetId, targetType] = params.target.split(',');
+
+        const type = types[sourceType]?.[targetType];
+
+        // if such a connection can't exist, then cancel
+        if (!type) return;
+        
+        // insert edge
+        const {data, error} = await supabase
+            .from(type)
+            .insert({
+                source_id: sourceId,
+                target_id: targetId,
+                aim_id: aim.id,
+            })
+            .select();
+
+        // format new edge
+        const newEdge = {
+            id: data[0].id+','+type,
+            source: data[0].source_id+','+sourceType,
+            target: data[0].target_id+','+targetType,
+        }
+
+        // set new edge
+        setEdges((eds) => addEdge(newEdge, eds));
     }
 
+    // handle auto layout
     async function handleLayout(direction) {
         const layouted = getLayoutedElements(nodes, edges, { direction });
     
@@ -256,7 +343,7 @@ function GraphFlowLayout({teamId, aim, primaryDrivers, secondaryDrivers}) {
                             color='info'
                             variant='contained' disableElevation 
                             startIcon={<AddRoundedIcon />}
-                            onClick={() => handleLayout('LR')}
+                            onClick={handleAddChangeIdeas}
                             size='small'
                             sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
                             >

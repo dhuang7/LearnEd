@@ -105,30 +105,35 @@ export default function CustomNode({id, title, name, description, measure, measu
 
     async function handleDelete() {
         setLoading(true);
-        await supabase.from(table).delete().eq('id', id);
-        setLoading(false);
+        const {error} = await supabase.from(table).delete().eq('id', id);
         // reset everything
         startTransition(() => {
             router.refresh();
         })
     }
 
-
+    const backgroundColor = {
+        'Aim': 'Chocolate',
+        'Primary Driver': 'RoyalBlue',
+        'Secondary Driver': 'ForestGreen',
+        'Change Idea': 'Crimson'
+    }
 
 
     return (
         <>
             {/* handles */}
-            {disableTarget || <Handle type="target" position={Position.Left} />}
-            {disableSource || <Handle type="source" position={Position.Right} />}
+            {disableTarget || <Handle type="target" position={Position.Left} style={{width:'.5rem', height:'.5rem'}} />}
+            {disableSource || <Handle type="source" position={Position.Right} style={{width:'.5rem', height:'.5rem'}} />}
             {/* actual node */}
             <Paper 
                 elevation={0} 
                 sx={{
                     p:'1rem', py:'.5rem', width:'250px', height:'152px',
                     boxSizing:'border-box',
+                    borderRadius:3,
                     display:'flex', flexDirection:'column',
-                    backgroundColor:'primary.main',
+                    backgroundColor:backgroundColor[title],
                     color:'common.white',
                 }}
                 >
@@ -277,6 +282,19 @@ export function SecondaryDriverNode({data}) {
             measureType='Process'
             table='secondary_drivers'
             columns={['id', 'name', 'description', 'process_measures']}
+            />
+    );
+}
+
+export function ChangeIdeaNode({data}) {
+    return (
+        <CustomNode 
+            {...data}  
+            title='Change Idea'
+            measure=''
+            table='change_ideas'
+            columns={['id', 'name', 'description']}
+            disableSource
             />
     );
 }

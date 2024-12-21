@@ -28,18 +28,34 @@ export default async function Drivers({params}) {
     }
 
     // load primary drivers
-    const {data: primaryDrivers, error: primaryDriverErrors} = await supabase
+    const {data: primaryDrivers, error: primaryDriversErrors} = await supabase
         .from('primary_drivers')
         .select()
         .eq('aim_id', projects[0].id);
 
+    // load primary secondary edges
+    const {data: primarySecondaryEdges, error: primarySecondaryEdgesError} = await supabase
+        .from('primary_secondary_edges')
+        .select()
+        .eq('aim_id', projects[0].id);
+
     // load secondary drivers
-    const {data: secondaryDrivers, error: secondaryDriverErrors} = await supabase
+    const {data: secondaryDrivers, error: secondaryDriversErrors} = await supabase
         .from('secondary_drivers')
         .select()
         .eq('aim_id', projects[0].id);
 
+    // load secondary change edges
+    const {data: secondaryChangeEdges, error: secondaryChangeEdgesError} = await supabase
+        .from('secondary_change_edges')
+        .select()
+        .eq('aim_id', projects[0].id);
+
     // load change ideas
+    const {data: changeIdeas, error: changeIdeasErrors} = await supabase
+        .from('change_ideas')
+        .select()
+        .eq('aim_id', projects[0].id);
 
 
     return (
@@ -55,7 +71,10 @@ export default async function Drivers({params}) {
                     teamId={teamId} 
                     aim={projects[0]} 
                     primaryDrivers={primaryDrivers} 
+                    primarySecondaryEdges={primarySecondaryEdges}
                     secondaryDrivers={secondaryDrivers}
+                    secondaryChangeEdges={secondaryChangeEdges}
+                    changeIdeas={changeIdeas}
                     />
         </Paper>
     )
