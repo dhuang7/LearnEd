@@ -307,6 +307,8 @@ function GraphFlowLayout({
                 nodeTypes={nodeTypes}
                 nodes={nodes} 
                 edges={edges}
+                maxZoom={5}
+                minZoom={.1}
                 onNodesChange={handleNodesChange}
                 onEdgesChange={handleEdgesChange}
                 onConnect={handleConnect}
