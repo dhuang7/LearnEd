@@ -40,7 +40,7 @@ export default function GraphFlow(params) {
 // Actual Component
 function GraphFlowLayout({
     teamId, aim, 
-    primaryDrivers, primarySecondaryEdges,
+    primaryDrivers, primarySecondaryEdges, primaryChangeEdges,
     secondaryDrivers, secondaryChangeEdges,
     changeIdeas,
 }) {
@@ -130,6 +130,12 @@ function GraphFlowLayout({
         target: e.target_id+',secondary_drivers', 
     }));
 
+    const pce = primaryChangeEdges.map((e, i) => ({
+        id: e.id+',primary_change_edges', 
+        source: e.source_id+',primary_drivers', 
+        target: e.target_id+',change_ideas', 
+    }));
+
     const sce = secondaryChangeEdges.map((e, i) => ({
         id: e.id+',secondary_change_edges', 
         source: e.source_id+',secondary_drivers', 
@@ -138,12 +144,12 @@ function GraphFlowLayout({
 
     // manage edge and node states
     const [nodes, setNodes, onNodesChange] = useNodesState([...aimNodes, ...primaryDriverNodes, ...secondaryDriverNodes, ...changeIdeaNodes]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([...ape, ...pse, ...sce]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([...ape, ...pse, ...pce, ...sce]);
 
     useEffect(() => {
         // set nodes and edges
         setNodes([...aimNodes, ...primaryDriverNodes, ...secondaryDriverNodes, ...changeIdeaNodes]);
-        setEdges([...ape, ...pse,...sce]);
+        setEdges([...ape, ...pse, ...pce, ...sce]);
     }, [aim])
 
     // add projects
@@ -227,7 +233,10 @@ function GraphFlowLayout({
     async function handleConnect(params) {
         // get correct table dictionary
         const types = {
-            'primary_drivers': {'secondary_drivers': 'primary_secondary_edges'},
+            'primary_drivers': {
+                'secondary_drivers': 'primary_secondary_edges',
+                'change_ideas': 'primary_change_edges',
+            },
             'secondary_drivers': {'change_ideas': 'secondary_change_edges'},
         }
 
@@ -239,7 +248,7 @@ function GraphFlowLayout({
 
         // if such a connection can't exist, then cancel
         if (!type) return;
-        
+
         // insert edge
         const {data, error} = await supabase
             .from(type)

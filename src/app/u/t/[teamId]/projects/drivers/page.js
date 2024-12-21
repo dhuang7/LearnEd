@@ -39,6 +39,12 @@ export default async function Drivers({params}) {
         .select()
         .eq('aim_id', projects[0].id);
 
+    // load primary change edges
+    const {data: primaryChangeEdges, error: primaryChangeEdgesError} = await supabase
+        .from('primary_change_edges')
+        .select()
+        .eq('aim_id', projects[0].id);
+
     // load secondary drivers
     const {data: secondaryDrivers, error: secondaryDriversErrors} = await supabase
         .from('secondary_drivers')
@@ -72,6 +78,7 @@ export default async function Drivers({params}) {
                     aim={projects[0]} 
                     primaryDrivers={primaryDrivers} 
                     primarySecondaryEdges={primarySecondaryEdges}
+                    primaryChangeEdges={primaryChangeEdges}
                     secondaryDrivers={secondaryDrivers}
                     secondaryChangeEdges={secondaryChangeEdges}
                     changeIdeas={changeIdeas}
