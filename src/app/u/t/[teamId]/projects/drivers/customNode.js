@@ -381,7 +381,7 @@ export function PrimaryDriverNode({data}) {
             title='Primary Driver'
             measureType='Process'
             table='primary_drivers'
-            columns={['id', 'name', 'description', 'process_measures']}
+            columns={['id', 'name', 'description', 'process_measure']}
             />
     );
 }
@@ -393,7 +393,7 @@ export function SecondaryDriverNode({data}) {
             title='Secondary Driver'
             measureType='Process'
             table='secondary_drivers'
-            columns={['id', 'name', 'description', 'process_measures']}
+            columns={['id', 'name', 'description', 'process_measure']}
             />
     );
 }
