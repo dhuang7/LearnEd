@@ -14,7 +14,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
-
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 
 
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -218,14 +219,25 @@ export default function CustomNode({
                                     overflow:'scroll',
                                     maxHeight:'100%',
                                     display: '-webkit-box',
-                                    WebkitLineClamp: 3,
-                                    lineClamp: 3,
+                                    WebkitLineClamp: title==='Change Idea' ? 2 : 3,
+                                    lineClamp: title==='Change Idea' ? 2 : 3,
                                     overflow: 'hidden',
                                     WebkitBoxOrient: 'vertical',
                                 }}
                                 >
                                     {goalText||descriptionText||'Enter description...'}
                             </Typography>
+                            {title==='Change Idea' &&
+                                <Box sx={{display:'flex', justifyContent:'right'}}>
+                                    <Rating 
+                                        value={ratingNum} 
+                                        readOnly 
+                                        icon={<StarRoundedIcon fontSize='inherit' />}
+                                        emptyIcon={<StarOutlineRoundedIcon fontSize='inherit' sx={{color:'common.white'}} />}
+                                        precision={.5}
+                                        />
+                                </Box>
+                            }
                         </Box>
                     </Box>
             </Paper>
@@ -323,6 +335,8 @@ export default function CustomNode({
                                             value={ratingNum}
                                             onChange={handleRatingNum}
                                             precision={.5}
+                                            icon={<StarRoundedIcon fontSize='inherit' />}
+                                            emptyIcon={<StarOutlineRoundedIcon fontSize='inherit' />}
                                             />
                                     </Box>
                                 </>
