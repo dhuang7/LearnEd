@@ -22,18 +22,20 @@ export default function CycleList({teamId, cycles}) {
     
     const columns = [
         // {field: 'id', headerName: 'id', flex:0 },
-        { field: 'focus', headerName: 'Aim', flex:2 },
-        { field: 'date', headerName: 'Date', valueFormatter: readableDate, flex:1 },
-        { field: 'start_time', headerName: 'Start', valueFormatter: readableTime, flex:1 },
-        { field: 'end_time', headerName: 'End', valueFormatter: readableTime, flex:1 },
+        { field: 'name', headerName: 'Change Name', flex:1 },
+        { field: 'description', headerName: 'Description', flex:1 },
+        { field: 'objective', headerName: 'Cycle Objective', flex:2 },
+        { field: 'plan_due_date', headerName: 'Due Date', valueFormatter: readableDate, flex:1 },
+        { field: 'act_choice', headerName: 'Next Step', flex:1 },
     ]
 
-    const rows = cycles?.map(({id, date, start_time, end_time, focus}) => ({
+    const rows = cycles?.map(({id, objective, plan_due_date, act_choice, change_ideas: {change_packages: {name, description}}}) => ({
         id,
-        date: start_time,
-        start_time,
-        end_time,
-        focus,
+        name,
+        description,
+        objective,
+        plan_due_date,
+        act_choice,
     }));
 
     // converts time to readable time
