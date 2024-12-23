@@ -100,18 +100,18 @@ function GraphFlowLayout({
         type: 'secondaryDriverNode'
     }));
 
-    const changeIdeaNodes = changeIdeas.filter(cn => cn.change_ideas.length).map((cn, i) => ({
-        id: cn.change_ideas[0].id+',change_ideas',
-        position: {x: cn.change_ideas[0].position_x, y: cn.change_ideas[0].position_y},
+    const changeIdeaNodes = changeIdeas.map((cn, i) => ({
+        id: cn.id+',change_ideas',
+        position: {x: cn.position_x, y: cn.position_y},
         data: {
-            id: cn.change_ideas[0].id,
-            changeIdeaId: cn.id,
-            name: cn.name,
-            description: cn.description,
-            teamId: cn.team_id,
-            aimId: cn.change_ideas[0].aim_id,
-            conclusions: cn.change_ideas[0].conclusions,
-            rating: cn.change_ideas[0].rating,
+            id: cn.id,
+            changePackageId: cn.change_packages.id,
+            name: cn.change_packages.name,
+            description: cn.change_packages.description,
+            teamId: cn.change_packages.team_id,
+            aimId: cn.aim_id,
+            conclusions: cn.conclusions,
+            rating: cn.rating,
         },
         type: 'changeIdeaNode'
     }));

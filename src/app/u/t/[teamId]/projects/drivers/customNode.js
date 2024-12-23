@@ -30,7 +30,7 @@ import ButtonTextfield from '@/components/buttonTextfield';
 export default function CustomNode({
     id, title, name, description, measure, measureType, 
     background, problem, goal, 
-    teamId, conclusions, rating, changeIdeaId,
+    teamId, conclusions, rating, changePackageId,
     table, aimId, columns, disableDelete, disableSource, disableTarget
 }) {
     const supabase = createClient();
@@ -141,7 +141,7 @@ export default function CustomNode({
             const {data: u, error: abnormal} = await supabase
                 .from('change_packages')
                 .update({name: nameText, description: descriptionText})
-                .eq('id', changeIdeaId)
+                .eq('id', changePackageId)
                 .select();
         }
 
