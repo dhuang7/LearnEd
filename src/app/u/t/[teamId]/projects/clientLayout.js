@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
+
 import { usePathname } from "next/navigation";
 import NextLink from 'next/link';
 
@@ -16,7 +17,7 @@ export default function ClientPage({children}) {
         'cycles':1,
     }
     const currentPath = pathname.split('/');
-    
+    const currentRelativePath = currentPath[currentPath.length-1];
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
@@ -28,7 +29,7 @@ export default function ClientPage({children}) {
                     {/* tabs */}
                     <Box sx={{ml:'auto'}}>
                         <Tabs 
-                            value={pathIndex[currentPath[currentPath.length-1]]} 
+                            value={pathIndex[currentRelativePath]} 
                             aria-label="basic tabs example"
                             >
                             <Tab label="Drivers" component={NextLink} href='drivers' />

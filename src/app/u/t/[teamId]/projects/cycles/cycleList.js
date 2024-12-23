@@ -2,10 +2,20 @@
 
 import createClient from "@/utils/supabase/client";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 
-import { DataGrid } from '@mui/x-data-grid';
+
+import {
+    DataGrid,
+    GridToolbarContainer,
+    GridToolbarColumnsButton,
+    GridToolbarFilterButton,
+    GridToolbarQuickFilter
+} from '@mui/x-data-grid';
 import { useState } from "react";
+import AddCycleModal from "./addCycleModal";
 
 
 
@@ -73,6 +83,12 @@ export default function CycleList({teamId, cycles}) {
                 // checkboxSelection
                 autoPageSize
                 onRowClick={handleOpenCycle}
+                slots={{ toolbar: CustomToolbar }}
+                slotProps={{
+                    toolbar: {
+                        showQuickFilter: true,
+                    },
+                }}
                 sx={{
                     '& .MuiDataGrid-cell:hover': {
                         color: 'primary.main',
@@ -88,4 +104,16 @@ export default function CycleList({teamId, cycles}) {
             {/* <EditAgendaModal teamId={teamId} open={open} setOpen={setOpen} agenda={agenda} /> */}
         </Box>
     )
+}
+
+
+export function CustomToolbar() {
+    return (
+        <GridToolbarContainer>
+            <GridToolbarColumnsButton />
+            <GridToolbarFilterButton />
+            <AddCycleModal />
+            <GridToolbarQuickFilter />
+        </GridToolbarContainer>
+    );
 }
