@@ -6,31 +6,29 @@ import Box from "@mui/material/Box";
 
 import { DataGrid } from '@mui/x-data-grid';
 import { useState } from "react";
-import EditAgendaModal from "./editAgendaModal";
 
 
 
-export default function AgendaList({teamId, agendas}) {
+export default function CycleList({teamId, cycles}) {
     const supabase = createClient();
-    // const [agendas, setAgendas] = useState([]);
     const [open, setOpen] = useState(false);
-    const [agenda, setAgenda] = useState(null);
+    const [cycle, setCycle] = useState(null);
 
     // handlers
-    function handleOpenAgenda(params, event, details) {
+    function handleOpenCycle(params, event, details) {
         setOpen(true);
-        setAgenda(params.row)
+        setCycle(params.row)
     } 
     
     const columns = [
         // {field: 'id', headerName: 'id', flex:0 },
-        { field: 'focus', headerName: 'Focus', flex:2 },
+        { field: 'focus', headerName: 'Aim', flex:2 },
         { field: 'date', headerName: 'Date', valueFormatter: readableDate, flex:1 },
         { field: 'start_time', headerName: 'Start', valueFormatter: readableTime, flex:1 },
         { field: 'end_time', headerName: 'End', valueFormatter: readableTime, flex:1 },
     ]
 
-    const rows = agendas?.map(({id, date, start_time, end_time, focus}) => ({
+    const rows = cycles?.map(({id, date, start_time, end_time, focus}) => ({
         id,
         date: start_time,
         start_time,
@@ -72,7 +70,7 @@ export default function AgendaList({teamId, agendas}) {
                 columns={columns} rows={rows} 
                 // checkboxSelection
                 autoPageSize
-                onRowClick={handleOpenAgenda}
+                onRowClick={handleOpenCycle}
                 sx={{
                     '& .MuiDataGrid-cell:hover': {
                         color: 'primary.main',
@@ -85,7 +83,7 @@ export default function AgendaList({teamId, agendas}) {
                     backgroundColor:'common.white',
                 }}
                 />
-            <EditAgendaModal teamId={teamId} open={open} setOpen={setOpen} agenda={agenda} />
+            {/* <EditAgendaModal teamId={teamId} open={open} setOpen={setOpen} agenda={agenda} /> */}
         </Box>
     )
 }

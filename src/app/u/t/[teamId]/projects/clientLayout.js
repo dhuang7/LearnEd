@@ -12,9 +12,8 @@ import NextLink from 'next/link';
 export default function ClientPage({children}) {
     const pathname = usePathname();
     const pathIndex = {
-        'cycles':0,
         'drivers':0,
-        'cycle-list':1,
+        'cycles':1,
     }
     const currentPath = pathname.split('/');
     
@@ -33,7 +32,7 @@ export default function ClientPage({children}) {
                             aria-label="basic tabs example"
                             >
                             <Tab label="Drivers" component={NextLink} href='drivers' />
-                            <Tab label="Cycles"  component={NextLink} href='cycle-list' />
+                            <Tab label="Cycles"  component={NextLink} href='cycles' />
                         </Tabs>
                     </Box>
                 </Box>

@@ -57,19 +57,6 @@ export default async function Drivers({params}) {
         .select()
         .eq('aim_id', projects[0].id);
 
-    // load change ideas
-    // const {data: changeIdeas, error: changeIdeasErrors} = await supabase
-    //     .from('change_ideas')
-    //     .select()
-    //     .eq('team_id', teamId)
-    //     .eq('aim_id', projects[0].id);
-
-    // // load project specific change ideas
-    // const {data: changeIdeasProject, error: changeIdeasProjectError} = await supabase
-    //     .from('project_change_relationships')
-    //     .select()
-    //     .eq('project_id', projects[0].id);
-
     // load change ideas with join
     const {data: changeIdeas, error: changeIdeasErrors} = await supabase
         .from('change_ideas')
