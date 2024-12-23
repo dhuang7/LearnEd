@@ -227,18 +227,19 @@ export default function CustomNode({
                                 >
                                     {goalText||descriptionText||'Enter description...'}
                             </Typography>
-                            {title==='Change Idea' &&
-                                <Box sx={{display:'flex', justifyContent:'right'}}>
-                                    <Rating 
-                                        value={ratingNum} 
-                                        readOnly 
-                                        icon={<StarRoundedIcon fontSize='inherit' />}
-                                        emptyIcon={<StarOutlineRoundedIcon fontSize='inherit' sx={{color:'common.white'}} />}
-                                        precision={.5}
-                                        />
-                                </Box>
-                            }
                         </Box>
+                        {/* rating */}
+                        {title==='Change Idea' &&
+                            <Box sx={{display:'flex', justifyContent:'right'}}>
+                                <Rating 
+                                    value={ratingNum} 
+                                    readOnly 
+                                    icon={<StarRoundedIcon fontSize='inherit' />}
+                                    emptyIcon={<StarOutlineRoundedIcon fontSize='inherit' sx={{color:'common.white'}} />}
+                                    precision={.5}
+                                    />
+                            </Box>
+                            }
                     </Box>
             </Paper>
 
