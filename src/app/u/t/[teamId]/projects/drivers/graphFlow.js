@@ -65,7 +65,9 @@ function GraphFlowLayout({
         data: {
             id: aim.id,
             name: aim.aim_name,
-            description: aim.aim_description,
+            background: aim.background,
+            problem: aim.problem,
+            goal: aim.goal,
             measure: aim.aim_outcome_measure,
             teamId: teamId,
         },
@@ -105,7 +107,10 @@ function GraphFlowLayout({
             id: cn.id,
             name: cn.name,
             description: cn.description,
+            teamId: cn.team_id,
             aimId: cn.aim_id,
+            conclusions: cn.project_change_relationships[0].conclusions,
+            rating: cn.project_change_relationships[0].rating,
         },
         type: 'changeIdeaNode'
     }));
@@ -183,9 +188,13 @@ function GraphFlowLayout({
     // add change ideas
     async function handleAddChangeIdeas() {
         setLoading(true);
-        const {data, error} = await supabase
-            .from('change_ideas')
-            .insert({aim_id: aim.id});
+        // const {data, error} = await supabase
+        //     .from('change_ideas')
+        //     .insert({aim_id: aim.id});
+
+        const {data, error} = await supabase.rpc('create_change_idea', {team_id: teamId, project_id: aim.id});
+
+        console.log(error);
 
         // reset everything
         startTransition(() => {
@@ -258,6 +267,8 @@ function GraphFlowLayout({
                 aim_id: aim.id,
             })
             .select();
+
+        if (error) return;
 
         // format new edge
         const newEdge = {

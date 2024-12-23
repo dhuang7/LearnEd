@@ -13,6 +13,8 @@ import DialogActions from "@mui/material/DialogActions";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import Button from "@mui/material/Button";
+import Rating from "@mui/material/Rating";
+
 
 
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -24,14 +26,24 @@ import createClient from '@/utils/supabase/client';
 import ButtonTextfield from '@/components/buttonTextfield';
  
  
-export default function CustomNode({id, title, name, description, measure, measureType, table, aimId, columns, disableDelete, disableSource, disableTarget}) {
+export default function CustomNode({
+    id, title, name, description, measure, measureType, 
+    background, problem, goal, 
+    teamId, conclusions, rating,
+    table, aimId, columns, disableDelete, disableSource, disableTarget
+}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [nameText, setNameText] = useState('');
     const [descriptionText, setDescriptionText] = useState('');
+    const [backgroundText, setBackgroundText] = useState('');
+    const [problemText, setProblemText] = useState('');
+    const [goalText, setGoalText] = useState('');
     const [measureText, setMeasureText] = useState('');
+    const [conclusionsText, setConclusionsText] = useState('');
+    const [ratingNum, setRatingNum] = useState(0);
     const [loading, setLoading] = useState(false);
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -40,7 +52,12 @@ export default function CustomNode({id, title, name, description, measure, measu
         setNameText(name);
         setDescriptionText(description);
         setMeasureText(measure);
-    }, [name, description])
+        setBackgroundText(background);
+        setProblemText(problem);
+        setGoalText(goal);
+        setConclusionsText(conclusions);
+        setRatingNum(rating||0);
+    }, [name, description, measure, background, problem, goal, conclusions, rating])
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -70,8 +87,28 @@ export default function CustomNode({id, title, name, description, measure, measu
         setDescriptionText(target.value);
     }
 
+    function handleBackgroundText({target}) {
+        setBackgroundText(target.value);
+    }
+
+    function handleProblemText({target}) {
+        setProblemText(target.value);
+    }
+
+    function handleGoalText({target}) {
+        setGoalText(target.value);
+    }
+
     function handleMeasureText({target}) {
         setMeasureText(target.value);
+    }
+
+    function handleConclusionsText({target}) {
+        setConclusionsText(target.value);
+    }
+
+    function handleRatingNum({target}) {
+        setRatingNum(target.value);
     }
 
     async function handleSubmit(e) {
@@ -79,8 +116,14 @@ export default function CustomNode({id, title, name, description, measure, measu
         setLoading(true);
 
         // insert data
-        const insertData = {aim_id: aimId};
-        const valueList = [id, nameText, descriptionText, measureText];
+        const insertData = (title === 'Change Idea')
+            ? {team_id: teamId}
+            : {aim_id: aimId};
+        const valueList = (title === 'Aim')
+            ? [id, nameText, backgroundText, problemText, goalText, measureText]
+            : (title === 'Change Idea')
+                ? [id, nameText, descriptionText]
+                : [id, nameText, descriptionText, measureText];
         // create data for the insert or update depending on what values exist
         columns.forEach((v, i) => {
             if (valueList[i]) {
@@ -89,13 +132,22 @@ export default function CustomNode({id, title, name, description, measure, measu
         })
 
         // update data
-        const {data: p, error} = await supabase
+        const {data: p, error: normal} = await supabase
             .from(table)
             .update(insertData)
             .eq('id', id)
             .select();
 
-        console.log(error);
+        // if change idea conclusions
+        if (conclusionsText.length||ratingNum) {
+            const {data: r, error: cError} = await supabase
+                .from('project_change_relationships')
+                .update({conclusions: conclusionsText, rating: ratingNum})
+                .eq('project_id', aimId)
+                .eq('change_idea_id', id)
+                .select();
+        }
+
 
         // reset everything
         startTransition(() => {
@@ -172,7 +224,7 @@ export default function CustomNode({id, title, name, description, measure, measu
                                     WebkitBoxOrient: 'vertical',
                                 }}
                                 >
-                                    {descriptionText||'Enter description...'}
+                                    {goalText||descriptionText||'Enter description...'}
                             </Typography>
                         </Box>
                     </Box>
@@ -215,12 +267,34 @@ export default function CustomNode({id, title, name, description, measure, measu
                                 <ButtonTextfield value={nameText} onChange={handleNameText} color='primary' />
                             </Box>
                             {/* description */}
-                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
-                                {/* title */}
-                                <Typography variant="h6">Description:</Typography>
-                                {/* writing box and button */}
-                                <ButtonTextfield value={descriptionText} onChange={handleDescriptionText} color='primary' />
-                            </Box>
+                            {(title==='Aim')
+                                ? <>
+                                    <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                        {/* title */}
+                                        <Typography variant="h6">Background:</Typography>
+                                        {/* writing box and button */}
+                                        <ButtonTextfield value={backgroundText} onChange={handleBackgroundText} color='primary' />
+                                    </Box>
+                                    <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                        {/* title */}
+                                        <Typography variant="h6">Problem:</Typography>
+                                        {/* writing box and button */}
+                                        <ButtonTextfield value={problemText} onChange={handleProblemText} color='primary' />
+                                    </Box>
+                                    <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                        {/* title */}
+                                        <Typography variant="h6">Goal:</Typography>
+                                        {/* writing box and button */}
+                                        <ButtonTextfield value={goalText} onChange={handleGoalText} color='primary' />
+                                    </Box>
+                                </>
+                                : <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                    {/* title */}
+                                    <Typography variant="h6">Description:</Typography>
+                                    {/* writing box and button */}
+                                    <ButtonTextfield value={descriptionText} onChange={handleDescriptionText} color='primary' />
+                                </Box>
+                            }
                             {/* measure */}
                             {(measureType) && (
                                 <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
@@ -229,6 +303,29 @@ export default function CustomNode({id, title, name, description, measure, measu
                                     {/* writing box and button */}
                                     <ButtonTextfield value={measureText} onChange={handleMeasureText} color='primary' />
                                 </Box>
+                            )}
+                            {/* change idea specific */}
+                            {(title==='Change Idea') && (
+                                <>
+                                    {/* conclusions */}
+                                    <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                        {/* title */}
+                                        <Typography variant="h6">Conclusions:</Typography>
+                                        {/* writing box and button */}
+                                        <ButtonTextfield value={conclusionsText} onChange={handleConclusionsText} color='primary' />
+                                    </Box>
+                                    {/* impact rating */}
+                                    <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                        {/* title */}
+                                        <Typography variant="h6">Impact Rating:</Typography>
+                                        {/* writing box and button */}
+                                        <Rating
+                                            value={ratingNum}
+                                            onChange={handleRatingNum}
+                                            precision={.5}
+                                            />
+                                    </Box>
+                                </>
                             )}
                         </Box>
                     </DialogContent>
@@ -255,7 +352,7 @@ export function AimNode({data}) {
             title='Aim'
             measureType='Outcome'
             table='projects'
-            columns={['id', 'aim_name', 'aim_description', 'aim_outcome_measure']}
+            columns={['id', 'aim_name', 'background', 'problem', 'goal', 'aim_outcome_measure']}
             disableDelete
             disableTarget
             />
@@ -293,7 +390,7 @@ export function ChangeIdeaNode({data}) {
             title='Change Idea'
             measure=''
             table='change_ideas'
-            columns={['id', 'name', 'description']}
+            columns={['id', 'name', 'description', 'conclusions']}
             disableSource
             />
     );
