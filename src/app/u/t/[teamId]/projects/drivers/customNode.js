@@ -140,7 +140,7 @@ export default function CustomNode({
             .select();
 
         // if change idea conclusions
-        if (conclusionsText.length||ratingNum) {
+        if (conclusionsText?.length||ratingNum) {
             const {data: r, error: cError} = await supabase
                 .from('project_change_relationships')
                 .update({conclusions: conclusionsText, rating: ratingNum})
