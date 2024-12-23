@@ -30,7 +30,7 @@ import ButtonTextfield from '@/components/buttonTextfield';
 export default function CustomNode({
     id, title, name, description, measure, measureType, 
     background, problem, goal, 
-    teamId, conclusions, rating,
+    teamId, conclusions, rating, changeIdeaId,
     table, aimId, columns, disableDelete, disableSource, disableTarget
 }) {
     const supabase = createClient();
@@ -117,13 +117,11 @@ export default function CustomNode({
         setLoading(true);
 
         // insert data
-        const insertData = (title === 'Change Idea')
-            ? {team_id: teamId}
-            : {aim_id: aimId};
+        const insertData = {aim_id: aimId};
         const valueList = (title === 'Aim')
             ? [id, nameText, backgroundText, problemText, goalText, measureText]
             : (title === 'Change Idea')
-                ? [id, nameText, descriptionText]
+                ? [id, conclusionsText, ratingNum]
                 : [id, nameText, descriptionText, measureText];
         // create data for the insert or update depending on what values exist
         columns.forEach((v, i) => {
@@ -139,15 +137,23 @@ export default function CustomNode({
             .eq('id', id)
             .select();
 
-        // if change idea conclusions
-        if (conclusionsText?.length||ratingNum) {
-            const {data: r, error: cError} = await supabase
-                .from('project_change_relationships')
-                .update({conclusions: conclusionsText, rating: ratingNum})
-                .eq('project_id', aimId)
-                .eq('change_idea_id', id)
+        if (title === 'Change Idea') {
+            const {data: u, error: abnormal} = await supabase
+                .from('change_packages')
+                .update({name: nameText, description: descriptionText})
+                .eq('id', changeIdeaId)
                 .select();
         }
+
+        // if change idea conclusions
+        // if (conclusionsText?.length||ratingNum) {
+        //     const {data: r, error: cError} = await supabase
+        //         .from('change_ideas')
+        //         .update({conclusions: conclusionsText, rating: ratingNum})
+        //         .eq('aim_id', aimId)
+        //         .eq('change_idea_id', id)
+        //         .select();
+        // }
 
 
         // reset everything
@@ -158,7 +164,16 @@ export default function CustomNode({
 
     async function handleDelete() {
         setLoading(true);
-        const {error} = await supabase.from(table).delete().eq('id', id);
+        const {error: normal} = await supabase.from(table).delete().eq('id', id);
+
+        // if not owner of change idea, then delete relationship
+        // if (normal) {
+        //     const {error: abnormal} = await supabase
+        //         .from('project_change_relationships')
+        //         .delete()
+        //         .eq('project_id', aimId)
+        //         .eq('change_idea_id', id);
+        // }
         // reset everything
         startTransition(() => {
             router.refresh();
@@ -405,7 +420,7 @@ export function ChangeIdeaNode({data}) {
             title='Change Idea'
             measure=''
             table='change_ideas'
-            columns={['id', 'name', 'description', 'conclusions']}
+            columns={['id', 'conclusions', 'rating']}
             disableSource
             />
     );

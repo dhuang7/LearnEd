@@ -100,17 +100,18 @@ function GraphFlowLayout({
         type: 'secondaryDriverNode'
     }));
 
-    const changeIdeaNodes = changeIdeas.map((cn, i) => ({
-        id: cn.id+',change_ideas',
-        position: {x: cn.position_x, y: cn.position_y},
+    const changeIdeaNodes = changeIdeas.filter(cn => cn.change_ideas.length).map((cn, i) => ({
+        id: cn.change_ideas[0].id+',change_ideas',
+        position: {x: cn.change_ideas[0].position_x, y: cn.change_ideas[0].position_y},
         data: {
-            id: cn.id,
+            id: cn.change_ideas[0].id,
+            changeIdeaId: cn.id,
             name: cn.name,
             description: cn.description,
             teamId: cn.team_id,
-            aimId: cn.aim_id,
-            conclusions: cn.project_change_relationships[0].conclusions,
-            rating: cn.project_change_relationships[0].rating,
+            aimId: cn.change_ideas[0].aim_id,
+            conclusions: cn.change_ideas[0].conclusions,
+            rating: cn.change_ideas[0].rating,
         },
         type: 'changeIdeaNode'
     }));
@@ -192,7 +193,7 @@ function GraphFlowLayout({
         //     .from('change_ideas')
         //     .insert({aim_id: aim.id});
 
-        const {data, error} = await supabase.rpc('create_change_idea', {team_id: teamId, project_id: aim.id});
+        const {data, error} = await supabase.rpc('create_change_idea', {team_id: teamId, aim_id: aim.id});
 
         console.log(error);
 
