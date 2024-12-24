@@ -29,8 +29,6 @@ export default async function Cycles({params}) {
             )
         `);
 
-    console.log(cycles);
-
     return (
         <> 
             <CycleList teamId={teamId} cycles={cycles} />

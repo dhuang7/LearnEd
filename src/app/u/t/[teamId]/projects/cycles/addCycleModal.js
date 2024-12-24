@@ -12,6 +12,8 @@ import Drawer from "@mui/material/Drawer";
 import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import Autocomplete from "@mui/material/Autocomplete";
+
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
@@ -22,20 +24,24 @@ import { useState, useTransition, useEffect } from "react";
 import createClient from "@/utils/supabase/client";
 // import TopicList from "./topicList";
 import { useRouter } from "next/navigation";
+import PDSAPages from "./pdsaPages";
 
 
 
-export default function AddCycleModal({teamId}) {
+export default function AddCycleModal({teamId, cycles}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [focusText, setFocusText] = useState('');
-    const [endTimeText, setEndTimeText] = useState('');
-    const [startTimeText, setStartTimeText] = useState('');
     const [topics, setTopics] = useState([]);
     const [errorText, setErrorText] = useState('');
+
+    const changeIdeas = removeDuplicates(cycles, ['change_ideas', 'id']).map(c=>c.change_ideas);
+    const changeIdeasAutoCompleteOptions = changeIdeas.map(ci=>ci.change_packages.name);
+
+    
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -61,22 +67,12 @@ export default function AddCycleModal({teamId}) {
         // handle remove everything
         handleClose();
         setFocusText('');
-        setEndTimeText('');
-        setStartTimeText('');
         setTopics([]);
     }
 
     // typing handlers
     function handleFocusText({target}) {
         setFocusText(target.value);
-    }
-
-    function handleStartTimeText({target}) {
-        setStartTimeText(target.value);
-    }
-
-    function handleEndTimeText({target}) {
-        setEndTimeText(target.value);
     }
 
     // handle submit
@@ -101,9 +97,9 @@ export default function AddCycleModal({teamId}) {
         })
     }
 
-    function handleShowPicker({target}) {
-        target.showPicker?.();
-    }
+    // function handleShowPicker({target}) {
+    //     target.showPicker?.();
+    // }
 
 
     return (
@@ -165,15 +161,23 @@ export default function AddCycleModal({teamId}) {
                     {/* content */}
                     <DialogContent sx={{pb:0, pl:0}}>
                         <Box sx={{pt:1, display:'flex', flexDirection:'column', height:'100%', boxSizing:'border-box',}}>
-                            {/* add focus */}
+                            {/* change idea */}
+                            <Autocomplete
+                                disablePortal
+                                options={changeIdeasAutoCompleteOptions}
+                                fullWidth
+                                renderInput={(params) => <TextField {...params} label="Change Idea" />}
+                                sx={{mb:'1rem'}}
+                                />
+                            {/* objective */}
                             <TextField 
                                 disabled={loading}
-                                label='Focus Area'
-                                value={focusText}
-                                onChange={handleFocusText}
+                                label='Objective'
+                                // value={focusText}
+                                // onChange={handleFocusText}
                                 fullWidth
-                                error={errorText}
-                                helperText={errorText}
+                                // error={errorText}
+                                // helperText={errorText}
                                 multiline
                                 rows={2}
                                 required
@@ -185,60 +189,26 @@ export default function AddCycleModal({teamId}) {
                                     }
                                 }}
                                 sx={{
-                                    mb:'1rem'
+                                    mb:'.5rem'
                                 }}
                                 />
-                            {/* add start time */}
-                            <Box sx={{display:'flex', mb:'1rem'}}>
-                                <Box sx={{width:'50%', boxSizing:'border-box', pr:'.25rem'}}>
-                                    <TextField 
-                                        disabled={loading}
-                                        label='Start Time'
-                                        type='datetime-local'
-                                        value={startTimeText}
-                                        required
-                                        onChange={handleStartTimeText}
-                                        onFocus={handleShowPicker}
-                                        fullWidth
-                                        error={errorText}
-                                        helperText={errorText}
-                                        slotProps={{
-                                            inputLabel: {
-                                                shrink:true,
-                                            }
-                                        }}
-                                        
-                                        />
-                                </Box>
-                                {/* add end time */}
-                                <Box sx={{width:'50%', boxSizing:'border-box', pl:'.25rem'}}>
-                                    <TextField 
-                                        disabled={loading}
-                                        label='End Time'
-                                        type='datetime-local'
-                                        value={endTimeText}
-                                        onChange={handleEndTimeText}
-                                        onFocus={handleShowPicker}
-                                        fullWidth
-                                        required
-                                        error={errorText}
-                                        helperText={errorText}
-                                        slotProps={{
-                                            inputLabel: {
-                                                shrink:true,
-                                            }
-                                        }}
-                                        
-                                        />
-                                </Box>
+                            {/* pdsa cycles */}
+                            <Box 
+                                sx={{
+                                    flexGrow:1, overflow:'hidden', 
+                                    // borderTop:'1px solid', borderColor:'grey.300', 
+                                    // boxSizing:'border-box', pt:'1rem', px:'1rem'
+                                    }}
+                                    >
+                                <PDSAPages />
                             </Box>
-                            {/* Content */}
-                            {/* <TopicList topics={topics} setTopics={setTopics} />                             */}
                         </Box>
                     </DialogContent>
                     {/* buttons */}
                     <DialogActions>
+                        {/* cancel */}
                         <Button disabled={loading} onClick={handleCancel}>Cancel</Button>
+                        {/* submit */}
                         <Button disabled={loading} type='submit'>
                             {(loading)
                                 ? <CircularProgress size='1rem' />
@@ -251,4 +221,24 @@ export default function AddCycleModal({teamId}) {
         </>
         
     )
+}
+
+
+
+
+
+function removeDuplicates(array, keys) {
+    const seen = new Set();
+    return array.filter(obj => {
+        let value = obj;
+        keys.forEach(k => {
+            value = value[k];
+        })
+
+        if (seen.has(value)) {
+            return false;
+        }
+        seen.add(value);
+        return true;
+    });
 }

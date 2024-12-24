@@ -83,7 +83,7 @@ export default function CycleList({teamId, cycles}) {
                 // checkboxSelection
                 autoPageSize
                 onRowClick={handleOpenCycle}
-                slots={{ toolbar: CustomToolbar }}
+                slots={{ toolbar: () => <CustomToolbar cycles={cycles} /> }}
                 slotProps={{
                     toolbar: {
                         showQuickFilter: true,
@@ -107,13 +107,13 @@ export default function CycleList({teamId, cycles}) {
 }
 
 
-export function CustomToolbar() {
+export function CustomToolbar({cycles}) {
     return (
         <GridToolbarContainer>
             <GridToolbarColumnsButton />
             <GridToolbarFilterButton />
-            <AddCycleModal />
-            <GridToolbarQuickFilter />
+            <AddCycleModal cycles={cycles} />
+            <GridToolbarQuickFilter variant="standard" sx={{p:0}}/>
         </GridToolbarContainer>
     );
 }
