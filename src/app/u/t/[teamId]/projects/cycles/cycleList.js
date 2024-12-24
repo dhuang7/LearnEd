@@ -2,8 +2,7 @@
 
 import createClient from "@/utils/supabase/client";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import Chip from "@mui/material/Chip";
 
 
 
@@ -23,6 +22,13 @@ export default function CycleList({teamId, cycles}) {
     const supabase = createClient();
     const [open, setOpen] = useState(false);
     const [cycle, setCycle] = useState(null);
+    const color = {
+        'Plan': 'Chocolate',
+        'Do': 'RoyalBlue',
+        'Study': 'ForestGreen',
+        'Act': 'Crimson',
+        'Completed': 'grey.700'
+    }
 
     // handlers
     function handleOpenCycle(params, event, details) {
@@ -34,15 +40,25 @@ export default function CycleList({teamId, cycles}) {
         // {field: 'id', headerName: 'id', flex:0 },
         { field: 'name', headerName: 'Change Name', flex:1 },
         { field: 'description', headerName: 'Description', flex:1 },
+        { 
+            field: 'stage', 
+            headerName: 'Stage', 
+            valueFormatter: (str) => str.charAt(0).toUpperCase() + str.slice(1),
+            renderCell: (params) => (
+                <Chip label={params.formattedValue} sx={{backgroundColor:color[params.formattedValue], color:'common.white'}} />
+            ),
+            flex:1
+        },
         { field: 'objective', headerName: 'Cycle Objective', flex:2 },
         { field: 'plan_due_date', headerName: 'Due Date', valueFormatter: readableDate, flex:1 },
         { field: 'act_choice', headerName: 'Next Step', flex:1 },
     ]
 
-    const rows = cycles?.map(({id, objective, plan_due_date, act_choice, change_ideas: {change_packages: {name, description}}}) => ({
+    const rows = cycles?.map(({id, objective, stage, plan_due_date, act_choice, change_ideas: {change_packages: {name, description}}}) => ({
         id,
         name,
         description,
+        stage,
         objective,
         plan_due_date,
         act_choice,
@@ -74,7 +90,7 @@ export default function CycleList({teamId, cycles}) {
 
     
 
-
+    
 
     return (
         <Box sx={{height:'100%', width:'100%'}}>

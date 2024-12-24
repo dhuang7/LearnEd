@@ -25,6 +25,8 @@ import createClient from "@/utils/supabase/client";
 // import TopicList from "./topicList";
 import { useRouter } from "next/navigation";
 import PDSAPages from "./pdsaPages";
+import ButtonTextfield from "@/components/buttonTextfield";
+import { MenuItem } from "@mui/material";
 
 
 
@@ -34,7 +36,18 @@ export default function AddCycleModal({teamId, cycles}) {
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [focusText, setFocusText] = useState('');
+    const [pageNum, setPageNum] = useState(0);
+    const [changeIdeaIdText, setChangeIdeaIdText] = useState('');
+    const [stageText, setStageText] = useState('plan');
+    const [objectiveText, setObjectiveText] = useState('');
+    const [logisticsText, setLogisticsText] = useState('');
+    const [measureText, setMeasureText] = useState('');
+    const [dueDateText, setDueDateText] = useState('');
+    const [observationText, setObservationText] = useState('');
+    const [dataText, setDataText] = useState('');
+    const [summaryText, setSummaryText] = useState('');
+    const [nextStepsText, setNextStepsText] = useState('');
+    const [choiceText, setChoiceText] = useState('');
     const [topics, setTopics] = useState([]);
     const [errorText, setErrorText] = useState('');
 
@@ -66,13 +79,66 @@ export default function AddCycleModal({teamId, cycles}) {
     function handleCancel(e) {
         // handle remove everything
         handleClose();
-        setFocusText('');
+        setChangeIdeaIdText('');
+        setStageText('plan');
+        setObjectiveText('');
+        setLogisticsText('');
+        setMeasureText('');
+        setDueDateText('');
+        setSummaryText('');
+        setChoiceText('');
+        setNextStepsText('');
+        setPageNum(0);
         setTopics([]);
     }
 
+    function handlePageNumChange(newValue) {
+        setPageNum(newValue);
+    }
+
     // typing handlers
-    function handleFocusText({target}) {
-        setFocusText(target.value);
+    function handleChangeIdeaIdText(event, newValue) {
+        setChangeIdeaIdText(newValue);
+    }
+
+    function handleStageText({target}) {
+        setStageText(target.value);
+    }
+
+    function handleObjectiveText({target}) {
+        setObjectiveText(target.value);
+    }
+
+    function handleLogisticsText({target}) {
+        setLogisticsText(target.value);
+    }
+
+    function handleMeasureText({target}) {
+        setMeasureText(target.value);
+    }
+
+    function handleDueDateText({target}) {
+        setDueDateText(target.value);
+    }
+
+    function handleObservationText(event) {
+        setObservationText(event.target.value);
+    }
+
+    function handleDataText(event) {
+        setDataText(event.target.value);
+    }
+
+    function handleSummaryText(event) {
+        setSummaryText(event.target.value);
+    }
+
+    function handleNextStepsText(event) {
+        setNextStepsText(event.target.value);
+    }
+
+    function handleChoiceText(event) {
+        setChoiceText(event.target.value);
     }
 
     // handle submit
@@ -161,20 +227,57 @@ export default function AddCycleModal({teamId, cycles}) {
                     {/* content */}
                     <DialogContent sx={{pb:0, pl:0}}>
                         <Box sx={{pt:1, display:'flex', flexDirection:'column', height:'100%', boxSizing:'border-box',}}>
-                            {/* change idea */}
-                            <Autocomplete
-                                disablePortal
-                                options={changeIdeasAutoCompleteOptions}
-                                fullWidth
-                                renderInput={(params) => <TextField {...params} label="Change Idea" />}
-                                sx={{mb:'1rem'}}
-                                />
+                            {/* change idea and stage */}
+                            <Box sx={{mb:'1rem', display:'flex', width:'100%'}}>
+                                {/* Change Idea */}
+                                <Box sx={{width:'66%', boxSizing:'border-box', pr:'.5rem'}}>
+                                    <Autocomplete
+                                        disablePortal
+                                        options={changeIdeasAutoCompleteOptions}
+                                        value={changeIdeaIdText}
+                                        onChange={handleChangeIdeaIdText}
+                                        fullWidth
+                                        renderInput={
+                                            (params) => 
+                                                <TextField {...params} 
+                                                    label="Change Idea" 
+                                                    required
+                                                    />
+                                        }
+                                        />
+                                </Box>
+                                {/* Stage */}
+                                <TextField
+                                    select
+                                    value={stageText}
+                                    onChange={handleStageText}
+                                    sx={{
+                                        flexGrow:1
+                                    }}
+                                    >
+                                    <MenuItem value={'plan'}>
+                                        Plan
+                                    </MenuItem>
+                                    <MenuItem value={'do'}>
+                                        Do
+                                    </MenuItem>
+                                    <MenuItem value={'study'}>
+                                        Study
+                                    </MenuItem>
+                                    <MenuItem value={'act'}>
+                                        Act
+                                    </MenuItem>
+                                    <MenuItem value={'completed'}>
+                                        Completed
+                                    </MenuItem>
+                                </TextField>
+                            </Box>
                             {/* objective */}
                             <TextField 
                                 disabled={loading}
                                 label='Objective'
-                                // value={focusText}
-                                // onChange={handleFocusText}
+                                value={objectiveText}
+                                onChange={handleObjectiveText}
                                 fullWidth
                                 // error={errorText}
                                 // helperText={errorText}
@@ -200,7 +303,26 @@ export default function AddCycleModal({teamId, cycles}) {
                                     // boxSizing:'border-box', pt:'1rem', px:'1rem'
                                     }}
                                     >
-                                <PDSAPages />
+                                <PDSAPages 
+                                    page={pageNum}
+                                    onPageChange={handlePageNumChange}
+                                    logistics={logisticsText}
+                                    measure={measureText}
+                                    dueDate={dueDateText}
+                                    observation={observationText}
+                                    data={dataText}
+                                    summary={summaryText}
+                                    nextSteps={nextStepsText}
+                                    choice={choiceText}
+                                    onLogisticsChange={handleLogisticsText}
+                                    onMeasureChange={handleMeasureText}
+                                    onDueDateChange={handleDueDateText}
+                                    onObservationChange={handleObservationText}
+                                    onDataChange={handleDataText}
+                                    onSummaryChange={handleSummaryText}
+                                    onNextStepsChange={handleNextStepsText}
+                                    onChoiceChange={handleChoiceText}
+                                    />
                             </Box>
                         </Box>
                     </DialogContent>

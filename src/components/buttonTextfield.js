@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 
 export default function ButtonTextfield(params) {
-    const {value, onChange, color} = params;
+    const {value, onChange, color, inputPadding, inputLineHeight, typeVariant} = params;
     
     const [valueText, setValueText] = useState('');
     const [editValue, setEditValue] = useState(false);
@@ -49,8 +49,8 @@ export default function ButtonTextfield(params) {
                             slotProps={{
                                 input: {
                                     sx: {
-                                        p:'6px 8px',
-                                        lineHeight:'1.5',
+                                        p:inputPadding||'6px 8px',
+                                        lineHeight:inputLineHeight||'1.5',
                                     }
                                 },
                             }}
@@ -58,8 +58,28 @@ export default function ButtonTextfield(params) {
                             />
                     </Box>
                     : <Button onClick={handleEditValue} sx={{width:'100%', textTransform:'none', whiteSpace:'pre-wrap',}}>
-                        <Box sx={{width:'100%', overflow:'hidden'}}>
-                            <Typography align='left' color={color||'textSecondary'} sx={{wordWrap: 'break-word'}}>
+                        <Box 
+                            sx={{
+                                width:'100%', 
+                                overflow:'hidden', 
+                                height:params.rows ? `${1.5*(params.rows)}rem` : 'auto'}}
+                            >
+                            <Typography 
+                                variant={typeVariant||'body1'} 
+                                align='left' 
+                                color={color||'textSecondary'} 
+                                sx={{
+                                    whiteSpace: 'pre-wrap',
+                                    wordBreak: 'break-word',
+                                    overflow:'scroll',
+                                    maxHeight:'100%',
+                                    display: '-webkit-box',
+                                    WebkitLineClamp: params.rows||null,
+                                    lineClamp: params.rows||null,
+                                    overflow: 'hidden',
+                                    WebkitBoxOrient: 'vertical',
+                                }}
+                                >
                                 {valueText || 'Enter text...'}
                             </Typography>
                         </Box>
