@@ -15,6 +15,7 @@ import {
 } from '@mui/x-data-grid';
 import { useState } from "react";
 import AddCycleModal from "./addCycleModal";
+import { grey } from "@mui/material/colors";
 
 
 
@@ -39,13 +40,21 @@ export default function CycleList({teamId, cycles}) {
     const columns = [
         // {field: 'id', headerName: 'id', flex:0 },
         { field: 'name', headerName: 'Change Name', flex:1 },
+        { 
+            field: 'user', 
+            headerName: 'User', 
+            renderCell: (params) => (
+                <Chip size='small' label={params.formattedValue} sx={{backgroundColor:'grey.500', color:'common.white'}} />
+            ),
+            flex:1
+        },
         { field: 'description', headerName: 'Description', flex:1 },
         { 
             field: 'stage', 
             headerName: 'Stage', 
             valueFormatter: (str) => str.charAt(0).toUpperCase() + str.slice(1),
             renderCell: (params) => (
-                <Chip label={params.formattedValue} sx={{backgroundColor:color[params.formattedValue], color:'common.white'}} />
+                <Chip size="small" label={params.formattedValue} sx={{backgroundColor:color[params.formattedValue], color:'common.white'}} />
             ),
             flex:1
         },
@@ -54,9 +63,10 @@ export default function CycleList({teamId, cycles}) {
         { field: 'act_choice', headerName: 'Next Step', flex:1 },
     ]
 
-    const rows = cycles?.map(({id, objective, stage, plan_due_date, act_choice, change_ideas: {change_packages: {name, description}}}) => ({
+    const rows = cycles?.map(({id, objective, stage, plan_due_date, act_choice, change_ideas: {profiles: {email}, change_packages: {name, description}}}) => ({
         id,
         name,
+        user: email,
         description,
         stage,
         objective,

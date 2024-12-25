@@ -8,16 +8,26 @@ import createClient from "@/utils/supabase/server";
 export default async function Cycles({params}) {
     const teamId = (await params).teamId;
     const supabase = await createClient();
+    let projects;
 
-    // const {data: cycles, error} = await supabase
-    //     .from('change_packages')
-    //     .select(`
-    //         *,
-    //         change_ideas (
-    //             *,
-    //             pdsa_cycles (*)
-    //         )
-    //     `);
+    // load projects
+    const {data: p, error: selectError} = await supabase
+        .from('projects')
+        .select()
+        .eq('team_id', teamId);
+
+    projects = p;
+
+    // temp until people get the option to create more projects
+    if (projects.length === 0) {
+        const {data: pi, error: insertError} = await supabase
+            .from('projects')
+            .insert({team_id: teamId})
+            .select();
+        
+        projects = pi;
+    }
+    
 
     const {data: cycles, error} = await supabase
         .from('pdsa_cycles')
@@ -25,9 +35,13 @@ export default async function Cycles({params}) {
             *,
             change_ideas (
                 *,
+                profiles (email),
                 change_packages (*)
             )
-        `);
+        `)
+        .not('change_ideas', 'is', null)
+        .eq('change_ideas.aim_id', projects[0].id); 
+
 
     return (
         <> 
