@@ -34,6 +34,9 @@ export default function SideNav({open, teamInfo}) {
                     href={props.path.concat(props.addpath||'')} 
                     selected={pathname.includes(props.path)}
                     {...props}
+                    sx={{
+                        whiteSpace:'nowrap'
+                    }}
                     >
                     {props.children}
                 </ListItemButton>
