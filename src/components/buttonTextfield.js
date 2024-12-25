@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 
 export default function ButtonTextfield(params) {
-    const {value, onChange, color, inputPadding, inputLineHeight, typeVariant} = params;
+    const {value, onChange, color, inputPadding, inputLineHeight, typeVariant, disabled} = params;
     
     const [valueText, setValueText] = useState('');
     const [editValue, setEditValue] = useState(false);
@@ -57,7 +57,7 @@ export default function ButtonTextfield(params) {
                             {...params}
                             />
                     </Box>
-                    : <Button onClick={handleEditValue} sx={{width:'100%', textTransform:'none', whiteSpace:'pre-wrap',}}>
+                    : <Button disabled={disabled} onClick={handleEditValue} sx={{width:'100%', textTransform:'none', whiteSpace:'pre-wrap',}}>
                         <Box 
                             sx={{
                                 width:'100%', 

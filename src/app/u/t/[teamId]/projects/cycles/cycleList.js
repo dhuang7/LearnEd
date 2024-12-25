@@ -15,11 +15,10 @@ import {
 } from '@mui/x-data-grid';
 import { useState } from "react";
 import AddCycleModal from "./addCycleModal";
-import { grey } from "@mui/material/colors";
 
 
 
-export default function CycleList({teamId, cycles}) {
+export default function CycleList({cycles, changeIdeas}) {
     const supabase = createClient();
     const [open, setOpen] = useState(false);
     const [cycle, setCycle] = useState(null);
@@ -63,10 +62,10 @@ export default function CycleList({teamId, cycles}) {
         { field: 'act_choice', headerName: 'Next Step', flex:1 },
     ]
 
-    const rows = cycles?.map(({id, objective, stage, plan_due_date, act_choice, change_ideas: {profiles: {email}, change_packages: {name, description}}}) => ({
+    const rows = cycles?.map(({id, objective, stage, plan_due_date, act_choice, user_email, change_ideas: {change_packages: {name, description}}}) => ({
         id,
         name,
-        user: email,
+        user: user_email,
         description,
         stage,
         objective,
@@ -74,18 +73,9 @@ export default function CycleList({teamId, cycles}) {
         act_choice,
     }));
 
-    // converts time to readable time
-    function readableTime(timestampz) {
-        // Convert to a Date object
-        const date = new Date(timestampz);
-
-        // Format the time to a readable format with AM/PM
-        const options = { hour: 'numeric', minute: 'numeric', hour12: true };
-        return date.toLocaleTimeString('en-US', options);
-    }
-
     // converts time to readable date
     function readableDate(timestampz) {
+        if (timestampz===null) return '';
         // Convert to a Date object
         const date = new Date(timestampz);
     
@@ -109,7 +99,7 @@ export default function CycleList({teamId, cycles}) {
                 // checkboxSelection
                 autoPageSize
                 onRowClick={handleOpenCycle}
-                slots={{ toolbar: () => <CustomToolbar cycles={cycles} /> }}
+                slots={{ toolbar: () => <CustomToolbar cycles={cycles} changeIdeas={changeIdeas}/> }}
                 slotProps={{
                     toolbar: {
                         showQuickFilter: true,
@@ -133,12 +123,12 @@ export default function CycleList({teamId, cycles}) {
 }
 
 
-export function CustomToolbar({cycles}) {
+export function CustomToolbar({cycles, changeIdeas}) {
     return (
         <GridToolbarContainer>
             <GridToolbarColumnsButton />
             <GridToolbarFilterButton />
-            <AddCycleModal cycles={cycles} />
+            <AddCycleModal cycles={cycles} changeIdeas={changeIdeas} />
             <GridToolbarQuickFilter variant="standard" sx={{p:0}}/>
         </GridToolbarContainer>
     );

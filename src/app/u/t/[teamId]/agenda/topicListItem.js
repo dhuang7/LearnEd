@@ -119,7 +119,7 @@ export default function TopicListItem({topic, setTopics, listOrder, handleDelete
                     </Box>
                 }
                 {/* cycles */}
-                <Autocomplete 
+                {/* <Autocomplete 
                     options={[{label:'test'}]}
                     sx={{width:'9rem', boxSizing:'border-box', pr:'.5rem'}} 
                     size='small'
@@ -130,7 +130,7 @@ export default function TopicListItem({topic, setTopics, listOrder, handleDelete
                             sx={{width:'9rem'}}
                             />
                     )}
-                    />
+                    /> */}
                 {/* trash */}
                 <IconButton data-order={listOrder} onClick={handleDeleteTopic}><DeleteRoundedIcon /></IconButton>
             </Box>

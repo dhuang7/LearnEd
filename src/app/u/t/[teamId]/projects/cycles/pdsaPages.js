@@ -9,12 +9,17 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 
+
+
+
 import { useState } from 'react';
 import ButtonTextfield from '@/components/buttonTextfield';
+import QPRList from './qprList';
 
 
 export default function PDSAPages({
     page, onPageChange,
+    qprsList, setQPRsList,
     logistics, measure, dueDate, observation, data, summary, nextSteps, choice,
     onLogisticsChange, onMeasureChange, onDueDateChange, onObservationChange, onDataChange, onSummaryChange, onNextStepsChange, onChoiceChange
 }) {
@@ -82,9 +87,6 @@ export default function PDSAPages({
 
     // pdsa colors
     const color = [ 'Chocolate', 'RoyalBlue', 'ForestGreen', 'Crimson']
-    // console.log(color[pageNum])
-
-    
 
     return (
         <Box sx={{height:'100%', width:'100%', display:'flex', flexDirection:'column'}}>
@@ -119,26 +121,6 @@ export default function PDSAPages({
                 <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
                     {/* Plan */}
                     <CustomTabPanel value={pageNum} index={0}>
-                        {/* due date */}
-                        <Box sx={{py:'1rem', width:'50%'}}>
-                            <TextField 
-                                // disabled={loading}
-                                label='Due Date'
-                                type='date'
-                                value={dueDateText}
-                                required
-                                onChange={handleDueDateText}
-                                onFocus={handleShowPicker}
-                                fullWidth
-                                // error={errorText}
-                                // helperText={errorText}
-                                slotProps={{
-                                    inputLabel: {
-                                        shrink:true,
-                                    }
-                                }}
-                                />
-                        </Box>
                         {/* logistics */}
                         <Box sx={{pb:'.5rem'}}>
                             <Typography variant='h6'>Logistics:</Typography>
@@ -153,7 +135,31 @@ export default function PDSAPages({
                             <Typography variant='h6'>Measure:</Typography>
                             <ButtonTextfield value={measureText} onChange={handleMeasureText} color='primary' />
                         </Box>
-                        
+                        {/* due date */}
+                        <Box sx={{py:'1rem', width:'50%'}}>
+                            <TextField 
+                                // disabled={loading}
+                                label='Due Date'
+                                type='date'
+                                value={dueDateText}
+                                // required
+                                onChange={handleDueDateText}
+                                onFocus={handleShowPicker}
+                                fullWidth
+                                // error={errorText}
+                                // helperText={errorText}
+                                slotProps={{
+                                    inputLabel: {
+                                        shrink:true,
+                                    }
+                                }}
+                                />
+                        </Box>
+                        {/* Questions */}
+                        <Box sx={{pb:'.5rem'}}>
+                            <Typography variant='h6'>Questions/Predictions:</Typography>
+                            <QPRList qprsList={qprsList} setQPRsList={setQPRsList} hideResults />
+                        </Box>
                     </CustomTabPanel>
                     {/* Do */}
                     <CustomTabPanel value={pageNum} index={1}>
@@ -172,6 +178,7 @@ export default function PDSAPages({
                             <ButtonTextfield value={dataText} onChange={handleDataText} color='primary' />
                         </Box>
                     </CustomTabPanel>
+                    {/* Study */}
                     <CustomTabPanel value={pageNum} index={2}>
                         {/* Summary */}
                         <Box sx={{pb:'.5rem'}}>
@@ -182,7 +189,13 @@ export default function PDSAPages({
                                 color='primary' 
                                 />
                         </Box>
+                        {/* Questions */}
+                        <Box sx={{pb:'.5rem'}}>
+                            <Typography variant='h6'>Results:</Typography>
+                            <QPRList qprsList={qprsList} setQPRsList={setQPRsList} hideAddQuestion />
+                        </Box>
                     </CustomTabPanel>
+                    {/* Act */}
                     <CustomTabPanel value={pageNum} index={3}>
                         {/* Stage */}
                         <Box sx={{py:'1rem'}}>
@@ -193,13 +206,16 @@ export default function PDSAPages({
                                 onChange={handleChoiceText}
                                 fullWidth
                                 >
-                                <MenuItem value={'plan'}>
+                                <MenuItem value={''}>
+                                    Select
+                                </MenuItem>
+                                <MenuItem value={'adapt'}>
                                     Adapt
                                 </MenuItem>
-                                <MenuItem value={'do'}>
+                                <MenuItem value={'adopt'}>
                                     Adopt
                                 </MenuItem>
-                                <MenuItem value={'study'}>
+                                <MenuItem value={'abandon'}>
                                     Abandon
                                 </MenuItem>
                             </TextField>

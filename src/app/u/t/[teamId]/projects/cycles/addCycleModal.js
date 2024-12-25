@@ -22,22 +22,20 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import { useState, useTransition, useEffect } from "react";
 import createClient from "@/utils/supabase/client";
-// import TopicList from "./topicList";
 import { useRouter } from "next/navigation";
 import PDSAPages from "./pdsaPages";
-import ButtonTextfield from "@/components/buttonTextfield";
 import { MenuItem } from "@mui/material";
 
 
 
-export default function AddCycleModal({teamId, cycles}) {
+export default function AddCycleModal({cycles, changeIdeas}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [pageNum, setPageNum] = useState(0);
-    const [changeIdeaIdText, setChangeIdeaIdText] = useState('');
+    const [changeIdeaObject, setChangeIdeaObject] = useState(null);
     const [stageText, setStageText] = useState('plan');
     const [objectiveText, setObjectiveText] = useState('');
     const [logisticsText, setLogisticsText] = useState('');
@@ -48,13 +46,11 @@ export default function AddCycleModal({teamId, cycles}) {
     const [summaryText, setSummaryText] = useState('');
     const [nextStepsText, setNextStepsText] = useState('');
     const [choiceText, setChoiceText] = useState('');
-    const [topics, setTopics] = useState([]);
-    const [errorText, setErrorText] = useState('');
-
-    const changeIdeas = removeDuplicates(cycles, ['change_ideas', 'id']).map(c=>c.change_ideas);
-    const changeIdeasAutoCompleteOptions = changeIdeas.map(ci=>ci.change_packages.name);
-
-    
+    const [qprsList, setQPRsList] = useState([{ // this is passed all the way down without handlers
+        question:'',
+        predictions:'',
+        results:'',
+    }]);
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -73,13 +69,12 @@ export default function AddCycleModal({teamId, cycles}) {
     function handleClose(e) {
         // close modal
         setOpen(false);
-        setErrorText('');
     }
 
     function handleCancel(e) {
         // handle remove everything
         handleClose();
-        setChangeIdeaIdText('');
+        setChangeIdeaObject(null);
         setStageText('plan');
         setObjectiveText('');
         setLogisticsText('');
@@ -89,7 +84,11 @@ export default function AddCycleModal({teamId, cycles}) {
         setChoiceText('');
         setNextStepsText('');
         setPageNum(0);
-        setTopics([]);
+        setQPRsList([{
+            question:'',
+            predictions:'',
+            results:'',
+        }]);
     }
 
     function handlePageNumChange(newValue) {
@@ -97,8 +96,8 @@ export default function AddCycleModal({teamId, cycles}) {
     }
 
     // typing handlers
-    function handleChangeIdeaIdText(event, newValue) {
-        setChangeIdeaIdText(newValue);
+    function handleChangeIdeaObject(event, newValue) {
+        setChangeIdeaObject(newValue);
     }
 
     function handleStageText({target}) {
@@ -146,27 +145,28 @@ export default function AddCycleModal({teamId, cycles}) {
         // handle submit
         e.preventDefault();
         setLoading(true);
-        
-        // load to database
-        // const {data, error} = await supabase.rpc('insert_agenda_with_topics', {
-        //     focus: focusText,
-        //     team_id: teamId,
-        //     start_time: (new Date(startTimeText).toISOString()),
-        //     end_time: (new Date(endTimeText).toISOString()),
-        //     topics: topics,
-        // });
 
-        // console.log(error);
+        // load to database
+        const {data, error} = await supabase.rpc('insert_pdsa_cycle_with_qprs', {
+            objective: objectiveText,
+            plan_logistics: logisticsText,
+            plan_due_date: dueDateText ? (new Date(dueDateText).toISOString()) : null,
+            plan_measure: measureText,
+            do_observations: observationText,
+            do_data: dataText,
+            study_summary: summaryText,
+            act_next_steps: nextStepsText,
+            act_choice: choiceText || null,
+            change_idea_id: changeIdeaObject.id,
+            stage: stageText,
+            qprs: qprsList,
+        });
+
         // reset everything
         startTransition(() => {
             router.refresh();
         })
     }
-
-    // function handleShowPicker({target}) {
-    //     target.showPicker?.();
-    // }
-
 
     return (
         <>
@@ -233,9 +233,10 @@ export default function AddCycleModal({teamId, cycles}) {
                                 <Box sx={{width:'66%', boxSizing:'border-box', pr:'.5rem'}}>
                                     <Autocomplete
                                         disablePortal
-                                        options={changeIdeasAutoCompleteOptions}
-                                        value={changeIdeaIdText}
-                                        onChange={handleChangeIdeaIdText}
+                                        options={changeIdeas}
+                                        getOptionLabel={(option) => `${option.change_packages.name||'-----'} (${option.rating})`}
+                                        value={changeIdeaObject}
+                                        onChange={handleChangeIdeaObject}
                                         fullWidth
                                         renderInput={
                                             (params) => 
@@ -306,6 +307,8 @@ export default function AddCycleModal({teamId, cycles}) {
                                 <PDSAPages 
                                     page={pageNum}
                                     onPageChange={handlePageNumChange}
+                                    qprsList={qprsList}
+                                    setQPRsList={setQPRsList}
                                     logistics={logisticsText}
                                     measure={measureText}
                                     dueDate={dueDateText}
@@ -343,24 +346,4 @@ export default function AddCycleModal({teamId, cycles}) {
         </>
         
     )
-}
-
-
-
-
-
-function removeDuplicates(array, keys) {
-    const seen = new Set();
-    return array.filter(obj => {
-        let value = obj;
-        keys.forEach(k => {
-            value = value[k];
-        })
-
-        if (seen.has(value)) {
-            return false;
-        }
-        seen.add(value);
-        return true;
-    });
 }
