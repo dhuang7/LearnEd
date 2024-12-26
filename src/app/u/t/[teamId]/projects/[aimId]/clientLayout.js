@@ -12,11 +12,13 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { usePathname, useRouter } from "next/navigation";
 import NextLink from 'next/link';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddProjectModal from "./addProjectModal";
+import { useTeamContext } from "@/app/u/layout";
 
 
-export default function ClientPage({children, aimId, projects}) {
+export default function ClientPage({children, aimId, projects, teamId}) {
+    const [_,__, aimInfo, setAimInfo] = useTeamContext();
     const pathname = usePathname();
     const router = useRouter();
     const pathIndex = {
@@ -28,15 +30,15 @@ export default function ClientPage({children, aimId, projects}) {
 
     const [project, setProject] = useState(projects.filter(v=>v.id===aimId)[0]);
 
+    useEffect(() => {
+        setAimInfo(aimId);
+    }, []);
+
     function handleSelectProject({target}) {
-        if (target.value === 'button') {
-            setProject(p=>({...p}));
-            return;
-        }
+        if (target.value === 'button') return true;
         setProject(target.value);
-        router.push(`${target.value.id}/${currentRelativePath}`);
+        router.push(`../${target.value.id}/${currentRelativePath}`);
     }
-    
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
@@ -76,12 +78,12 @@ export default function ClientPage({children, aimId, projects}) {
                                     </MenuItem>
                                 ))}
                                 {/* Add new project */}
-                                <AddProjectModal value='button' />
+                                <AddProjectModal teamId={teamId} component={(props) => <MenuItem disableGutters value={'button'} {...props}/>} />
                             </TextField>
                         </Box>
                         {/* nav tabs */}
                         <Tabs 
-                            value={pathIndex[currentRelativePath]} 
+                            value={pathIndex[currentRelativePath]||0} 
                             aria-label="basic tabs example"
                             >
                             <Tab label="Drivers" component={NextLink} href='drivers' />

@@ -28,7 +28,7 @@ import { MenuItem } from "@mui/material";
 
 
 
-export default function AddCycleModal({cycles, changeIdeas}) {
+export default function AddCycleModal({changeIdeas}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();

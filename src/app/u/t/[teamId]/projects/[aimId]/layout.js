@@ -16,6 +16,6 @@ export default async function Layout({children, params}) {
     
 
     return (
-        <ClientPage children={children} aimId={aimId} projects={projects} />
+        <ClientPage children={children} aimId={aimId} projects={projects} teamId={teamId} />
     )
 }

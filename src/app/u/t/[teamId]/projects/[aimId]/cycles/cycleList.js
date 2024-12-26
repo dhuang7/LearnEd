@@ -99,7 +99,7 @@ export default function CycleList({cycles, changeIdeas}) {
                 // checkboxSelection
                 autoPageSize
                 onRowClick={handleOpenCycle}
-                slots={{ toolbar: () => <CustomToolbar cycles={cycles} changeIdeas={changeIdeas}/> }}
+                slots={{ toolbar: () => <CustomToolbar changeIdeas={changeIdeas}/> }}
                 slotProps={{
                     toolbar: {
                         showQuickFilter: true,
@@ -123,12 +123,12 @@ export default function CycleList({cycles, changeIdeas}) {
 }
 
 
-export function CustomToolbar({cycles, changeIdeas}) {
+export function CustomToolbar({changeIdeas}) {
     return (
         <GridToolbarContainer>
             <GridToolbarColumnsButton />
             <GridToolbarFilterButton />
-            <AddCycleModal cycles={cycles} changeIdeas={changeIdeas} />
+            <AddCycleModal changeIdeas={changeIdeas} />
             <GridToolbarQuickFilter variant="standard" sx={{p:0}}/>
         </GridToolbarContainer>
     );

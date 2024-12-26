@@ -20,7 +20,7 @@ import { usePathname } from "next/navigation";
 import { Typography } from "@mui/material";
 import { useTeamContext } from "./layout";
 
-export default function SideNav({open, teamInfo}) {
+export default function SideNav({open, teamInfo, aimInfo}) {
     const pathname = usePathname();
 
     // custom navbar button for the lists below
@@ -121,7 +121,10 @@ export default function SideNav({open, teamInfo}) {
                                     Tasks
                                 </Typography>
                             </CustomNavButton> */}
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/projects`} tip='Projects'>
+                            <CustomNavButton 
+                                path={`/u/t/${teamInfo.id}/projects`} 
+                                addpath={aimInfo ? `/${aimInfo}/drivers` : ''} 
+                                tip='Projects'>
                                 <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Projects

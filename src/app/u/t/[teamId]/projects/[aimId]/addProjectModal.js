@@ -1,6 +1,5 @@
 'use client'
 
-import MenuItem from "@mui/material/MenuItem";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
@@ -14,11 +13,17 @@ import CircularProgress from "@mui/material/CircularProgress";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import theme from "@/app/theme";
-import { useState } from "react";
+import { useState, useTransition, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import createClient from '@/utils/supabase/client';
 
 
 
-export default function AddProjectModal({value}) {
+export default function AddProjectModal({component, modalOnly, teamId}) {
+    const Component = component || Button;
+    const supabase = createClient();
+    const router = useRouter();
+    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [projectNameText, setProjectNameText] = useState('');
@@ -29,6 +34,13 @@ export default function AddProjectModal({value}) {
     const [outcomeMeasureText, setOutcomeMeasureText] = useState('');
 
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    useEffect(() => {
+        if (!isPending && loading) {
+            handleClose();
+            setLoading(false);
+        }
+    }, [isPending])
 
 
     // handlers
@@ -44,6 +56,7 @@ export default function AddProjectModal({value}) {
         setProblemText('');
         setGoalText('');
         setOutcomeMeasureText('');
+        modalOnly && !loading && router.back();
     }
 
     // typing handlers
@@ -67,27 +80,47 @@ export default function AddProjectModal({value}) {
         setOutcomeMeasureText(target.value);
     }
 
-    function handleErrorBlur(event) {
-        console.log(event)
+    // stops propagation of the keydown for the textfields
+    function handleCancelKeydownPropagation(e) {
+        e.stopPropagation();
     }
 
-    function handleSubmit(e) {
-        e.preventDefault();
 
-        handleClose();
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setLoading(true);
+
+        const {data, error} = await supabase
+            .from('projects')
+            .insert({
+                name: projectNameText,
+                aim_name: aimNameText,
+                team_id: teamId,
+                aim_outcome_measure: outcomeMeasureText,
+                background: backgroundText,
+                problem: problemText,
+                goal: goalText,
+            })
+
+        startTransition(() => {
+            router.refresh();
+        })
     }
 
     return (
         <>
-            <MenuItem disableGutters value={value} onClick={handleOpen}>
-                <AddRoundedIcon color="info" sx={{mx:'.5rem'}} />
-                <Typography color="info">Project</Typography>
-            </MenuItem>
+            {modalOnly ||
+                <Component onClick={handleOpen} >
+                    <AddRoundedIcon color="info" sx={{mx:'.5rem'}} />
+                    <Typography color="info">Project</Typography>
+                </Component>
+            }
 
             {/* open dialog */}
             <Dialog
-                open={open}
+                open={modalOnly||open}
                 maxWidth='sm'
+                onClose={handleClose}
                 fullWidth
                 fullScreen={fullScreen}
                 aria-labelledby="alert-dialog-title"
@@ -109,7 +142,7 @@ export default function AddProjectModal({value}) {
                                 label='Project Name'
                                 value={projectNameText}
                                 onChange={handleProjectNameText}
-                                onBlur={handleErrorBlur}
+                                onKeyDown={handleCancelKeydownPropagation}
                                 sx={{mb:'.5rem'}}
                                 />
                             <TextField
@@ -118,6 +151,7 @@ export default function AddProjectModal({value}) {
                                 label='Aim Name'
                                 value={aimNameText}
                                 onChange={handleAimNameText}
+                                onKeyDown={handleCancelKeydownPropagation}
                                 sx={{mb:'.5rem'}}
                                 />
                             <TextField
@@ -126,6 +160,7 @@ export default function AddProjectModal({value}) {
                                 label='Background'
                                 value={backgroundText}
                                 onChange={handleBackgroundText}
+                                onKeyDown={handleCancelKeydownPropagation}
                                 multiline
                                 rows={2}
                                 slotProps={{
@@ -143,6 +178,7 @@ export default function AddProjectModal({value}) {
                                 label='Problem'
                                 value={problemText}
                                 onChange={handleProblemText}
+                                onKeyDown={handleCancelKeydownPropagation}
                                 multiline
                                 rows={2}
                                 slotProps={{
@@ -160,6 +196,7 @@ export default function AddProjectModal({value}) {
                                 label='Goal'
                                 value={goalText}
                                 onChange={handleGoalText}
+                                onKeyDown={handleCancelKeydownPropagation}
                                 multiline
                                 rows={2}
                                 slotProps={{
@@ -169,7 +206,6 @@ export default function AddProjectModal({value}) {
                                         }
                                     }
                                 }}
-                                sx={{mb:'.5rem'}}
                                 sx={{mb:'.5rem'}}
                                 />
                             <TextField
@@ -178,6 +214,7 @@ export default function AddProjectModal({value}) {
                                 label='Outcome Measure'
                                 value={outcomeMeasureText}
                                 onChange={handleOutcomeMeasureText}
+                                onKeyDown={handleCancelKeydownPropagation}
                                 multiline
                                 rows={2}
                                 slotProps={{
@@ -187,7 +224,6 @@ export default function AddProjectModal({value}) {
                                         }
                                     }
                                 }}
-                                sx={{mb:'.5rem'}}
                                 sx={{mb:'.5rem'}}
                                 />
                         </Box>

@@ -6,27 +6,14 @@ import createClient from "@/utils/supabase/server";
 
 
 export default async function Cycles({params}) {
-    const teamId = (await params).teamId;
+    const {teamId, aimId} = await params;
     const supabase = await createClient();
-    let projects;
 
     // load projects
-    const {data: p, error: selectError} = await supabase
+    const {data: projects, error: selectError} = await supabase
         .from('projects')
         .select()
-        .eq('team_id', teamId);
-
-    projects = p;
-
-    // temp until people get the option to create more projects
-    if (projects.length === 0) {
-        const {data: pi, error: insertError} = await supabase
-            .from('projects')
-            .insert({team_id: teamId})
-            .select();
-        
-        projects = pi;
-    }
+        .eq('id', aimId);
 
     const {data: changeIdeas, error: changeIdeasError} = await supabase
         .from('change_ideas')
@@ -34,7 +21,7 @@ export default async function Cycles({params}) {
             *,
             change_packages(*)    
         `)
-        .eq('aim_id', projects[0].id);
+        .eq('aim_id', aimId);
 
 
     const {data: cycles, error: cyclesError} = await supabase
@@ -47,11 +34,11 @@ export default async function Cycles({params}) {
             )
         `)
         .not('change_ideas', 'is', null)
-        .eq('change_ideas.aim_id', projects[0].id); 
+        .eq('change_ideas.aim_id', aimId); 
 
     return (
         <> 
-            <CycleList teamId={teamId} cycles={cycles} changeIdeas={changeIdeas} />
+            <CycleList cycles={cycles} changeIdeas={changeIdeas} />
         </>
     )
 }

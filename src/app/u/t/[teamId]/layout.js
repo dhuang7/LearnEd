@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 
 export default function LayoutRedirect({params, children}) {
     // checks if valid team url, otherwise, route back to teams
-    const [teamInfo, setTeamInfo] = useTeamContext();
+    const [teamInfo, setTeamInfo, aimInfo, setAimInfo] = useTeamContext();
     const supabase = createClient();
     const router = useRouter();
     
@@ -26,6 +26,7 @@ export default function LayoutRedirect({params, children}) {
                 return;
             }
             setTeamInfo(teams[0]);
+            setAimInfo(null);
         }
 
         getTeamId();

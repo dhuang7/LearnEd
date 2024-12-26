@@ -24,6 +24,7 @@ export default function Navbars({children}) {
     const [lastName, setLastName] = useState('');
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [teamInfo, setTeamInfo] = useState(null);
+    const [aimInfo, setAimInfo] = useState(null);
 
     // handlers
     function handleOpen() {
@@ -77,7 +78,7 @@ export default function Navbars({children}) {
     
 
     return (
-        <TeamContext.Provider value={[teamInfo, setTeamInfo]}>
+        <TeamContext.Provider value={[teamInfo, setTeamInfo, aimInfo, setAimInfo]}>
             <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
                 {/* top navbar */}
                 <Box sx={{width:'100%'}}>
@@ -88,7 +89,7 @@ export default function Navbars({children}) {
                     <Box sx={{width:'100%', height:'100%', display:'flex', overflow:'hidden'}}>
                         {/* side drawer */}
                         <Box sx={{height:'100%'}}>
-                            <SideNav open={open} teamInfo={teamInfo} />
+                            <SideNav open={open} teamInfo={teamInfo} aimInfo={aimInfo} />
                         </Box>
                         {/* rest */}
                         <Box flexGrow={1} sx={{ overflow:'hidden' }}>
