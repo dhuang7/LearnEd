@@ -121,7 +121,7 @@ export default function SideNav({open, teamInfo}) {
                                     Tasks
                                 </Typography>
                             </CustomNavButton> */}
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/projects`} addpath='/drivers' tip='Projects'>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/projects`} tip='Projects'>
                                 <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Projects
