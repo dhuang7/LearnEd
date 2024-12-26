@@ -28,6 +28,7 @@ export default async function Cycles({params}) {
         .from('pdsa_cycles')
         .select(`
             *,
+            pdsa_qprs(*),
             change_ideas (
                 *,
                 change_packages (*)
@@ -38,7 +39,7 @@ export default async function Cycles({params}) {
 
     return (
         <> 
-            <CycleList cycles={cycles} changeIdeas={changeIdeas} />
+            <CycleList cycles={cycles} changeIdeas={changeIdeas} aimId={aimId} />
         </>
     )
 }

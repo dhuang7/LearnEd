@@ -20,16 +20,16 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import createClient from "@/utils/supabase/client";
 import PDSAPages from "./pdsaPages";
 import { MenuItem } from "@mui/material";
 
 
 
-export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
+export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles, open, setOpen}) {
     const supabase = createClient();
-    const [open, setOpen] = useState(false);
+    // const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [pageNum, setPageNum] = useState(0);
     const [changeIdeaObject, setChangeIdeaObject] = useState(null);
@@ -48,6 +48,29 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
         predictions:'',
         results:'',
     }]);
+
+    useEffect(() => {
+        const pageStage = {
+            'plan': 0,
+            'do': 1,
+            'study': 2,
+            'act': 3,
+        }
+
+        setPageNum(pageStage[cycle?.stage]);
+        setChangeIdeaObject(cycle?.change_ideas);
+        setStageText(cycle?.stage);
+        setObjectiveText(cycle?.objective);
+        setLogisticsText(cycle?.plan_logistics);
+        setMeasureText(cycle?.plan_measure);
+        setDueDateText(cycle?.plan_due_date ? formatDateField(cycle.plan_due_date) : '');
+        setObservationText(cycle?.do_observations);
+        setDataText(cycle?.do_data);
+        setSummaryText(cycle?.study_summary);
+        setNextStepsText(cycle?.act_next_steps);
+        setChoiceText(cycle?.act_choice);
+        setQPRsList(cycle?.pdsa_qprs);
+    }, [cycle]);
 
     // handlers
     function handleOpen() {
@@ -136,20 +159,20 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
         setLoading(true);
 
         // load to database
-        const {data, error} = await supabase.rpc('insert_pdsa_cycle_with_qprs', {
-            objective: objectiveText,
-            plan_logistics: logisticsText,
-            plan_due_date: dueDateText ? (new Date(dueDateText).toISOString()) : null,
-            plan_measure: measureText,
-            do_observations: observationText,
-            do_data: dataText,
-            study_summary: summaryText,
-            act_next_steps: nextStepsText,
-            act_choice: choiceText || null,
-            change_idea_id: changeIdeaObject.id,
-            stage: stageText,
-            qprs: qprsList,
-        });
+        // const {data, error} = await supabase.rpc('insert_pdsa_cycle_with_qprs', {
+        //     objective: objectiveText,
+        //     plan_logistics: logisticsText,
+        //     plan_due_date: dueDateText ? (new Date(dueDateText).toISOString()) : null,
+        //     plan_measure: measureText,
+        //     do_observations: observationText,
+        //     do_data: dataText,
+        //     study_summary: summaryText,
+        //     act_next_steps: nextStepsText,
+        //     act_choice: choiceText || null,
+        //     change_idea_id: changeIdeaObject.id,
+        //     stage: stageText,
+        //     qprs: qprsList,
+        // });
 
         const {data: newCycles, error: newCyclesError} = await supabase
             .from('pdsa_cycles')
@@ -174,18 +197,6 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
 
     return (
         <>
-            {/* add member button to open dialog */}
-            <Button 
-                color='info' 
-                variant='contained' disableElevation 
-                sx={{borderRadius:3, textTransform:'none', ml:'auto'}} 
-                startIcon={<AddRoundedIcon />}
-                size='small'
-                onClick={handleOpen}
-                disabled={loading}
-                >
-                Cycle
-            </Button>
             {/* open dialog */}
             <Drawer
                 open={open}
@@ -350,4 +361,19 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
         </>
         
     )
+}
+
+
+// format date correctly
+function formatDateField(timestampz) {
+    // Convert the timestamp to a Date object
+    const date = new Date(timestampz);
+
+    // Get components in the user's local timezone
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    // Construct the formatted string
+    return `${year}-${month}-${day}`;
 }

@@ -25,7 +25,7 @@ export default function Navbars({children}) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [teamInfo, setTeamInfo] = useState(null);
     const [aimInfo, setAimInfo] = useState(null);
-
+    
     // handlers
     function handleOpen() {
         // toggles the side bar

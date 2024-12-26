@@ -15,12 +15,14 @@ import {
 } from '@mui/x-data-grid';
 import { useState } from "react";
 import AddCycleModal from "./addCycleModal";
+import EditCycleModal from "./editCycleModal";
 
 
 
-export default function CycleList({cycles, changeIdeas}) {
+export default function CycleList({cycles, changeIdeas, aimId}) {
     const supabase = createClient();
     const [open, setOpen] = useState(false);
+    const [currCycles, setCurrCycles] = useState(cycles);
     const [cycle, setCycle] = useState(null);
     const color = {
         'Plan': 'Chocolate',
@@ -33,7 +35,7 @@ export default function CycleList({cycles, changeIdeas}) {
     // handlers
     function handleOpenCycle(params, event, details) {
         setOpen(true);
-        setCycle(params.row)
+        setCycle(params.row.cycle)
     } 
     
     const columns = [
@@ -62,15 +64,16 @@ export default function CycleList({cycles, changeIdeas}) {
         { field: 'act_choice', headerName: 'Next Step', flex:1 },
     ]
 
-    const rows = cycles?.map(({id, objective, stage, plan_due_date, act_choice, user_email, change_ideas: {change_packages: {name, description}}}) => ({
-        id,
-        name,
-        user: user_email,
-        description,
-        stage,
-        objective,
-        plan_due_date,
-        act_choice,
+    const rows = currCycles?.map((cycle) => ({
+        id: cycle.id,
+        name: cycle.change_ideas.change_packages.name,
+        user: cycle.user_email,
+        description: cycle.change_ideas.change_packages.description,
+        stage: cycle.stage,
+        objective: cycle.objective,
+        plan_due_date: cycle.plan_due_date,
+        act_choice: cycle.act_choice,
+        cycle,
     }));
 
     // converts time to readable date
@@ -99,7 +102,7 @@ export default function CycleList({cycles, changeIdeas}) {
                 // checkboxSelection
                 autoPageSize
                 onRowClick={handleOpenCycle}
-                slots={{ toolbar: () => <CustomToolbar changeIdeas={changeIdeas}/> }}
+                slots={{ toolbar: () => <CustomToolbar setCurrCycles={setCurrCycles} aimId={aimId} changeIdeas={changeIdeas}/> }}
                 slotProps={{
                     toolbar: {
                         showQuickFilter: true,
@@ -117,18 +120,18 @@ export default function CycleList({cycles, changeIdeas}) {
                     backgroundColor:'common.white',
                 }}
                 />
-            {/* <EditAgendaModal teamId={teamId} open={open} setOpen={setOpen} agenda={agenda} /> */}
+            <EditCycleModal cycle={cycle} setCurrCycles={setCurrCycles} aimId={aimId} changeIdeas={changeIdeas} open={open} setOpen={setOpen}  />
         </Box>
     )
 }
 
 
-export function CustomToolbar({changeIdeas}) {
+export function CustomToolbar({setCurrCycles, aimId, changeIdeas}) {
     return (
         <GridToolbarContainer>
             <GridToolbarColumnsButton />
             <GridToolbarFilterButton />
-            <AddCycleModal changeIdeas={changeIdeas} />
+            <AddCycleModal setCurrCycles={setCurrCycles} aimId={aimId} changeIdeas={changeIdeas} />
             <GridToolbarQuickFilter variant="standard" sx={{p:0}}/>
         </GridToolbarContainer>
     );

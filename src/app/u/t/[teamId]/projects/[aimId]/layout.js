@@ -14,6 +14,7 @@ export default async function Layout({children, params}) {
         .select()
         .eq('team_id', teamId);
     
+    
 
     return (
         <ClientPage children={children} aimId={aimId} projects={projects} teamId={teamId} />
