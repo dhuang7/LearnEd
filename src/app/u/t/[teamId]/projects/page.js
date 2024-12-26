@@ -20,7 +20,7 @@ export default async function RedirectToFirstProject({params}) {
     if (projects.length === 0) {
         const {data: pi, error: insertError} = await supabase
             .from('projects')
-            .insert({team_id: teamId})
+            .insert({team_id: teamId, name:'temp'})// you need to open a modal for the user to be able to create the project first
             .select();
         
         projects = pi;
