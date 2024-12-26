@@ -87,21 +87,26 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
     function handleCancel(e) {
         // handle remove everything
         handleClose();
-        setChangeIdeaObject(null);
-        setStageText('plan');
-        setObjectiveText('');
-        setLogisticsText('');
-        setMeasureText('');
-        setDueDateText('');
-        setSummaryText('');
-        setChoiceText('');
-        setNextStepsText('');
-        setPageNum(0);
-        setQPRsList([{
-            question:'',
-            predictions:'',
-            results:'',
-        }]);
+        const pageStage = {
+            'plan': 0,
+            'do': 1,
+            'study': 2,
+            'act': 3,
+        }
+
+        setPageNum(pageStage[cycle?.stage]);
+        setChangeIdeaObject(cycle?.change_ideas);
+        setStageText(cycle?.stage);
+        setObjectiveText(cycle?.objective);
+        setLogisticsText(cycle?.plan_logistics);
+        setMeasureText(cycle?.plan_measure);
+        setDueDateText(cycle?.plan_due_date ? formatDateField(cycle.plan_due_date) : '');
+        setObservationText(cycle?.do_observations);
+        setDataText(cycle?.do_data);
+        setSummaryText(cycle?.study_summary);
+        setNextStepsText(cycle?.act_next_steps);
+        setChoiceText(cycle?.act_choice);
+        setQPRsList(cycle?.pdsa_qprs.sort((a, b) => a.order_num-b.order_num));
     }
 
     function handlePageNumChange(newValue) {
