@@ -23,7 +23,7 @@ export default function TopicList({topics, setTopics}) {
 
     function handleAddTopic() {
         setTopics(ts => ts.concat([{
-            orderNum: ts.length + 1,
+            order_num: ts.length + 1,
             name: '',
             outcomes:'',
             discussions:'',
@@ -36,10 +36,21 @@ export default function TopicList({topics, setTopics}) {
         if (topics.length === 1) {
             setTopics([]);
         } else {
-            setTopics(ts => [
-                ...ts.slice(0, value),
-                ...ts.slice(value+1)
-            ])
+            setTopics(ts => {
+                const newTs = [];
+                let adjust = 0;
+                ts.forEach((v, i) => {
+                    const newV = {...v}
+                    if (i === value) {
+                        adjust = 1;
+                        return;
+                    }
+                    newV.order_num = newV.order_num-adjust;
+                    newTs.push(newV);
+                })
+
+                return newTs;
+            })
         }
         
     }
@@ -54,7 +65,7 @@ export default function TopicList({topics, setTopics}) {
                     {/* Topic lists */}
                     <List disablePadding>
                         {/* topic list items */}
-                        {topics.map((topic, i) => (
+                        {topics.sort((a,b) => a.order_num - b.order_num).map((topic, i) => (
                             <TopicListItem key={i} topic={topic} setTopics={setTopics} listOrder={i+1} handleDeleteTopic={handleDeleteTopic} />
                         ))}
                         {/* add new topic */}

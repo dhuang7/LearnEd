@@ -49,6 +49,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         results:'',
     }]);
 
+
     useEffect(() => {
         const pageStage = {
             'plan': 0,
@@ -69,7 +70,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         setSummaryText(cycle?.study_summary);
         setNextStepsText(cycle?.act_next_steps);
         setChoiceText(cycle?.act_choice);
-        setQPRsList(cycle?.pdsa_qprs);
+        setQPRsList(cycle?.pdsa_qprs.sort((a, b) => a.order_num-b.order_num));
     }, [cycle]);
 
     // handlers
@@ -158,21 +159,34 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         e.preventDefault();
         setLoading(true);
 
+        // console.log(qprsList)
+
+        // // const {data:d, error:er} = await supabase.rpc('get_qpr_ids', {
+        // //     qprs: qprsList,
+        // //     cycle_id: cycle.id
+        // // });
+
+        // // console.log(d);
+        // // console.log(er);
+
         // load to database
-        // const {data, error} = await supabase.rpc('insert_pdsa_cycle_with_qprs', {
-        //     objective: objectiveText,
-        //     plan_logistics: logisticsText,
-        //     plan_due_date: dueDateText ? (new Date(dueDateText).toISOString()) : null,
-        //     plan_measure: measureText,
-        //     do_observations: observationText,
-        //     do_data: dataText,
-        //     study_summary: summaryText,
-        //     act_next_steps: nextStepsText,
-        //     act_choice: choiceText || null,
-        //     change_idea_id: changeIdeaObject.id,
-        //     stage: stageText,
-        //     qprs: qprsList,
-        // });
+        const {data, error} = await supabase.rpc('update_pdsa_cycle_with_qprs', {
+            cycle_id: cycle.id,
+            new_objective: objectiveText,
+            new_plan_logistics: logisticsText,
+            new_plan_due_date: dueDateText ? (new Date(dueDateText).toISOString()) : null,
+            new_plan_measure: measureText,
+            new_do_observations: observationText,
+            new_do_data: dataText,
+            new_study_summary: summaryText,
+            new_act_next_steps: nextStepsText,
+            new_act_choice: choiceText || null,
+            new_change_idea_id: changeIdeaObject.id,
+            new_stage: stageText,
+            qprs: qprsList,
+        });
+
+        console.log(error);
 
         const {data: newCycles, error: newCyclesError} = await supabase
             .from('pdsa_cycles')
@@ -235,7 +249,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
                     {/* title */}
                     <DialogTitle id="alert-dialog-title" sx={{pl:0, display:'flex', alignItems:'center'}}>
                         {/* title */}
-                        <Typography variant='inherit'>Add Cycle</Typography>
+                        <Typography variant='inherit'>Edit Cycle</Typography>
                         {/* delete button */}
                         <IconButton onClick={handleCancel} sx={{ml:'auto'}}><CloseRoundedIcon /></IconButton>
                     </DialogTitle>
@@ -352,7 +366,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
                         <Button disabled={loading} type='submit'>
                             {(loading)
                                 ? <CircularProgress size='1rem' />
-                                : 'Add'
+                                : 'Save'
                             }
                         </Button>
                     </DialogActions>

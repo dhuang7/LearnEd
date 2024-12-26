@@ -94,7 +94,7 @@ export default function AddAgendaModal({teamId}) {
             topics: topics,
         });
 
-        // console.log(error);
+        console.log(error);
         // reset everything
         startTransition(() => {
             router.refresh();

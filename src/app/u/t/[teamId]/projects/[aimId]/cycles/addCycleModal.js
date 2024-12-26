@@ -44,6 +44,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
     const [nextStepsText, setNextStepsText] = useState('');
     const [choiceText, setChoiceText] = useState('');
     const [qprsList, setQPRsList] = useState([{ // this is passed all the way down without handlers
+        order_num:0,
         question:'',
         predictions:'',
         results:'',
@@ -74,6 +75,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
         setNextStepsText('');
         setPageNum(0);
         setQPRsList([{
+            order_num:0,
             question:'',
             predictions:'',
             results:'',

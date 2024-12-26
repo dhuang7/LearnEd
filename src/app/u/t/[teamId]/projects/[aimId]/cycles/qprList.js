@@ -22,6 +22,7 @@ export default function QPRList({
         setQPRsList(l => [
             ...l,
             {
+                order_num: l.length,
                 question: '',
                 predictions: '',
                 results:'',
@@ -32,12 +33,28 @@ export default function QPRList({
     function handleDeleteQPR({currentTarget}) {
         const value = Number(currentTarget.dataset.order);
         if (qprsList.length !== 1) {
-            setQPRsList(ts => [
-                ...ts.slice(0, value),
-                ...ts.slice(value+1)
-            ])
+            // setQPRsList(ts => [
+            //     ...ts.slice(0, value),
+            //     ...ts.slice(value+1)
+            // ])
+            setQPRsList(ts => {
+                const newTs = [];
+                let adjust = 0;
+                ts.forEach((v, i) => {
+                    const newV = {...v}
+                    if (i === value) {
+                        adjust = 1;
+                        return;
+                    }
+                    newV.order_num = newV.order_num-adjust;
+                    newTs.push(newV);
+                })
+
+                return newTs;
+            })
         } else {
             setQPRsList([{
+                order_num: 0,
                 question:'',
                 predictions:'',
                 results:'',

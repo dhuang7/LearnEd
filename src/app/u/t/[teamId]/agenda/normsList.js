@@ -15,13 +15,13 @@ import createClient from "@/utils/supabase/client";
 
 
 export default function NormsList({teamId, normsList}) {
-    const [norms, setNorms] = useState(normsList);
+    const [norms, setNorms] = useState(normsList.sort((a, b) => a.order_num-b.order_num));
     const [toggleDelete, setToggleDelete] = useState(false);
     const [saving, setSaving] = useState('');
     const supabase = createClient();
 
     function handleAddNorm() {
-        setNorms(n => n.concat([{team_id: teamId}]));
+        setNorms(n => n.concat([{team_id: teamId, order_num: n.length}]));
     }
 
     function handleToggleDelete() {
@@ -70,7 +70,7 @@ export default function NormsList({teamId, normsList}) {
             </Box>
             <Box sx={{flexGrow:1, overflow:'hidden', pt:'.5rem', boxSizing:'border-box'}}>
                 <List disablePadding sx={{height:'100%', overflowY:'scroll'}}>
-                    {norms.map((norm, i) => (
+                    {norms.sort((a,b) => a.order_num - b.order_num).map((norm, i) => (
                         <NormsListItem 
                             key={i} 
                             norm={norm} 

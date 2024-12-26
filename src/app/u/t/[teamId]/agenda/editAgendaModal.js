@@ -48,7 +48,7 @@ export default function EditAgendaModal({teamId, agenda, open, setOpen}) {
                 .select()
                 .eq('agenda_id', agenda.id);
 
-            setTopics(t);
+            setTopics(t.sort((a, b) => a.order_num-b.order_num));
         }
         if (agenda) getTopics();
     }, [agenda]);

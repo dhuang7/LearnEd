@@ -42,10 +42,28 @@ export default function NormsListItem({norm, toggleDelete, orderNum, setNorms, s
     }
 
     function handleDelete() {
-        setNorms(n => [
-            ...n.slice(0, orderNum),
-            ...n.slice(orderNum + 1),
-        ]);
+        // setNorms(n => [
+        //     ...n.slice(0, orderNum),
+        //     ...n.slice(orderNum + 1),
+        // ]);
+
+        setNorms(ts => {
+            const newTs = [];
+            let adjust = 0;
+            ts.forEach((v, i) => {
+                const newV = {...v};
+                if (i === orderNum) {
+                    adjust = 1;
+                    return;
+                }
+                
+                newV.order_num = newV.order_num-adjust;
+                newTs.push(newV);
+            })
+
+
+            return newTs;
+        })
     }
 
     return (
