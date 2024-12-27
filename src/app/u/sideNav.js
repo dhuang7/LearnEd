@@ -7,6 +7,7 @@ import AppBar from "@mui/material/AppBar";
 import SpaceDashboardRoundedIcon from '@mui/icons-material/SpaceDashboardRounded';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
+import LightbulbRoundedIcon from '@mui/icons-material/LightbulbRounded';
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
@@ -70,9 +71,9 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                         <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Tasks
                     </CustomNavButton> */}
-                    <CustomNavButton path='/u/cycles' divider tip='Cycles'>
-                        <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
-                        All Cycles
+                    <CustomNavButton path='/u/change-ideas' divider tip='Search Ideas'>
+                        <LightbulbRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                        Search Ideas
                     </CustomNavButton>
                     <CustomNavButton path='/u/teams' divider tip='Teams'>
                         {/* renames the Teams to a Team name when a team is selected */}
@@ -97,12 +98,12 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                     {/* Team side navigation */}
                     {(teamInfo)
                         ? <>
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/dashboard`} tip='Dashboard'>
+                            {/* <CustomNavButton path={`/u/t/${teamInfo.id}/dashboard`} tip='Dashboard'>
                                 <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Dashboard
                                 </Typography>
-                            </CustomNavButton>
+                            </CustomNavButton> */}
                             <CustomNavButton path={`/u/t/${teamInfo.id}/agenda`} tip='Agenda'>
                                 <HandshakeRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>

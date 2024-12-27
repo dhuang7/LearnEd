@@ -13,7 +13,7 @@ export default function Cycles() {
             {/* title */}
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                    <Typography variant='h4'>Cycles</Typography>
+                    <Typography variant='h4'>Change Ideas</Typography>
                     {/* <AddAgendaModal teamId={teamId} /> */}
                 </Box>
             </Box>
