@@ -66,14 +66,14 @@ export default function ChangeIdeaList({changePackages, projects}) {
             headerName: 'Tags', 
             valueGetter: (value, row) => [...(value.p||[]), ...(value.s||[])].join(' '),
             renderCell: (params) => (
-                <Box sx={{width:'100%', overflow:'scroll'}}>
+                <Box sx={{width:'100%', overflow:'scroll', height:'100%'}}>
                     <Box sx={{display:'flex', flexWrap:'wrap'}}>
                         {params.row.tags.p?.map((v,i) => (
                             <Box key={i} sx={{boxSizing:'border-box', display:'flex', p:'.125rem'}}>
                                 <Chip 
                                     label={v} size="small" 
                                     sx={{
-                                        backgroundColor:'royalBlue', color:'common.white',
+                                        backgroundColor:'royalBlue', color:'common.white', overflow:'hidden'
                                     }} 
                                     />
                             </Box>
@@ -83,7 +83,7 @@ export default function ChangeIdeaList({changePackages, projects}) {
                                 <Chip 
                                     label={v} size="small" 
                                     sx={{
-                                        backgroundColor:'forestGreen', color:'common.white',
+                                        backgroundColor:'forestGreen', color:'common.white', overflow:'hidden'
                                     }} 
                                     />
                             </Box>
