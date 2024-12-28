@@ -13,6 +13,8 @@ import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+
 
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
@@ -214,6 +216,37 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         }, 100);
     }
 
+    async function handleDelete() {
+        setLoading(true);
+
+        const {data, error} = await supabase
+            .from('pdsa_cycles')
+            .delete()
+            .eq('id', cycle.id);
+
+        console.log(error);
+
+        const {data: newCycles, error: newCyclesError} = await supabase
+            .from('pdsa_cycles')
+            .select(`
+                *,
+                pdsa_qprs(*),
+                change_ideas (
+                    *,
+                    change_packages (*)
+                )
+            `)
+            .not('change_ideas', 'is', null)
+            .eq('change_ideas.aim_id', aimId); 
+
+        setLoading(false);
+        handleCancel();
+        // delay so animation of modal closing can finish
+        setTimeout(() => {
+            setCurrCycles(newCycles);
+        }, 100);
+    }
+
     return (
         <>
             {/* open dialog */}
@@ -256,7 +289,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
                         {/* title */}
                         <Typography variant='inherit'>Edit Cycle</Typography>
                         {/* delete button */}
-                        <IconButton onClick={handleCancel} sx={{ml:'auto'}}><CloseRoundedIcon /></IconButton>
+                        <IconButton onClick={handleDelete} sx={{ml:'auto'}}><DeleteRoundedIcon /></IconButton>
                     </DialogTitle>
                     {/* content */}
                     <DialogContent sx={{pb:0, pl:0}}>

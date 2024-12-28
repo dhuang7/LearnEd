@@ -42,6 +42,7 @@ export default function ViewPackageModal({open, setOpen, changePackage, projects
             const {data, error} = await supabase.rpc('get_change_ideas_info', {
                 cp_id: changePackage?.id,
             });
+            console.log(error);
 
             setChangeIdeas(data||[]);
         }
@@ -165,7 +166,9 @@ export default function ViewPackageModal({open, setOpen, changePackage, projects
                                         <Box sx={{borderRadius:3, border:'1px solid', borderColor:'grey.300', boxSizing:'border-box', p:'.5rem', width:'100%', boxShadow:2}}>
                                             <Box sx={{display:'flex', alignItems:'center', mb:'.5rem', fontWeight:'bold'}}>
                                                 {/* team name */}
-                                                <Typography variant="body1" sx={{fontWeight:'bold'}}>{v.team_name}</Typography>
+                                                <Typography variant="body1" sx={{fontWeight:'bold', mr:'.5rem'}}>{v.team_name}</Typography>
+                                                {/* project name */}
+                                                <Typography variant="body1" color="textSecondary" noWrap sx={{fontWeight:'bold'}}>{v.project_name}</Typography>
                                                 {/* rating */}
                                                 <Rating 
                                                     value={v.rating} 
