@@ -27,20 +27,26 @@ export default async function Page() {
     //     `)
 
     // the below is avg of all the change ideas weighted by the number of completed pdsa cycles that are ran
-    const {data: changePackages, error: aggChangeError} = await supabase
-        .from('pdsa_cycles')
-        .select(`
-            ...change_ideas(
-                rating:rating.avg(),
-                ...change_packages(
-                    id, 
-                    name, 
-                    description
-                )
-            ),
-            num_cycles:id.count()
-        `)
-        .eq('stage', 'completed')
+    // const {data: changePackages, error: changePackagesError} = await supabase
+    //     .from('pdsa_cycles')
+    //     .select(`
+    //         ...change_ideas(
+    //             rating:rating.avg(),
+    //             ...change_packages(
+    //                 id, 
+    //                 name, 
+    //                 description,
+    //                 change_ideas(
+    //                     primary_drivers(name),
+    //                     secondary_drivers(name)
+    //                 )
+    //             )
+    //         ),
+    //         num_cycles:id.count()
+    //     `)
+    //     .eq('stage', 'completed');
+
+    const {data: changePackages, error: changePackagesError} = await supabase.rpc('get_completed_change_packages');
 
     const {data: projects, error: projectsError} = await supabase
         .from('projects')

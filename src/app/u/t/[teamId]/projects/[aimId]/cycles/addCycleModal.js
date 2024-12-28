@@ -209,7 +209,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
                 aria-describedby="alert-dialog-description"
                 PaperProps={{
                     sx: {
-                        width:'40%',
+                        width:{xs:'100%', md:'35rem'},
                         display:'flex',
                         flexDirection:'row',
                         alignItems:'flex-start',

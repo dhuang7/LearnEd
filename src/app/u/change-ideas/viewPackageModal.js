@@ -18,12 +18,7 @@ import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-
-
-
-
-
-
+import Chip from '@mui/material/Chip';
 
 
 
@@ -92,7 +87,7 @@ export default function ViewPackageModal({open, setOpen, changePackage, projects
                 aria-describedby="alert-dialog-description"
                 PaperProps={{
                     sx: {
-                        width:'40%',
+                        width:{xs:'100%', md:'35rem'},
                         display:'flex',
                         flexDirection:'row',
                         alignItems:'flex-start',
@@ -141,22 +136,55 @@ export default function ViewPackageModal({open, setOpen, changePackage, projects
                                     </Box>
                                 </Box>
                             </Box>
-                            {/* description */}
-                            <Box sx={{boxSizing:'border-box', pb:'1rem'}}>
-                                <Typography variant="h6" >Description:</Typography>
-                                <Typography 
-                                    variant="body1" color='primary' 
-                                    sx={{
-                                        whiteSpace: 'pre-wrap',
-                                        wordBreak: 'break-word',
-                                        maxHeight:'5.25rem',
-                                        display: '-webkit-box',
-                                        overflow: 'scroll',
-                                        WebkitBoxOrient: 'vertical',
-                                    }}
-                                    >
-                                    {changePackage?.description}
-                                </Typography>
+                            {/* description and tags */}
+                            <Box sx={{boxSizing:'border-box', pb:'1rem', display:'flex'}}>
+                                {/* description */}
+                                <Box>
+                                    <Typography variant="h6" >Description:</Typography>
+                                    <Typography 
+                                        variant="body1" color='primary' 
+                                        sx={{
+                                            whiteSpace: 'pre-wrap',
+                                            wordBreak: 'break-word',
+                                            maxHeight:'5.25rem',
+                                            display: '-webkit-box',
+                                            overflow: 'scroll',
+                                            WebkitBoxOrient: 'vertical',
+                                        }}
+                                        >
+                                        {changePackage?.description}
+                                    </Typography>
+                                </Box>
+                                {/* tags */}
+                                <Box sx={{width:'199.44px', minWidth:'199.44px'}}>
+                                    <Typography variant="h6" >Tags:</Typography>
+                                    <Box sx={{width:'100%', maxHeight:'5.25rem', overflow:'scroll'}}>
+                                        <Box sx={{display:'flex', flexWrap:'wrap'}}>
+                                            {/* primary */}
+                                            {changePackage?.tags.p?.map((v,i) => (
+                                                <Box key={i} sx={{boxSizing:'border-box', display:'flex', p:'.125rem'}}>
+                                                    <Chip 
+                                                        label={v} size="small" 
+                                                        sx={{
+                                                            backgroundColor:'royalBlue', color:'common.white',
+                                                        }} 
+                                                        />
+                                                </Box>
+                                            ))}
+                                            {/* secondary */}
+                                            {changePackage?.tags.s?.map((v,i) => (
+                                                <Box key={i} sx={{boxSizing:'border-box', display:'flex', p:'.125rem'}}>
+                                                    <Chip 
+                                                        label={v} size="small" 
+                                                        sx={{
+                                                            backgroundColor:'forestGreen', color:'common.white',
+                                                        }} 
+                                                        />
+                                                </Box>
+                                            ))}
+                                        </Box>
+                                    </Box>
+                                </Box>
                             </Box>
                             <Divider />
                             {/* list of change idea reviews */}
@@ -168,7 +196,7 @@ export default function ViewPackageModal({open, setOpen, changePackage, projects
                                                 {/* team name */}
                                                 <Typography variant="body1" sx={{fontWeight:'bold', mr:'.5rem'}}>{v.team_name}</Typography>
                                                 {/* project name */}
-                                                <Typography variant="body1" color="textSecondary" noWrap sx={{fontWeight:'bold'}}>{v.project_name}</Typography>
+                                                <Typography variant="body1" color="textSecondary" noWrap>{v.project_name}</Typography>
                                                 {/* rating */}
                                                 <Rating 
                                                     value={v.rating} 

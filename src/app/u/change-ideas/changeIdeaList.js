@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
+import Chip from '@mui/material/Chip';
+
 
 
 
@@ -46,17 +48,51 @@ export default function ChangeIdeaList({changePackages, projects}) {
             field: 'rating', 
             headerName: 'Rating', 
             renderCell: (params) => (
-                <Rating 
+                <Box sx={{height:'100%', display:'flex', alignItems:'center'}}>
+                    <Rating 
                     value={params.formattedValue} 
                     readOnly 
                     icon={<StarRoundedIcon fontSize='inherit' />}
                     emptyIcon={<StarOutlineRoundedIcon fontSize='inherit'  />}
                     precision={.5}
                     />
+                </Box>
             ),
             flex:1 
         },
         { field: 'num_cycles', headerName: '# of Cycles', flex:1 },
+        { 
+            field: 'tags', 
+            headerName: 'Tags', 
+            valueGetter: (value, row) => [...(value.p||[]), ...(value.s||[])].join(' '),
+            renderCell: (params) => (
+                <Box sx={{width:'100%', overflow:'scroll'}}>
+                    <Box sx={{display:'flex', flexWrap:'wrap'}}>
+                        {params.row.tags.p?.map((v,i) => (
+                            <Box key={i} sx={{boxSizing:'border-box', display:'flex', p:'.125rem'}}>
+                                <Chip 
+                                    label={v} size="small" 
+                                    sx={{
+                                        backgroundColor:'royalBlue', color:'common.white',
+                                    }} 
+                                    />
+                            </Box>
+                        ))}
+                        {params.row.tags.s?.map((v,i) => (
+                            <Box key={i} sx={{boxSizing:'border-box', display:'flex', p:'.125rem'}}>
+                                <Chip 
+                                    label={v} size="small" 
+                                    sx={{
+                                        backgroundColor:'forestGreen', color:'common.white',
+                                    }} 
+                                    />
+                            </Box>
+                        ))}
+                    </Box>
+                </Box>
+            ),
+            flex:1 
+        },
     ]
 
     const rows = changePackages?.map((cp,i) => ({
@@ -65,22 +101,8 @@ export default function ChangeIdeaList({changePackages, projects}) {
         description: cp.description,
         rating: cp.rating,
         num_cycles: cp.num_cycles,
+        tags: {p: cp.primary_drivers, s: cp.secondary_drivers},
     }));
-
-    // converts time to readable date
-    function readableDate(timestampz) {
-        if (timestampz===null) return '';
-        // Convert to a Date object
-        const date = new Date(timestampz);
-    
-        // Get month, day, and year
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-        const day = String(date.getDate()).padStart(2, '0');
-        const year = date.getFullYear();
-    
-        // Return formatted date
-        return `${month}-${day}-${year}`;
-    }
 
     
 
