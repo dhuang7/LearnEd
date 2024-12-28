@@ -2,7 +2,9 @@
 
 import createClient from "@/utils/supabase/client";
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
+import Rating from "@mui/material/Rating";
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 
 
 
@@ -14,14 +16,14 @@ import {
     GridToolbarQuickFilter
 } from '@mui/x-data-grid';
 import { useState } from "react";
+import ViewPackageModal from "./viewPackageModal";
 
 
 
-export default function ChangeIdeaList({cycles, changeIdeas, aimId}) {
+export default function ChangeIdeaList({changePackages, projects}) {
     const supabase = createClient();
     const [open, setOpen] = useState(false);
-    const [currCycles, setCurrCycles] = useState(cycles);
-    const [cycle, setCycle] = useState(null);
+    const [changePackage, setChangePackage] = useState(null);
     const color = {
         'Plan': 'Chocolate',
         'Do': 'RoyalBlue',
@@ -33,45 +35,36 @@ export default function ChangeIdeaList({cycles, changeIdeas, aimId}) {
     // handlers
     function handleOpenCycle(params, event, details) {
         setOpen(true);
-        setCycle(params.row.cycle)
+        setChangePackage(params.row)
     } 
     
     const columns = [
         // {field: 'id', headerName: 'id', flex:0 },
         { field: 'name', headerName: 'Change Name', flex:1 },
+        { field: 'description', headerName: 'Description', flex:2 },
         { 
-            field: 'user', 
-            headerName: 'User', 
+            field: 'rating', 
+            headerName: 'Rating', 
             renderCell: (params) => (
-                <Chip size='small' label={params.formattedValue} sx={{backgroundColor:'grey.500', color:'common.white'}} />
+                <Rating 
+                    value={params.formattedValue} 
+                    readOnly 
+                    icon={<StarRoundedIcon fontSize='inherit' />}
+                    emptyIcon={<StarOutlineRoundedIcon fontSize='inherit'  />}
+                    precision={.5}
+                    />
             ),
-            flex:1
+            flex:1 
         },
-        { field: 'description', headerName: 'Description', flex:1 },
-        { 
-            field: 'stage', 
-            headerName: 'Stage', 
-            valueFormatter: (str) => str.charAt(0).toUpperCase() + str.slice(1),
-            renderCell: (params) => (
-                <Chip size="small" label={params.formattedValue} sx={{backgroundColor:color[params.formattedValue], color:'common.white'}} />
-            ),
-            flex:1
-        },
-        { field: 'objective', headerName: 'Cycle Objective', flex:2 },
-        { field: 'plan_due_date', headerName: 'Due Date', valueFormatter: readableDate, flex:1 },
-        { field: 'act_choice', headerName: 'Next Step', flex:1 },
+        { field: 'num_cycles', headerName: '# of Cycles', flex:1 },
     ]
 
-    const rows = currCycles?.map((cycle) => ({
-        id: cycle.id,
-        name: cycle.change_ideas.change_packages.name,
-        user: cycle.user_email,
-        description: cycle.change_ideas.change_packages.description,
-        stage: cycle.stage,
-        objective: cycle.objective,
-        plan_due_date: cycle.plan_due_date,
-        act_choice: cycle.act_choice,
-        cycle,
+    const rows = changePackages?.map((cp,i) => ({
+        id: cp.id,
+        name: cp.name,
+        description: cp.description,
+        rating: cp.rating,
+        num_cycles: cp.num_cycles,
     }));
 
     // converts time to readable date
@@ -100,7 +93,7 @@ export default function ChangeIdeaList({cycles, changeIdeas, aimId}) {
                 // checkboxSelection
                 autoPageSize
                 onRowClick={handleOpenCycle}
-                slots={{ toolbar: () => <CustomToolbar setCurrCycles={setCurrCycles} aimId={aimId} changeIdeas={changeIdeas}/> }}
+                slots={{ toolbar: () => <CustomToolbar /> }}
                 slotProps={{
                     toolbar: {
                         showQuickFilter: true,
@@ -118,18 +111,17 @@ export default function ChangeIdeaList({cycles, changeIdeas, aimId}) {
                     backgroundColor:'common.white',
                 }}
                 />
-            {/* <EditCycleModal cycle={cycle} setCurrCycles={setCurrCycles} aimId={aimId} changeIdeas={changeIdeas} open={open} setOpen={setOpen}  /> */}
+            <ViewPackageModal open={open} setOpen={setOpen} changePackage={changePackage} projects={projects} />
         </Box>
     )
 }
 
 
-export function CustomToolbar({setCurrCycles, aimId, changeIdeas}) {
+export function CustomToolbar() {
     return (
         <GridToolbarContainer>
             <GridToolbarColumnsButton />
             <GridToolbarFilterButton />
-            {/* <AddCycleModal setCurrCycles={setCurrCycles} aimId={aimId} changeIdeas={changeIdeas} /> */}
             <GridToolbarQuickFilter variant="standard" sx={{p:0, ml:'auto'}}/>
         </GridToolbarContainer>
     );

@@ -231,7 +231,6 @@ export default function CustomNode({
                                 sx={{
                                     whiteSpace: 'pre-wrap',
                                     wordBreak: 'break-word',
-                                    overflow:'scroll',
                                     maxHeight:'100%',
                                     display: '-webkit-box',
                                     WebkitLineClamp: title==='Change Idea' ? 2 : 3,

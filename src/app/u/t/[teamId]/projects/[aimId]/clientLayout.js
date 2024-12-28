@@ -50,10 +50,11 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                     {/* tabs and select */}
                     <Box sx={{ml:'auto', display:'flex', alignItems:'center'}}>
                         {/* select project */}
-                        <Box sx={{width:'7.5rem', boxSizing:'border-box', pr:'.5rem'}}>
+                        <Box sx={{width:'10rem', boxSizing:'border-box', pr:'.5rem'}}>
                             <TextField
                                 select
                                 value={project}
+                                label='Projects'
                                 onChange={handleSelectProject}
                                 fullWidth
                                 slotProps={{
