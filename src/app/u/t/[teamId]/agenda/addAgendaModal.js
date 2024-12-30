@@ -37,8 +37,8 @@ export default function AddAgendaModal({teamId}) {
     const [focusText, setFocusText] = useState('');
     const [endTimeText, setEndTimeText] = useState(initTime.add(1, 'h'));
     const [startTimeText, setStartTimeText] = useState(initTime);
-    const [openStartTime, setOpenStartTime] = useState(false);
-    const [openEndTime, setOpenEndTime] = useState(false);
+    // const [openStartTime, setOpenStartTime] = useState(false);
+    // const [openEndTime, setOpenEndTime] = useState(false);
     const [topics, setTopics] = useState([]);
     const [errorText, setErrorText] = useState('');
 
@@ -196,8 +196,8 @@ export default function AddAgendaModal({teamId}) {
                                         disabled={loading}
                                         value={startTimeText}
                                         onChange={handleStartTimeText}
-                                        onAccept={() => setOpenStartTime(false)}
-                                        open={openStartTime}
+                                        // onAccept={() => setOpenStartTime(false)}
+                                        // open={openStartTime}
                                         viewRenderers={{
                                             hours: renderTimeViewClock,
                                             minutes: renderTimeViewClock,
@@ -207,12 +207,12 @@ export default function AddAgendaModal({teamId}) {
                                             actionBar: {
                                                 actions:['today']
                                             },
-                                            textField: {
-                                                onClick: () => setOpenStartTime(true),
-                                            },
-                                            openPickerButton: {
-                                                onClick: (e) => e.stopPropagation() || setOpenStartTime(t=>!t),
-                                            },
+                                            // textField: {
+                                            //     onClick: () => setOpenStartTime(true),
+                                            // },
+                                            // openPickerButton: {
+                                            //     onClick: (e) => e.stopPropagation() || setOpenStartTime(t=>!t),
+                                            // },
                                         }}
                                         />
                                 </Box>
@@ -223,8 +223,8 @@ export default function AddAgendaModal({teamId}) {
                                         disabled={loading}
                                         value={endTimeText}
                                         onChange={handleEndTimeText}
-                                        onAccept={() => setOpenEndTime(false)}
-                                        open={openEndTime}
+                                        // onAccept={() => setOpenEndTime(false)}
+                                        // open={openEndTime}
                                         viewRenderers={{
                                             hours: renderTimeViewClock,
                                             minutes: renderTimeViewClock,
@@ -234,12 +234,12 @@ export default function AddAgendaModal({teamId}) {
                                             actionBar: {
                                                 actions:['today']
                                             },
-                                            textField: {
-                                                onClick: () => setOpenEndTime(true),
-                                            },
-                                            openPickerButton: {
-                                                onClick: (e) => e.stopPropagation() || setOpenEndTime(t=>!t),
-                                            },
+                                            // textField: {
+                                            //     onClick: () => setOpenEndTime(true),
+                                            // },
+                                            // openPickerButton: {
+                                            //     onClick: (e) => e.stopPropagation() || setOpenEndTime(t=>!t),
+                                            // },
                                         }}
                                         />
                                 </Box>
