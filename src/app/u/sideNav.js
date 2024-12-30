@@ -110,13 +110,13 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                                     Agenda
                                 </Typography>
                             </CustomNavButton>
-                            {/* <CustomNavButton path={`/u/t/${teamInfo.id}/calendar`} tip='Calendar'>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/calendar`} tip='Calendar'>
                                 <CalendarMonthRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Calendar
                                 </Typography>
                             </CustomNavButton>
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/tasks`} tip='Tasks'>
+                            {/* <CustomNavButton path={`/u/t/${teamInfo.id}/tasks`} tip='Tasks'>
                                 <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Tasks
