@@ -15,6 +15,8 @@ import createClient from "@/utils/supabase/client";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import theme from "@/app/theme";
 import {createProfile} from './createProfileAction';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 
 export default function Navbars({children}) {
@@ -78,73 +80,75 @@ export default function Navbars({children}) {
     
 
     return (
-        <TeamContext.Provider value={[teamInfo, setTeamInfo, aimInfo, setAimInfo]}>
-            <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
-                {/* top navbar */}
-                <Box sx={{width:'100%'}}>
-                    <TopNav handleOpen={handleOpen} />
-                </Box>
-                {/* rest */}
-                <Box flexGrow={1} sx={{overflow:'hidden'}}>
-                    <Box sx={{width:'100%', height:'100%', display:'flex', overflow:'hidden'}}>
-                        {/* side drawer */}
-                        <Box sx={{height:'100%'}}>
-                            <SideNav open={open} teamInfo={teamInfo} aimInfo={aimInfo} />
-                        </Box>
-                        {/* rest */}
-                        <Box flexGrow={1} sx={{ overflow:'hidden' }}>
-                            {/* ------ MAIN CONTENT ------ */}
-                            <Box sx={{width:'100%', height:'100%', backgroundColor:'grey.100'}}>
-                                {children}
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TeamContext.Provider value={[teamInfo, setTeamInfo, aimInfo, setAimInfo]}>
+                <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
+                    {/* top navbar */}
+                    <Box sx={{width:'100%'}}>
+                        <TopNav handleOpen={handleOpen} />
+                    </Box>
+                    {/* rest */}
+                    <Box flexGrow={1} sx={{overflow:'hidden'}}>
+                        <Box sx={{width:'100%', height:'100%', display:'flex', overflow:'hidden'}}>
+                            {/* side drawer */}
+                            <Box sx={{height:'100%'}}>
+                                <SideNav open={open} teamInfo={teamInfo} aimInfo={aimInfo} />
+                            </Box>
+                            {/* rest */}
+                            <Box flexGrow={1} sx={{ overflow:'hidden' }}>
+                                {/* ------ MAIN CONTENT ------ */}
+                                <Box sx={{width:'100%', height:'100%', backgroundColor:'grey.100'}}>
+                                    {children}
+                                </Box>
                             </Box>
                         </Box>
                     </Box>
+                    {/* profile completion dialog */}
+                    <Dialog
+                        open={!hasProfile}
+                        maxWidth='sm'
+                        fullWidth
+                        fullScreen={fullScreen}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                        >
+                        <form onSubmit={handleSubmit}>
+                            {/* title */}
+                            <DialogTitle id="alert-dialog-title">
+                                Finish your profile
+                            </DialogTitle>
+                            {/* content */}
+                            <DialogContent>
+                                <Box sx={{pt:1}}>
+                                    {/* first name */}
+                                    <TextField 
+                                        required
+                                        label='First Name'
+                                        value={firstName}
+                                        onChange={handleFirstName}
+                                        sx={{width:'100%', mb:'1rem'}}
+                                        />
+                                    {/* last name */}
+                                    <TextField 
+                                        required
+                                        label='Last Name'
+                                        value={lastName}
+                                        onChange={handleLastName}
+                                        sx={{width:'100%'}}
+                                        />
+                                </Box>
+                            </DialogContent>
+                            {/* button save */}
+                            <DialogActions>
+                                <Button type='submit' autoFocus>
+                                    Save
+                                </Button>
+                            </DialogActions>
+                        </form>
+                    </Dialog>
                 </Box>
-                {/* profile completion dialog */}
-                <Dialog
-                    open={!hasProfile}
-                    maxWidth='sm'
-                    fullWidth
-                    fullScreen={fullScreen}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                    >
-                    <form onSubmit={handleSubmit}>
-                        {/* title */}
-                        <DialogTitle id="alert-dialog-title">
-                            Finish your profile
-                        </DialogTitle>
-                        {/* content */}
-                        <DialogContent>
-                            <Box sx={{pt:1}}>
-                                {/* first name */}
-                                <TextField 
-                                    required
-                                    label='First Name'
-                                    value={firstName}
-                                    onChange={handleFirstName}
-                                    sx={{width:'100%', mb:'1rem'}}
-                                    />
-                                {/* last name */}
-                                <TextField 
-                                    required
-                                    label='Last Name'
-                                    value={lastName}
-                                    onChange={handleLastName}
-                                    sx={{width:'100%'}}
-                                    />
-                            </Box>
-                        </DialogContent>
-                        {/* button save */}
-                        <DialogActions>
-                            <Button type='submit' autoFocus>
-                                Save
-                            </Button>
-                        </DialogActions>
-                    </form>
-                </Dialog>
-            </Box>
-        </TeamContext.Provider>
+            </TeamContext.Provider>
+        </LocalizationProvider>
     )
 }
 

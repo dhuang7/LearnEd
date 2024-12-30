@@ -14,7 +14,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+import dayjs from 'dayjs';
 
 
 
@@ -28,18 +30,21 @@ import { useRouter } from "next/navigation";
 export default function AddAgendaModal({teamId}) {
     const supabase = createClient();
     const router = useRouter();
+    const initTime = dayjs();
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [focusText, setFocusText] = useState('');
-    const [endTimeText, setEndTimeText] = useState('');
-    const [startTimeText, setStartTimeText] = useState('');
+    const [endTimeText, setEndTimeText] = useState(initTime.add(1, 'h'));
+    const [startTimeText, setStartTimeText] = useState(initTime);
+    const [openStartTime, setOpenStartTime] = useState(false);
+    const [openEndTime, setOpenEndTime] = useState(false);
     const [topics, setTopics] = useState([]);
     const [errorText, setErrorText] = useState('');
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
-        if (!isPending) {
+        if (!isPending && loading) {
             handleCancel();
             setLoading(false);
         }
@@ -61,8 +66,8 @@ export default function AddAgendaModal({teamId}) {
         // handle remove everything
         handleClose();
         setFocusText('');
-        setEndTimeText('');
-        setStartTimeText('');
+        setEndTimeText(initTime.add(1, 'h'));
+        setStartTimeText(initTime);
         setTopics([]);
     }
 
@@ -71,12 +76,13 @@ export default function AddAgendaModal({teamId}) {
         setFocusText(target.value);
     }
 
-    function handleStartTimeText({target}) {
-        setStartTimeText(target.value);
+    function handleStartTimeText(newValue) {
+        setStartTimeText(newValue);
+        setEndTimeText(newValue.add(endTimeText.diff(startTimeText)||3600000, 'milliseconds'));
     }
 
-    function handleEndTimeText({target}) {
-        setEndTimeText(target.value);
+    function handleEndTimeText(newValue) {
+        setEndTimeText(newValue);
     }
 
     // handle submit
@@ -89,8 +95,8 @@ export default function AddAgendaModal({teamId}) {
         const {data, error} = await supabase.rpc('insert_agenda_with_topics', {
             focus: focusText,
             team_id: teamId,
-            start_time: (new Date(startTimeText).toISOString()),
-            end_time: (new Date(endTimeText).toISOString()),
+            start_time: startTimeText.toISOString(),
+            end_time: endTimeText.toISOString(),
             topics: topics,
         });
 
@@ -100,11 +106,6 @@ export default function AddAgendaModal({teamId}) {
             router.refresh();
         })
     }
-
-    function handleShowPicker({target}) {
-        target.showPicker?.();
-    }
-
 
     return (
         <>
@@ -190,44 +191,56 @@ export default function AddAgendaModal({teamId}) {
                             {/* add start time */}
                             <Box sx={{display:'flex', mb:'1rem'}}>
                                 <Box sx={{width:'50%', boxSizing:'border-box', pr:'.25rem'}}>
-                                    <TextField 
+                                    <DateTimePicker
+                                        label="Start Time"
                                         disabled={loading}
-                                        label='Start Time'
-                                        type='datetime-local'
                                         value={startTimeText}
-                                        required
                                         onChange={handleStartTimeText}
-                                        onFocus={handleShowPicker}
-                                        fullWidth
-                                        error={errorText}
-                                        helperText={errorText}
-                                        slotProps={{
-                                            inputLabel: {
-                                                shrink:true,
-                                            }
+                                        onAccept={() => setOpenStartTime(false)}
+                                        open={openStartTime}
+                                        viewRenderers={{
+                                            hours: renderTimeViewClock,
+                                            minutes: renderTimeViewClock,
+                                            seconds: renderTimeViewClock,
                                         }}
-                                        
+                                        slotProps={{
+                                            actionBar: {
+                                                actions:['today']
+                                            },
+                                            textField: {
+                                                onClick: () => setOpenStartTime(true),
+                                            },
+                                            openPickerButton: {
+                                                onClick: (e) => e.stopPropagation() || setOpenStartTime(t=>!t),
+                                            },
+                                        }}
                                         />
                                 </Box>
                                 {/* add end time */}
                                 <Box sx={{width:'50%', boxSizing:'border-box', pl:'.25rem'}}>
-                                    <TextField 
+                                    <DateTimePicker
+                                        label="End Time"
                                         disabled={loading}
-                                        label='End Time'
-                                        type='datetime-local'
                                         value={endTimeText}
                                         onChange={handleEndTimeText}
-                                        onFocus={handleShowPicker}
-                                        fullWidth
-                                        required
-                                        error={errorText}
-                                        helperText={errorText}
-                                        slotProps={{
-                                            inputLabel: {
-                                                shrink:true,
-                                            }
+                                        onAccept={() => setOpenEndTime(false)}
+                                        open={openEndTime}
+                                        viewRenderers={{
+                                            hours: renderTimeViewClock,
+                                            minutes: renderTimeViewClock,
+                                            seconds: renderTimeViewClock,
                                         }}
-                                        
+                                        slotProps={{
+                                            actionBar: {
+                                                actions:['today']
+                                            },
+                                            textField: {
+                                                onClick: () => setOpenEndTime(true),
+                                            },
+                                            openPickerButton: {
+                                                onClick: (e) => e.stopPropagation() || setOpenEndTime(t=>!t),
+                                            },
+                                        }}
                                         />
                                 </Box>
                             </Box>
