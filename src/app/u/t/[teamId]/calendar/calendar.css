@@ -9,21 +9,26 @@
 .fc-scrollgrid {
     border: 0px !important;
 }
+.fc-scrollgrid-section > * {
+    border-width: 0px !important;
+}
 
-/* aligns all the times to the top of cell */
+/* aligns all the times to the top of cell and a little more */
 .fc-timegrid-slot-label {
     vertical-align: top !important;
     border: 0px !important;
 }
-
 .fc-timegrid-slot-label-frame {
     position: relative !important;
     top: -0.75rem !important;
 }
 
-/* reduces the height of the all day row */
+/* edits all day row */
 .fc-daygrid-day-events {
     min-height: 0 !important;
+}
+.fc-daygrid-body-natural {
+    border-bottom: 1px solid #ddd !important;
 }
 
 /* removes the border of the entire top header */
@@ -35,8 +40,19 @@
 .fc-timegrid-divider {
     display: none !important;
 }
+.fc-scrollgrid-section {
+    height: 0px !important;
+}
 
 /* reduces the margin between the button tool bar and rest of calendar */
 .fc-header-toolbar {
     margin-bottom: .5em !important;
+    /* display: none !important; */
 }
+
+/* change month view date */
+.fc-daygrid-day-top {
+    flex-direction: row !important;
+    font-size: small !important;
+}
+
