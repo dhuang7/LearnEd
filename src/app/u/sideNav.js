@@ -62,12 +62,12 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                     {/* <CustomNavButton path='/u/dashboard' tip='Dashboard'>
                         <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Dashboard
-                    </CustomNavButton>
+                    </CustomNavButton> */}
                     <CustomNavButton path='/u/calendar' tip='Calendar'>
                         <CalendarMonthRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Calendar
                     </CustomNavButton>
-                    <CustomNavButton path='/u/tasks' tip='Tasks'>
+                    {/* <CustomNavButton path='/u/tasks' tip='Tasks'>
                         <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Tasks
                     </CustomNavButton> */}
@@ -110,12 +110,12 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                                     Agenda
                                 </Typography>
                             </CustomNavButton>
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/calendar`} tip='Calendar'>
+                            {/* <CustomNavButton path={`/u/t/${teamInfo.id}/calendar`} tip='Calendar'>
                                 <CalendarMonthRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Calendar
                                 </Typography>
-                            </CustomNavButton>
+                            </CustomNavButton> */}
                             {/* <CustomNavButton path={`/u/t/${teamInfo.id}/tasks`} tip='Tasks'>
                                 <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>

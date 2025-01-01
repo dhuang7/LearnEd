@@ -1,14 +1,24 @@
 import Box from "@mui/material/Box";
 
 
+import createClient from "@/utils/supabase/server";
+import PageContent from "./pageContent";
 
-export default function Calendar() {
 
-    
+
+
+export default async function Calendar() {
+
+    // const supabase = await createClient();
+
+    // const {data: agendas, error: agendasError} = await supabase
+    //     .from('agendas')
+    //     .select()
+    //     .eq('team_id', teamId);
 
     return (
-        <Box>
-            Calendar
+        <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
+            <PageContent />
         </Box>
     )
 }

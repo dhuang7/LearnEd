@@ -18,18 +18,12 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 
 import './calendar.css';
 import dayjs from 'dayjs';
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
 
 
 
-const CalendarPage = forwardRef(({agendas}, ref) => {
-
-    const agendaEvents = agendas.map(v => ({
-        title: v.focus,
-        start: v.start_time,
-        end: v.end_time,
-    }));
+const CalendarPage = forwardRef((props, ref) => {
 
     return (
         <Paper 
@@ -61,7 +55,7 @@ const CalendarPage = forwardRef(({agendas}, ref) => {
                 slotLabelContent={slotLabelContent}
                 allDayContent={allDayContent}
                 events={[
-                    ...agendaEvents,
+
                 ]}
                 />
         </Paper>
