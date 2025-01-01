@@ -101,7 +101,7 @@ export default function AddEventModal() {
                     {/* content */}
                     <DialogContent>
                         <Box sx={{pt:1}}>
-                            
+                            (Work in progress)
                         </Box>
                     </DialogContent>
                     {/* buttons */}

@@ -28,6 +28,7 @@ export default function SideMenuCalendar() {
                         height:'auto',
                     }}
                     />
+                (work in progress)
             </Box>
         </Paper>
     );
