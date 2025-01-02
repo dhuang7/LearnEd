@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import CalendarPage from "./calendarPage";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddEventModal from "./addEventModal";
 import SideMenuCalendar from "./sideMenuCalendar";
 
@@ -13,6 +13,16 @@ import SideMenuCalendar from "./sideMenuCalendar";
 
 export default function PageContent() {
     const calendarRef = useRef();
+    const [calendar, setCalendar] = useState();
+    const [rerender, setRerender] = useState();
+
+    useEffect(() => {
+        setCalendar(calendarRef.current?.getApi());
+    }, [calendarRef.current])
+
+    function handleRerender() {
+        setRerender(r=>!r);
+    }
 
     return (
         <>
@@ -27,14 +37,14 @@ export default function PageContent() {
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex'}}>
                     {/* side dash */}
-                    <Box sx={{width:'20%', height:'100%', pt:'.5rem', pb:'1rem', pl:'1rem', pr:'.5rem', boxSizing:'border-box'}}>
+                    <Box sx={{width:'17.5rem', height:'100%', pt:'.5rem', pb:'1rem', pl:'1rem', pr:'.5rem', boxSizing:'border-box'}}>
                         {/* side calendar */}
-                        <SideMenuCalendar />
+                        <SideMenuCalendar calendar={calendar} rerender={rerender} handleRerender={handleRerender} />
                     </Box>
                     {/* Main calendar */}
                     <Box sx={{flexGrow:1, height:'100%', overflow:'hidden'}}>
                         <Box sx={{width:'100%', height:'100%', pt:'.5rem', pr:'1rem', pl:'.5rem', boxSizing:'border-box', pb:'1rem'}}>
-                            <CalendarPage ref={calendarRef} />
+                            <CalendarPage ref={calendarRef} calendar={calendar} handleRerender={handleRerender} />
                         </Box>
                     </Box>
                 </Box>

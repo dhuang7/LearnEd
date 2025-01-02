@@ -23,7 +23,7 @@ import { forwardRef, useEffect, useState } from "react";
 
 
 
-const CalendarPage = forwardRef((props, ref) => {
+const CalendarPage = forwardRef(({calendar, handleRerender}, ref) => {
 
     return (
         <Paper 
@@ -34,7 +34,7 @@ const CalendarPage = forwardRef((props, ref) => {
                 display:'flex', flexDirection:'column'
             }}
             >
-            <CustomToolbar calendarRef={ref} />
+            <CustomToolbar calendar={calendar} handleRerender={handleRerender} />
             <FullCalendar
                 ref={ref}
                 plugins={[ dayGridPlugin, timeGridPlugin ]}
@@ -113,22 +113,16 @@ function allDayContent(args) {
     );
 }
 
-function CustomToolbar({calendarRef}) {
-    const [calendar, setCalendar] = useState();
-    const [rerender, setRerender] = useState(false);
+function CustomToolbar({calendar, handleRerender}) {
     const [currentView, setCurrentView] = useState("timeGridWeek");
 
-    useEffect(() => {
-        setCalendar(calendarRef.current?.getApi());
-    }, [calendarRef, rerender]);
-
     function handlePref() {
-        setRerender(r=>!r);
+        handleRerender();
         calendar?.prev();
     }
 
     function handleNext() {
-        setRerender(r=>!r);
+        handleRerender();
         calendar?.next();
     }
 
@@ -138,7 +132,7 @@ function CustomToolbar({calendarRef}) {
     }
 
     function handleToday() {
-        setRerender(r=>!r);
+        handleRerender();
         calendar?.today();
     }
 

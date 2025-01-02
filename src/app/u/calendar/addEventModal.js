@@ -89,6 +89,7 @@ export default function AddEventModal() {
                 maxWidth='sm'
                 fullWidth
                 fullScreen={fullScreen}
+                onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 >
