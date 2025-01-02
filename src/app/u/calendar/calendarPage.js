@@ -45,6 +45,7 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
                 title: v.title,
                 editable: true,
                 eventObj: v,
+                allDay: Math.abs(dayjs(v.start_time).diff(dayjs(v.end_time), 'hour')) >= 24,
             })))
         }
     });
@@ -108,7 +109,9 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
                 eventClick={handleEventClicked}
                 views={{
                     timeGrid: {
-                        titleFormat: { year: 'numeric', month: 'short' }
+                        titleFormat: { year: 'numeric', month: 'short' },
+                        dayMaxEventRows: 3,
+                        dayMaxEvents: false,
                     }
                 }}
                 headerToolbar='false'

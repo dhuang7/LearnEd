@@ -37,7 +37,7 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
     const [endTimeText, setEndTimeText] = useState(initTime.add(1, 'h'));
     const [startTimeText, setStartTimeText] = useState(initTime);
     const [descriptionText, setDescriptionText] = useState('');
-    const [calendarIdText, setCalendarIdText] = useState(calendarData?.[0].calendars.id);
+    const [calendarIdText, setCalendarIdText] = useState(calendarData?.[0]?.calendars.id);
 
 
     useEffect(() => {
@@ -70,7 +70,7 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
 
     function handleCancel() {
         handleClose();
-        setCalendarIdText(calendarData?.[0].calendars.id);
+        setCalendarIdText(calendarData?.[0]?.calendars.id);
         setTitleText('');
         const newTime = dayjs();
         setEndTimeText(newTime.add(1, 'h'));

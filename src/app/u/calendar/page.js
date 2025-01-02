@@ -27,8 +27,7 @@ export default async function Calendar() {
         .eq('user_id', user.id)
         .order('calendar_id');
 
-    // console.log(calendarData);
-    // console.log(calendarDataErrors)
+    
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>

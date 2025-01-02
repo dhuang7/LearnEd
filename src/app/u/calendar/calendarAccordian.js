@@ -35,7 +35,7 @@ export default function CalendarAccordian({calendarData, user}) {
                 {/* text */}
                 <Typography variant="body2" sx={{fontWeight:'bold', mr:'auto'}}>My Calendars</Typography>
                 {/* add calendar */}
-                <AddCalendarModal />
+                <AddCalendarModal defaultOpen={!calendarData.length} />
             </AccordionSummary>
             {/* expanded content */}
             <AccordionDetails sx={{py:0,}}>

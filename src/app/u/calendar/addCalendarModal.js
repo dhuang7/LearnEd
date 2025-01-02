@@ -22,11 +22,11 @@ import { useRouter } from "next/navigation";
 
 
 
-export default function AddCalendarModal() {
+export default function AddCalendarModal({defaultOpen}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(defaultOpen||false);
     const [loading, setLoading] = useState(false);
     const [nameText, setNameText] = useState('');
     const [descriptionText, setDescriptionText] = useState('');
@@ -53,6 +53,7 @@ export default function AddCalendarModal() {
         setOpen(false);
         setNameText('');
         setDescriptionText('');
+        if (defaultOpen) router.back();
     }
 
     function handleNameText({target}) {
