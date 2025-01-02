@@ -173,8 +173,6 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
                 }}
                 onClose={handleClose}
                 elevation={5}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
                 PaperProps={{
                     sx: {
                         width:{xs:'100%', md:'35rem'},

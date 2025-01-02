@@ -68,6 +68,7 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
     }
 
     async function handleCreateEvent(info) {
+        console.log(info);
         setEvent({
             title:'',
             description: '',
