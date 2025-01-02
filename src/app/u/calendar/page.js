@@ -11,14 +11,28 @@ export default async function Calendar() {
 
     const supabase = await createClient();
 
-    const {data: agendas, error: agendasError} = await supabase
-        .from('agendas')
-        .select()
-        // .eq('team_id', teamId);
+    const { data: [user] } = await supabase
+        .from('profiles')
+        .select();
+
+    const {data: calendarData, error: calendarDataErrors} = await supabase
+        .from('calendar_memberships')
+        .select(`
+            *,
+            calendars(
+                *,
+                events(*)
+            )
+        `)
+        .eq('user_id', user.id)
+        .order('calendar_id');
+
+    // console.log(calendarData);
+    // console.log(calendarDataErrors)
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
-            <PageContent />
+            <PageContent calendarData={calendarData} user={user} />
         </Box>
     )
 }

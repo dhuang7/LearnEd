@@ -5,13 +5,13 @@ import Typography from "@mui/material/Typography";
 
 import CalendarPage from "./calendarPage";
 import { useEffect, useRef, useState } from "react";
-import AddEventModal from "./addEventModal";
 import SideMenuCalendar from "./sideMenuCalendar";
+import AddEventSideview from "./addEventSideview";
 
 
 
 
-export default function PageContent() {
+export default function PageContent({calendarData, user}) {
     const calendarRef = useRef();
     const [calendar, setCalendar] = useState();
     const [rerender, setRerender] = useState();
@@ -30,7 +30,7 @@ export default function PageContent() {
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                     <Typography variant='h4'>Calendar</Typography>
-                    <AddEventModal />
+                    <AddEventSideview calendarData={calendarData} user={user} />
                 </Box>
             </Box>
             {/* norms */}
@@ -39,12 +39,17 @@ export default function PageContent() {
                     {/* side dash */}
                     <Box sx={{width:'17.5rem', height:'100%', pt:'.5rem', pb:'1rem', pl:'1rem', pr:'.5rem', boxSizing:'border-box'}}>
                         {/* side calendar */}
-                        <SideMenuCalendar calendar={calendar} rerender={rerender} handleRerender={handleRerender} />
+                        <SideMenuCalendar 
+                            calendar={calendar} 
+                            rerender={rerender} handleRerender={handleRerender} 
+                            calendarData={calendarData} 
+                            user={user}
+                            />
                     </Box>
                     {/* Main calendar */}
                     <Box sx={{flexGrow:1, height:'100%', overflow:'hidden'}}>
                         <Box sx={{width:'100%', height:'100%', pt:'.5rem', pr:'1rem', pl:'.5rem', boxSizing:'border-box', pb:'1rem'}}>
-                            <CalendarPage ref={calendarRef} calendar={calendar} handleRerender={handleRerender} />
+                            <CalendarPage ref={calendarRef} user={user} calendar={calendar} calendarData={calendarData} handleRerender={handleRerender} />
                         </Box>
                     </Box>
                 </Box>

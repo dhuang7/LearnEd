@@ -5,16 +5,13 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AddCalendarModal from './addCalendarModal';
+
+import CalendarMenuItem from './calendarMenuItem';
 
 
 
-export default function CalendarAccordian() {
-
-    function handleAddCalendar(e) {
-        e.stopPropagation();
-    }
+export default function CalendarAccordian({calendarData, user}) {
 
     return (
         <Accordion
@@ -24,6 +21,7 @@ export default function CalendarAccordian() {
                 boxShadow:0,
             }}
             >
+            {/* title */}
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 sx={{
@@ -34,12 +32,16 @@ export default function CalendarAccordian() {
                     }
                 }}
                 >
+                {/* text */}
                 <Typography variant="body2" sx={{fontWeight:'bold', mr:'auto'}}>My Calendars</Typography>
-                <IconButton size="small" onClick={handleAddCalendar}><AddRoundedIcon fontSize="small" /></IconButton>
+                {/* add calendar */}
+                <AddCalendarModal />
             </AccordionSummary>
-            <AccordionDetails sx={{py:0}}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                malesuada lacus ex, sit amet blandit leo lobortis eget.
+            {/* expanded content */}
+            <AccordionDetails sx={{py:0,}}>
+                {calendarData.map((v, i) => (
+                    <CalendarMenuItem key={i} user={user} defaultChecked={v.show_events} calendar={v.calendars} />
+                ))}
             </AccordionDetails>
         </Accordion>
     );
