@@ -70,7 +70,7 @@ export default function CalendarMenuItem({user, defaultChecked, calendar}) {
                 ? <CircularProgress size='20px' sx={{px:'.5rem'}} />
                 : <Checkbox checked={checked} size='small' sx={{p:0, px:'.5rem'}} />
             }
-            <Typography color="textSecondary">{calendar.name}</Typography>
+            <Typography color="textSecondary" noWrap>{calendar.name}</Typography>
             <EditCalendarModal calendar={calendar} />
         </MenuItem>
     );
