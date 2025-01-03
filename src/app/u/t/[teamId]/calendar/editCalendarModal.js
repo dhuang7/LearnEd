@@ -8,11 +8,12 @@ import DialogActions from "@mui/material/DialogActions";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 
 
@@ -25,15 +26,15 @@ import { useRouter } from "next/navigation";
 
 
 
-export default function AddCalendarModal({defaultOpen}) {
+export default function EditCalendarModal({calendar}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
-    const [open, setOpen] = useState(defaultOpen||false);
+    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [nameText, setNameText] = useState('');
-    const [colorText, setColorText] = useState('Chocolate');
-    const [descriptionText, setDescriptionText] = useState('');
+    const [nameText, setNameText] = useState(calendar.name);
+    const [colorText, setColorText] = useState(calendar.default_color);
+    const [descriptionText, setDescriptionText] = useState(calendar.description);
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     // makes sure that the info is loaded before finishing.
@@ -55,9 +56,8 @@ export default function AddCalendarModal({defaultOpen}) {
         e?.stopPropagation();
         // close modal
         setOpen(false);
-        setNameText('');
-        setDescriptionText('');
-        if (defaultOpen) router.back();
+        setNameText(calendar.name);
+        setDescriptionText(calendar.description);
     }
 
     function handleNameText({target}) {
@@ -68,7 +68,7 @@ export default function AddCalendarModal({defaultOpen}) {
     function handleColorText({target}) {
         setColorText(target.value);
     }
-    
+
     function handleDescriptionText({target}) {
         // member text
         setDescriptionText(target.value);
@@ -78,13 +78,14 @@ export default function AddCalendarModal({defaultOpen}) {
         // handle submit
         e.preventDefault();
         setLoading(true);
-        const {data, error} = await supabase.rpc('create_calendar', {
-            calendar_name: nameText, 
-            calendar_description: descriptionText,
-            calendar_default_color: colorText,
-            user_ids: [],
-            team_id: null,
-        });
+        const {data, error} = await supabase
+            .from('calendars')
+            .update({
+                name: nameText,
+                description: descriptionText,
+                default_color: colorText,
+            })
+            .eq('id', calendar.id)
 
         console.log(data);
         console.log(error);
@@ -94,10 +95,22 @@ export default function AddCalendarModal({defaultOpen}) {
         })
     }
 
+    async function handleDelete() {
+        setLoading(true);
+        const {data, error} = await supabase
+            .from('calendars')
+            .delete()
+            .eq('id', calendar.id);
+
+        startTransition(() => {
+            router.refresh();
+        })
+    }
+
     return (
         <>
             {/* add member button to open dialog */}
-            <IconButton size="small" onClick={handleOpen} disabled={loading}><AddRoundedIcon fontSize="small" /></IconButton>
+            <IconButton size="small" onClick={handleOpen} disabled={loading} sx={{ml:'auto', mr:'.5rem'}}><MoreVertRoundedIcon fontSize="small" /></IconButton>
             {/* open dialog */}
             <Dialog
                 open={open}
@@ -112,13 +125,14 @@ export default function AddCalendarModal({defaultOpen}) {
                 {/* form */}
                 <form onSubmit={handleSubmit}>
                     {/* title */}
-                    <DialogTitle id="alert-dialog-title">
-                        Add Calendar
+                    <DialogTitle id="alert-dialog-title" sx={{display:'flex', alignItems: 'center'}}>
+                        <Typography variant="inherit">Edit Calendar</Typography>
+                        <IconButton disabled={loading} onClick={handleDelete} size="small" sx={{ml:'auto'}}><DeleteRoundedIcon fontSize="small" /></IconButton>
                     </DialogTitle>
                     {/* content */}
                     <DialogContent>
                         <Box sx={{pt:1, flexDirection:'column'}}>
-                        <Box sx={{display: 'flex', mb:'1rem'}}>
+                            <Box sx={{display: 'flex', mb:'1rem'}}>
                                 {/* name */}
                                 <Box sx={{boxSizing: 'border-box', pr:'.25rem', width:'85%'}}>
                                     <TextField 
@@ -159,10 +173,12 @@ export default function AddCalendarModal({defaultOpen}) {
                                     </TextField>
                                 </Box>
                             </Box>
+                            
                             <TextField 
                                 label='Description'
                                 value={descriptionText}
                                 onChange={handleDescriptionText}
+                                disabled={loading}
                                 multiline
                                 rows={4}
                                 fullWidth
@@ -178,7 +194,7 @@ export default function AddCalendarModal({defaultOpen}) {
                         <Button disabled={loading} type='submit' >
                             {(loading)
                                 ? <CircularProgress size='1rem' />
-                                : 'Add'
+                                : 'Save'
                             }
                         </Button>
                     </DialogActions>

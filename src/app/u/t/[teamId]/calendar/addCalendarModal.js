@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 
 
 
-export default function AddCalendarModal({defaultOpen}) {
+export default function AddCalendarModal({defaultOpen, teamId}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -83,7 +83,7 @@ export default function AddCalendarModal({defaultOpen}) {
             calendar_description: descriptionText,
             calendar_default_color: colorText,
             user_ids: [],
-            team_id: null,
+            team_id: teamId,
         });
 
         console.log(data);

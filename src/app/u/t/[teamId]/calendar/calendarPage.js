@@ -15,21 +15,72 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction';
+
 
 import './calendar.css';
 import dayjs from 'dayjs';
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
+import EditEventSideview from "./editEventSideview";
+import createClient from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 
 
 
-const CalendarPage = forwardRef(({agendas}, ref) => {
+const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender}, ref) => {
+    const supabase = createClient();
+    const router = useRouter();
+    const [event, setEvent] = useState();
+    const [open, setOpen] = useState(false);
 
-    const agendaEvents = agendas.map(v => ({
-        title: v.focus,
-        start: v.start_time,
-        end: v.end_time,
-    }));
+
+    let calendarEvents = [];
+    calendarData.forEach(v => {
+        if (v.show_events) {
+            calendarEvents = calendarEvents.concat(v.calendars.events.map(event => ({
+                id: event.id,
+                start: event.start_time,
+                end: event.end_time,
+                title: event.title,
+                editable: true,
+                eventObj: event,
+                allDay: Math.abs(dayjs(event.start_time).diff(dayjs(event.end_time), 'hour')) >= 24,
+                backgroundColor: v.calendars.default_color,
+                borderColor: v.calendars.default_color,
+            })))
+        }
+    });
+
+    function handleEventClicked(info) {
+        setEvent(info.event.extendedProps.eventObj);
+        setOpen(true);
+    }
+
+    async function handleEventTimeChanged(info) {
+        const {data, error} = await supabase
+            .from('events')
+            .update({
+                start_time: info.event.start.toISOString(),
+                end_time: info.event.end.toISOString(),
+            })
+            .eq('id', info.event.extendedProps.eventObj.id);
+
+        router.refresh();
+    }
+
+    async function handleCreateEvent(info) {
+        console.log(info);
+        setEvent({
+            title:'',
+            description: '',
+            start_time: info.start.toISOString(),
+            end_time: info.end.toISOString(),
+            user_id: user.id,
+            calendar_id: calendarData[0].calendar_id,
+        })
+        setOpen(true);
+    }
 
     return (
         <Paper 
@@ -40,19 +91,30 @@ const CalendarPage = forwardRef(({agendas}, ref) => {
                 display:'flex', flexDirection:'column'
             }}
             >
-            <CustomToolbar calendarRef={ref} />
+            <CustomToolbar calendar={calendar} handleRerender={handleRerender} />
             <FullCalendar
                 ref={ref}
-                plugins={[ dayGridPlugin, timeGridPlugin ]}
+                plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
                 slotDuration={'00:60:00'}
                 expandRows
+                selectable
+                selectMirror
+                select={handleCreateEvent}
+                editable
+                unselectAuto={false}
+                eventDrop={handleEventTimeChanged}
+                eventResize={handleEventTimeChanged}
+                snapDuration={'00:15:00'}
                 fixedWeekCount={false}
                 initialView="timeGridWeek"
                 nowIndicator
                 dayMaxEvents
+                eventClick={handleEventClicked}
                 views={{
                     timeGrid: {
-                        titleFormat: { year: 'numeric', month: 'short' }
+                        titleFormat: { year: 'numeric', month: 'short' },
+                        dayMaxEventRows: 3,
+                        dayMaxEvents: false,
                     }
                 }}
                 headerToolbar='false'
@@ -61,9 +123,10 @@ const CalendarPage = forwardRef(({agendas}, ref) => {
                 slotLabelContent={slotLabelContent}
                 allDayContent={allDayContent}
                 events={[
-                    ...agendaEvents,
+                    ...calendarEvents,
                 ]}
                 />
+            <EditEventSideview calendar={calendar} event={event} calendarData={calendarData} open={open} setOpen={setOpen} />
         </Paper>
     );
 })
@@ -119,22 +182,16 @@ function allDayContent(args) {
     );
 }
 
-function CustomToolbar({calendarRef}) {
-    const [calendar, setCalendar] = useState();
-    const [rerender, setRerender] = useState(false);
+function CustomToolbar({calendar, handleRerender}) {
     const [currentView, setCurrentView] = useState("timeGridWeek");
 
-    useEffect(() => {
-        setCalendar(calendarRef.current?.getApi());
-    }, [calendarRef, rerender]);
-
     function handlePref() {
-        setRerender(r=>!r);
+        handleRerender();
         calendar?.prev();
     }
 
     function handleNext() {
-        setRerender(r=>!r);
+        handleRerender();
         calendar?.next();
     }
 
@@ -144,7 +201,7 @@ function CustomToolbar({calendarRef}) {
     }
 
     function handleToday() {
-        setRerender(r=>!r);
+        handleRerender();
         calendar?.today();
     }
 

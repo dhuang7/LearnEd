@@ -11,7 +11,7 @@ import AddEventSideview from "./addEventSideview";
 
 
 
-export default function PageContent({calendarData, user}) {
+export default function PageContent({calendarData, user, sortedCalendarData}) {
     const calendarRef = useRef();
     const [calendar, setCalendar] = useState();
     const [rerender, setRerender] = useState();
@@ -43,6 +43,7 @@ export default function PageContent({calendarData, user}) {
                             calendar={calendar} 
                             rerender={rerender} handleRerender={handleRerender} 
                             calendarData={calendarData} 
+                            sortedCalendarData={sortedCalendarData}
                             user={user}
                             />
                     </Box>

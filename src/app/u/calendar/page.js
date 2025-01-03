@@ -21,17 +21,28 @@ export default async function Calendar() {
             *,
             calendars(
                 *,
+                teams(name),
                 events(*)
             )
         `)
         .eq('user_id', user.id)
+        // .is('calendars.team_id', null)
+        // .not('calendars', 'is', null)
         .order('calendar_id');
 
-    
+    const sortedCalendarData = {user:[]};
+    calendarData.forEach(v => {
+        const teamId = v.calendars.team_id;
+        if (teamId) {
+            sortedCalendarData[teamId] = (sortedCalendarData[teamId] || []).concat(v);
+        } else {
+            sortedCalendarData.user.push(v);
+        }
+    });
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
-            <PageContent calendarData={calendarData} user={user} />
+            <PageContent calendarData={calendarData} user={user} sortedCalendarData={sortedCalendarData} />
         </Box>
     )
 }

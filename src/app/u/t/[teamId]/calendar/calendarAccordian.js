@@ -11,7 +11,8 @@ import CalendarMenuItem from './calendarMenuItem';
 
 
 
-export default function CalendarAccordian({calendarData, user, title}) {
+export default function CalendarAccordian({calendarData, user, teamId}) {
+
     return (
         <Accordion
             disableGutters
@@ -20,7 +21,7 @@ export default function CalendarAccordian({calendarData, user, title}) {
                 boxShadow:0,
                 '&:before': {
                     display:'none',
-                }
+                },
             }}
             >
             {/* title */}
@@ -31,13 +32,13 @@ export default function CalendarAccordian({calendarData, user, title}) {
                     '& .MuiAccordionSummary-content': {
                         m:0,
                         alignItems:'center',
-                    },
+                    }
                 }}
                 >
                 {/* text */}
-                <Typography variant="body2" sx={{fontWeight:'bold', mr:'auto'}}>{title}</Typography>
+                <Typography variant="body2" sx={{fontWeight:'bold', mr:'auto'}}>Team Calendars</Typography>
                 {/* add calendar */}
-                <AddCalendarModal defaultOpen={!calendarData.length} />
+                <AddCalendarModal defaultOpen={!calendarData.length} teamId={teamId} />
             </AccordionSummary>
             {/* expanded content */}
             <AccordionDetails sx={{py:0,}}>
