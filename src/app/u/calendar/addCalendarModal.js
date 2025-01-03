@@ -6,11 +6,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Box from "@mui/material/Box";
+import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 
 
 
@@ -29,6 +32,7 @@ export default function AddCalendarModal({defaultOpen}) {
     const [open, setOpen] = useState(defaultOpen||false);
     const [loading, setLoading] = useState(false);
     const [nameText, setNameText] = useState('');
+    const [colorText, setColorText] = useState('Chocolate');
     const [descriptionText, setDescriptionText] = useState('');
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -60,6 +64,11 @@ export default function AddCalendarModal({defaultOpen}) {
         // member text
         setNameText(target.value);
     }
+
+    function handleColorText({target}) {
+        setColorText(target.value);
+    }
+    
     function handleDescriptionText({target}) {
         // member text
         setDescriptionText(target.value);
@@ -108,16 +117,47 @@ export default function AddCalendarModal({defaultOpen}) {
                     {/* content */}
                     <DialogContent>
                         <Box sx={{pt:1, flexDirection:'column'}}>
-                            <TextField 
-                                label='Name'
-                                required
-                                fullWidth
-                                value={nameText}
-                                onChange={handleNameText}
-                                sx={{
-                                    mb:'1rem'
-                                }}
-                                />
+                        <Box sx={{display: 'flex', mb:'1rem'}}>
+                                {/* name */}
+                                <Box sx={{boxSizing: 'border-box', pr:'.25rem', width:'85%'}}>
+                                    <TextField 
+                                        label='Name'
+                                        required
+                                        disabled={loading}
+                                        fullWidth
+                                        value={nameText}
+                                        onChange={handleNameText}
+                                        />
+                                </Box>
+                                {/* color */}
+                                <Box sx={{boxSizing: 'border-box', pl:'.25rem', width:'15%'}}>
+                                    <TextField 
+                                        label='Color'
+                                        disabled={loading}
+                                        fullWidth
+                                        select
+                                        value={colorText}
+                                        onChange={handleColorText}
+                                        slotProps={{
+                                            select: {
+                                                renderValue:(v) => <CircleRoundedIcon fontSize="small" sx={{color:v}} />,
+                                            },
+                                            htmlInput: {
+                                                sx: {
+                                                    display:'flex'
+                                                }
+                                            },
+                                        }}
+                                        >
+                                        {['Chocolate', 'RoyalBlue', 'ForestGreen', 'Crimson'].map((v,i) => (
+                                            <MenuItem key={i} value={v}>
+                                                <CircleRoundedIcon sx={{color:v, mr:'.5rem'}} />
+                                                <Typography>{v}</Typography>
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Box>
+                            </Box>
                             <TextField 
                                 label='Description'
                                 value={descriptionText}

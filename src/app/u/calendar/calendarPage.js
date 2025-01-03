@@ -38,14 +38,16 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
     let calendarEvents = [];
     calendarData.forEach(v => {
         if (v.show_events) {
-            calendarEvents = calendarEvents.concat(v.calendars.events.map(v => ({
-                id: v.id,
-                start: v.start_time,
-                end: v.end_time,
-                title: v.title,
+            calendarEvents = calendarEvents.concat(v.calendars.events.map(event => ({
+                id: event.id,
+                start: event.start_time,
+                end: event.end_time,
+                title: event.title,
                 editable: true,
-                eventObj: v,
-                allDay: Math.abs(dayjs(v.start_time).diff(dayjs(v.end_time), 'hour')) >= 24,
+                eventObj: event,
+                allDay: Math.abs(dayjs(event.start_time).diff(dayjs(event.end_time), 'hour')) >= 24,
+                backgroundColor: v.calendars.default_color,
+                borderColor: v.calendars.default_color,
             })))
         }
     });

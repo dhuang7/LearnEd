@@ -68,7 +68,17 @@ export default function CalendarMenuItem({user, defaultChecked, calendar}) {
             >
             {(loading)
                 ? <CircularProgress size='20px' sx={{px:'.5rem'}} />
-                : <Checkbox checked={checked} size='small' sx={{p:0, px:'.5rem'}} />
+                : <Checkbox 
+                    checked={checked} 
+                    size='small' 
+                    sx={{
+                        p:0, px:'.5rem', 
+                        color: calendar.default_color,
+                        '&.Mui-checked': {
+                            color: calendar.default_color,
+                        },
+                    }} 
+                    />
             }
             <Typography color="textSecondary" noWrap>{calendar.name}</Typography>
             <EditCalendarModal calendar={calendar} />
