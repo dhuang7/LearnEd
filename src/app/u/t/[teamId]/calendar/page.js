@@ -16,6 +16,14 @@ export default async function Calendar({params}) {
         .from('profiles')
         .select();
 
+    // const {data: teamMembers, error: teamMembersErrors} = await supabase
+    //     .from('team_memberships')
+    //     .select()
+    //     .eq('team_id', teamId);
+    
+    const { data: teamMembers, error: teamMembersErrors } = await supabase.rpc('get_team_members_emails', { tid: teamId });
+
+
     const {data: calendarData, error: calendarDataErrors} = await supabase
         .from('calendar_memberships')
         .select(`
@@ -33,7 +41,7 @@ export default async function Calendar({params}) {
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
-            <PageContent calendarData={calendarData} user={user} teamId={teamId} />
+            <PageContent calendarData={calendarData} user={user} teamId={teamId} teamMembers={teamMembers} />
         </Box>
     )
 }

@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 
 
 
-export default function AddCalendarModal({defaultOpen, teamId}) {
+export default function AddCalendarModal({defaultOpen, teamId, teamMembers, user}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -78,11 +78,15 @@ export default function AddCalendarModal({defaultOpen, teamId}) {
         // handle submit
         e.preventDefault();
         setLoading(true);
+        const memberIds = teamMembers.map(v => ({user_id: v.id, role: 'editor'})).filter(u => u.user_id !== user.id);
+
         const {data, error} = await supabase.rpc('create_calendar', {
             calendar_name: nameText, 
             calendar_description: descriptionText,
             calendar_default_color: colorText,
-            user_ids: [],
+            user_ids: [
+                ...memberIds,
+            ],
             team_id: teamId,
         });
 

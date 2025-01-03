@@ -110,7 +110,7 @@ export default function AddMemberModal({profiles, teamId}) {
             .from('team_memberships')
             .select()
             .eq('team_id', teamId)
-            .eq('user_id', )
+            // .eq('user_id', )
 
         if (memberEmails[value] === user.email) {
             // check if you are removing self

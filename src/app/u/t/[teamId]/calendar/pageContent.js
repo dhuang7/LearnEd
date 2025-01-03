@@ -11,7 +11,7 @@ import AddEventSideview from "./addEventSideview";
 
 
 
-export default function PageContent({calendarData, user, teamId}) {
+export default function PageContent({calendarData, user, teamId, teamMembers}) {
     const calendarRef = useRef();
     const [calendar, setCalendar] = useState();
     const [rerender, setRerender] = useState();
@@ -45,6 +45,7 @@ export default function PageContent({calendarData, user, teamId}) {
                             calendarData={calendarData} 
                             user={user}
                             teamId={teamId}
+                            teamMembers={teamMembers}
                             />
                     </Box>
                     {/* Main calendar */}

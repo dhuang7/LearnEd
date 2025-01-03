@@ -11,7 +11,7 @@ import CalendarAccordian from "./calendarAccordian";
 
 
 
-export default function SideMenuCalendar({calendar, rerender, handleRerender, calendarData, user, teamId}) {
+export default function SideMenuCalendar({calendar, rerender, handleRerender, calendarData, user, teamId, teamMembers}) {
     const [date, setDate] = useState(dayjs());
 
     useEffect(() => {
@@ -83,7 +83,7 @@ export default function SideMenuCalendar({calendar, rerender, handleRerender, ca
             </Box>
             <Box sx={{width:'100%', mt:'.5rem', flexGrow: 1, overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
-                    <CalendarAccordian calendarData={calendarData} user={user} teamId={teamId} />
+                    <CalendarAccordian calendarData={calendarData} user={user} teamId={teamId} teamMembers={teamMembers} />
                 </Box>
             </Box>
         </Paper>

@@ -30,6 +30,7 @@ export default async function Calendar() {
         // .not('calendars', 'is', null)
         .order('calendar_id');
 
+    // sorts the data for the accordians of calendars
     const sortedCalendarData = {user:[]};
     calendarData.forEach(v => {
         const teamId = v.calendars.team_id;

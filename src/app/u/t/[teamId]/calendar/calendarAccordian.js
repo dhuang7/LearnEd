@@ -11,7 +11,7 @@ import CalendarMenuItem from './calendarMenuItem';
 
 
 
-export default function CalendarAccordian({calendarData, user, teamId}) {
+export default function CalendarAccordian({calendarData, user, teamId, teamMembers}) {
 
     return (
         <Accordion
@@ -38,7 +38,7 @@ export default function CalendarAccordian({calendarData, user, teamId}) {
                 {/* text */}
                 <Typography variant="body2" sx={{fontWeight:'bold', mr:'auto'}}>Team Calendars</Typography>
                 {/* add calendar */}
-                <AddCalendarModal defaultOpen={!calendarData.length} teamId={teamId} />
+                <AddCalendarModal defaultOpen={!calendarData.length} teamId={teamId} teamMembers={teamMembers} user={user} />
             </AccordionSummary>
             {/* expanded content */}
             <AccordionDetails sx={{py:0,}}>
