@@ -81,7 +81,7 @@ export default function AddCalendarModal({defaultOpen}) {
         const {data, error} = await supabase.rpc('create_calendar', {
             calendar_name: nameText, 
             calendar_description: descriptionText,
-            calendar_default_color: '',
+            calendar_default_color: colorText,
             user_ids: [],
         });
 
