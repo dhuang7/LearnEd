@@ -90,6 +90,7 @@ export default function SideMenuCalendar({calendar, rerender, handleRerender, us
                                 key={i}
                                 calendarData={sortedCalendarData[v]} 
                                 user={user} 
+                                teamId={v}
                                 title={sortedCalendarData[v][0]?.calendars.teams.name} 
                                 />
                     ))}
