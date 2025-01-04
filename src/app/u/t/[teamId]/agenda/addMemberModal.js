@@ -162,6 +162,7 @@ export default function AddMemberModal({profiles, teamId}) {
         e.preventDefault();
         setLoading(true);
         const {data, error} = await supabase.rpc('manage_team_memberships', {tid: teamId, member_ids: memberIds});
+        console.log(error);
         // reset everything
         startTransition(() => {
             router.refresh();

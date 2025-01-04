@@ -34,7 +34,7 @@ import { useRouter } from "next/navigation";
 export default function EditCalendarModal({calendarData, teamMembers, user}) {
     const supabase = createClient();
     const router = useRouter();
-    const teamMemberIds = teamMembers?.filter(v=>v.id===user.id).map(v=>v.id) || [];
+    const [teamMemberObj, setTeamMemberObj] = useState(teamMembers?.filter(v => v.id !== user.id) || []);
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -47,6 +47,11 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
     const [errorText, setErrorText] = useState('');
     const [memberEmails, setMemberEmails] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
+
+    useEffect(() => {
+        setTeamMemberObj(teamMembers?.filter(v => v.id !== user.id) || []);
+    }, [teamMembers]);
+
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -143,14 +148,12 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
     async function handleRemoveMember({currentTarget}) {
         // removes a member
         const value = Number(currentTarget.dataset.value);
-        console.log(calendarData)
-        console.log(memberIds);
         if (memberEmails[value] === user.email) {
             // check if you are removing self
             setErrorText("You can't remove yourself");
         } else if (calendarData.role !== 'owner') {
             setErrorText("Only owners can remove members");
-        } else if (teamMemberIds.includes(memberIds[value])) {
+        } else if (teamMemberObj.map(v=>v.id).includes(memberIds[value])) {
             setErrorText("You can't remove a team member from a team calendar.")
         } else {
             // remove
