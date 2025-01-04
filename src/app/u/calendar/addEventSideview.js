@@ -91,7 +91,6 @@ export default function AddEventSideview({calendarData, user}) {
         setCalendarIdText(target.value);
     }
 
-    
 
     async function handleSubmit(e) {
         // handle submit

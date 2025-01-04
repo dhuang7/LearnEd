@@ -2,34 +2,28 @@ import Box from "@mui/material/Box";
 
 
 import createClient from "@/utils/supabase/server";
-import PageContent from "./pageContent";
+import PageContent from "@/app/u/calendar/pageContent";
 
 
 
 
 export default async function Calendar({params}) {
     const teamId = (await params).teamId;
-
     const supabase = await createClient();
 
+    // get user profile
     const { data: [user] } = await supabase
         .from('profiles')
         .select();
 
-    // const {data: teamMembers, error: teamMembersErrors} = await supabase
-    //     .from('team_memberships')
-    //     .select()
-    //     .eq('team_id', teamId);
-    
-    const { data: teamMembers, error: teamMembersErrors } = await supabase.rpc('get_team_members_emails', { tid: teamId });
-
-
+    // get calendars
     const {data: calendarData, error: calendarDataErrors} = await supabase
         .from('calendar_memberships')
         .select(`
             *,
             calendars(
                 *,
+                teams(name),
                 events(*)
             )
         `)
@@ -38,10 +32,12 @@ export default async function Calendar({params}) {
         .not('calendars', 'is', null)
         .order('calendar_id');
     
+    // this is just so that i can use the pagecontent info from u/calendar
+    const sortedCalendarData = {[teamId]: calendarData}
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
-            <PageContent calendarData={calendarData} user={user} teamId={teamId} teamMembers={teamMembers} />
+            <PageContent calendarData={calendarData} user={user} sortedCalendarData={sortedCalendarData} />
         </Box>
     )
 }

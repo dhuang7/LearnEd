@@ -8,13 +8,14 @@ import PageContent from "./pageContent";
 
 
 export default async function Calendar() {
-
     const supabase = await createClient();
 
+    // get user profile
     const { data: [user] } = await supabase
         .from('profiles')
         .select();
 
+    // get all calendars
     const {data: calendarData, error: calendarDataErrors} = await supabase
         .from('calendar_memberships')
         .select(`
@@ -26,18 +27,21 @@ export default async function Calendar() {
             )
         `)
         .eq('user_id', user.id)
-        // .is('calendars.team_id', null)
-        // .not('calendars', 'is', null)
         .order('calendar_id');
 
-    // sorts the data for the accordians of calendars
-    const sortedCalendarData = {user:[]};
+
+    // sorts the data for the accordians of calendars based on ur calendar, shared calendars and team calendars
+    const sortedCalendarData = {user:[], sharedCalendar: []};
     calendarData.forEach(v => {
         const teamId = v.calendars.team_id;
-        if (teamId) {
+        if (v.calendars.teams) {
             sortedCalendarData[teamId] = (sortedCalendarData[teamId] || []).concat(v);
         } else {
-            sortedCalendarData.user.push(v);
+            if (v.role === 'owner') {
+                sortedCalendarData.user.push(v);
+            } else {
+                sortedCalendarData.sharedCalendar.push(v);
+            }
         }
     });
 

@@ -12,9 +12,9 @@ import AddEventSideview from "./addEventSideview";
 
 
 export default function PageContent({calendarData, user, sortedCalendarData}) {
-    const calendarRef = useRef();
-    const [calendar, setCalendar] = useState();
-    const [rerender, setRerender] = useState();
+    const calendarRef = useRef(); // get the main calendar api
+    const [calendar, setCalendar] = useState(); // set calendar api
+    const [rerender, setRerender] = useState(); // rerendering to work with non react calendar component
 
     useEffect(() => {
         setCalendar(calendarRef.current?.getApi());
@@ -42,7 +42,7 @@ export default function PageContent({calendarData, user, sortedCalendarData}) {
                         <SideMenuCalendar 
                             calendar={calendar} 
                             rerender={rerender} handleRerender={handleRerender} 
-                            calendarData={calendarData} 
+                            defaultOpen={!calendarData.length} 
                             sortedCalendarData={sortedCalendarData}
                             user={user}
                             />

@@ -11,13 +11,14 @@ import CalendarAccordian from "./calendarAccordian";
 
 
 
-export default function SideMenuCalendar({calendar, rerender, handleRerender, user, sortedCalendarData}) {
+export default function SideMenuCalendar({calendar, rerender, handleRerender, user, sortedCalendarData, defaultOpen}) {
     const [date, setDate] = useState(dayjs());
 
     useEffect(() => {
         setDate(dayjs(calendar?.getDate()));
     }, [rerender]);
 
+    // have date calendar change the main calendar date
     function handleDateChange(newValue) {
         setDate(newValue);
         handleRerender();
@@ -81,14 +82,20 @@ export default function SideMenuCalendar({calendar, rerender, handleRerender, us
                     }}
                     />
             </Box>
+            {/* list of calendar categories */}
             <Box sx={{width:'100%', mt:'.5rem', flexGrow: 1, overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
-                    <CalendarAccordian calendarData={sortedCalendarData.user} user={user} title='My Calendar' />
+                    {/* my calendars */}
+                    {sortedCalendarData.user && <CalendarAccordian defaultOpen={defaultOpen} calendarData={sortedCalendarData.user} user={user} title='My Calendar' />}
+                    {/* shared with me */}
+                    {sortedCalendarData.sharedCalendar && <CalendarAccordian defaultOpen={defaultOpen} calendarData={sortedCalendarData.sharedCalendar} user={user} title='Shared with me' />}
+                    {/* team calendars */}
                     {Object.keys(sortedCalendarData).map((v, i) => (
-                        (v !== 'user') && 
+                        (v !== 'user' && v !== 'sharedCalendar') && 
                             <CalendarAccordian 
                                 key={i}
                                 calendarData={sortedCalendarData[v]} 
+                                defaultOpen={defaultOpen}
                                 user={user} 
                                 teamId={v}
                                 title={sortedCalendarData[v][0]?.calendars.teams.name} 

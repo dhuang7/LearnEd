@@ -7,13 +7,19 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import TextField from "@mui/material/TextField";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
+import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 
 
 
@@ -25,9 +31,10 @@ import { useRouter } from "next/navigation";
 
 
 
-export default function AddCalendarModal({defaultOpen, teamId}) {
+export default function AddCalendarModal({defaultOpen, teamId, teamMembers, user}) {
     const supabase = createClient();
     const router = useRouter();
+    const [teamMemberObj, setTeamMemberObj] = useState(teamMembers?.filter(v => v.id !== user.id) || []);
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(defaultOpen||false);
     const [loading, setLoading] = useState(false);
@@ -35,6 +42,20 @@ export default function AddCalendarModal({defaultOpen, teamId}) {
     const [colorText, setColorText] = useState('Chocolate');
     const [descriptionText, setDescriptionText] = useState('');
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const [disableType, setDisableType] = useState(false);
+    const [memberText, setMemberText] = useState('');
+    const [errorText, setErrorText] = useState('');
+    const [memberEmails, setMemberEmails] = useState(teamMemberObj.map(v=>v.email));
+    const [memberIds, setMemberIds] = useState(teamMemberObj.map(v=>v.id));
+
+    useEffect(() => {
+        const tmo = teamMembers?.filter(v => v.id !== user.id) || [];
+        setTeamMemberObj(tmo);
+        setMemberEmails(tmo.map(v=>v.email));
+        setMemberIds(tmo.map(v=>v.id));
+    }, [teamMembers]);
+
+
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -57,6 +78,10 @@ export default function AddCalendarModal({defaultOpen, teamId}) {
         setOpen(false);
         setNameText('');
         setDescriptionText('');
+        setMemberText('');
+        setMemberEmails(teamMemberObj.map(v=>v.email));
+        setMemberIds(teamMemberObj.map(v=>v.id));
+        setErrorText('');
         if (defaultOpen) router.back();
     }
 
@@ -74,6 +99,71 @@ export default function AddCalendarModal({defaultOpen, teamId}) {
         setDescriptionText(target.value);
     }
 
+    function handleMemberText({target}) {
+        // member text
+        setMemberText(target.value);
+        if (errorText.length > 0) setErrorText('');
+    }
+
+    function handleKeyDown(e) {
+        // remove form enter for handling adding members
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent form submission
+            handleAddMember();
+        }
+      
+    }
+
+    async function handleAddMember() {
+        // check if member exist then adds it to the list
+        setDisableType(true);
+
+        if (memberEmails.includes(memberText)) {
+            // checks if user is already added
+            setErrorText('User is already added');
+        } else {
+            if (user.email === memberText) {
+                // checks if this is your email
+                setErrorText('This is your email');
+            } else {
+                const { data, error } = await supabase.rpc('email_exists', { checked_email: memberText })
+                if (data[0]) {
+                    // checks if user exists
+                    setMemberEmails(m=>m.concat([memberText]));
+                    setMemberIds(m=>m.concat([data[0].id]));
+                } else {
+                    setErrorText('User does not exist');
+                }
+            }            
+        }
+
+        setDisableType(false);
+        setMemberText('');
+    }
+
+    async function handleRemoveMember({currentTarget}) {
+        // removes a member
+        const value = Number(currentTarget.dataset.value);
+
+        if (memberEmails[value] === user.email) {
+            // check if you are removing self
+            setErrorText("You can't remove yourself");
+        } else if (teamMemberObj.map(v=>v.id).includes(memberIds[value])) {
+            setErrorText("You can't remove a team member from a team calendar.")
+        } else {
+            // remove
+            setMemberEmails(m => [
+                ...m.slice(0, value),
+                ...m.slice(value+1),
+            ]);
+            setMemberIds(m => [
+                ...m.slice(0, value),
+                ...m.slice(value+1),
+            ]);
+        }
+        
+    }
+
     async function handleSubmit(e) {
         // handle submit
         e.preventDefault();
@@ -82,7 +172,9 @@ export default function AddCalendarModal({defaultOpen, teamId}) {
             calendar_name: nameText, 
             calendar_description: descriptionText,
             calendar_default_color: colorText,
-            user_ids: [],
+            user_ids: [
+                ...memberIds.map(v => ({user_id: v, role: 'editor'})),
+            ],
             team_id: teamId||null,
         });
 
@@ -110,7 +202,7 @@ export default function AddCalendarModal({defaultOpen, teamId}) {
                 aria-describedby="alert-dialog-description"
                 >
                 {/* form */}
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} sx={{overflow:'hidden'}}>
                     {/* title */}
                     <DialogTitle id="alert-dialog-title">
                         Add Calendar
@@ -170,6 +262,46 @@ export default function AddCalendarModal({defaultOpen, teamId}) {
                                     mb:'1rem'
                                 }}
                                 />
+                            {/* add users */}
+                            <TextField 
+                                disabled={disableType}
+                                label='Add User'
+                                value={memberText}
+                                onChange={handleMemberText}
+                                onKeyDown={handleKeyDown}
+                                sx={{width:'100%', mb:'1rem'}}
+                                error={errorText}
+                                helperText={errorText}
+                                slotProps={{
+                                    input:{
+                                        endAdornment:(
+                                            <InputAdornment position='end'>
+                                                <IconButton 
+                                                    // disabled={notAdmin} 
+                                                    size='large' edge="end" 
+                                                    onClick={handleAddMember}
+                                                    >
+                                                    <PersonAddRoundedIcon />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }
+                                }}
+                                />
+                            {/* list of users */}
+                            <Typography variant="h6">Users:</Typography>
+                            <List sx={{maxHeight:'10rem', overflow:'scroll'}}>
+                                {memberEmails.map((m, i) => (
+                                    <ListItem key={i}>
+                                        <AccountCircleRoundedIcon fontSize='large' sx={{mr:'1rem'}} />
+                                        <Typography>{m}</Typography>
+                                        {/* remove user */}
+                                        <IconButton data-value={i} sx={{ml:'auto'}} onClick={handleRemoveMember}>
+                                            <PersonRemoveRoundedIcon fontSize="medium" />
+                                        </IconButton>
+                                    </ListItem>
+                                ))}
+                            </List>
                         </Box>
                     </DialogContent>
                     {/* buttons */}

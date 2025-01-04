@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 
 
 
-export default function CalendarMenuItem({user, defaultChecked, calendar}) {
+export default function CalendarMenuItem({user, defaultChecked, calendarData, teamMembers}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -29,6 +29,7 @@ export default function CalendarMenuItem({user, defaultChecked, calendar}) {
         }
     }, [isPending]);
 
+    // handle whether calendar is checked
     async function handleCheck() {
         setChecked(c => {
             handleCheckChange(!c);
@@ -36,6 +37,7 @@ export default function CalendarMenuItem({user, defaultChecked, calendar}) {
         });
     }
 
+    // edits calendar membership if the calendar should be showing
     async function handleCheckChange(showEvents) {
         setLoading(true);
         const {data, error} = await supabase
@@ -43,7 +45,7 @@ export default function CalendarMenuItem({user, defaultChecked, calendar}) {
             .update({
                 show_events: showEvents,
             })
-            .eq('calendar_id', calendar.id)
+            .eq('calendar_id', calendarData.calendars.id)
             .eq('user_id', user.id)
 
         startTransition(() => {
@@ -69,15 +71,15 @@ export default function CalendarMenuItem({user, defaultChecked, calendar}) {
                     size='small' 
                     sx={{
                         p:0, px:'.5rem', 
-                        color: calendar.default_color,
+                        color: calendarData.calendars.default_color,
                         '&.Mui-checked': {
-                            color: calendar.default_color,
+                            color: calendarData.calendars.default_color,
                         },
                     }} 
                     />
             }
-            <Typography color="textSecondary" noWrap>{calendar.name}</Typography>
-            <EditCalendarModal calendar={calendar} />
+            <Typography color="textSecondary" noWrap>{calendarData.calendars.name}</Typography>
+            <EditCalendarModal calendarData={calendarData} teamMembers={teamMembers} user={user} />
         </MenuItem>
     );
 }
