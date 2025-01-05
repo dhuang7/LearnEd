@@ -23,12 +23,14 @@ export default async function Calendar() {
             calendars(
                 *,
                 teams(name),
-                events(*)
+                events(
+                    *,
+                    event_topics(*)
+                )
             )
         `)
         .eq('user_id', user.id)
         .order('calendar_id');
-
 
     // sorts the data for the accordians of calendars based on ur calendar, shared calendars and team calendars
     const sortedCalendarData = {user:[], sharedCalendar: []};

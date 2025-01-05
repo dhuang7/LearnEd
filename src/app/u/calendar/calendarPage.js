@@ -77,6 +77,7 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
             end_time: info.end.toISOString(),
             user_id: user.id,
             calendar_id: calendarData[0].calendar_id,
+            event_topics: [],
         })
         setOpen(true);
     }

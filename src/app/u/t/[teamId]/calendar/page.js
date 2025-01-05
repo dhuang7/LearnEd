@@ -24,14 +24,17 @@ export default async function Calendar({params}) {
             calendars(
                 *,
                 teams(name),
-                events(*)
+                events(
+                    *,
+                    event_topics(*)
+                )
             )
         `)
         .eq('user_id', user.id)
         .eq('calendars.team_id', teamId)
         .not('calendars', 'is', null)
         .order('calendar_id');
-    
+
     // this is just so that i can use the pagecontent info from u/calendar
     const sortedCalendarData = {[teamId]: calendarData}
 

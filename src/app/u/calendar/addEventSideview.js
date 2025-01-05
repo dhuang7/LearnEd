@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 import { useState, useTransition, useEffect } from "react";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import TopicList from "./topicList";
 
 
 
@@ -39,6 +40,7 @@ export default function AddEventSideview({calendarData, user}) {
     const [startTimeText, setStartTimeText] = useState(initTime);
     const [descriptionText, setDescriptionText] = useState('');
     const [calendarIdText, setCalendarIdText] = useState(calendarData?.[0]?.calendars.id);
+    const [topics, setTopics] = useState([]);
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -67,6 +69,7 @@ export default function AddEventSideview({calendarData, user}) {
         setEndTimeText(newTime.add(1, 'h'));
         setStartTimeText(newTime);
         setDescriptionText('');
+        setTopics([]);
     }
 
     function handleTitleText({target}) {
@@ -96,17 +99,28 @@ export default function AddEventSideview({calendarData, user}) {
         // handle submit
         e.preventDefault();
         setLoading(true);
-        const {data, error} = await supabase
-            .from('events')
-            .insert({
-                title: titleText,
-                description: descriptionText,
-                start_time: startTimeText.toISOString(),
-                end_time: endTimeText.toISOString(),
-                calendar_id: calendarIdText,
-                user_id: user.id,
-            })
+        // const {data, error} = await supabase
+        //     .from('events')
+        //     .insert({
+        //         title: titleText,
+        //         description: descriptionText,
+        //         start_time: startTimeText.toISOString(),
+        //         end_time: endTimeText.toISOString(),
+        //         calendar_id: calendarIdText,
+        //         user_id: user.id,
+        //     })
+        const {data, error} = await supabase.rpc('insert_event_with_topics', {
+            title: titleText,
+            description: descriptionText,
+            start_time: startTimeText.toISOString(),
+            end_time: endTimeText.toISOString(),
+            calendar_id: calendarIdText,
+            user_id: user.id, 
+            color: '',
+            event_topics: topics,
+        });
 
+        console.log(error);
         // reset everything
         startTransition(() => {
             router.refresh();
@@ -181,6 +195,18 @@ export default function AddEventSideview({calendarData, user}) {
                                     mb:'1rem'
                                 }}
                                 />
+                            {/* focus area */}
+                            <TextField 
+                                label='Focus Area'
+                                value={descriptionText}
+                                onChange={handleDescriptionText}
+                                multiline
+                                rows={2}
+                                fullWidth
+                                sx={{
+                                    mb:'1rem'
+                                }}
+                                />
                             {/* times */}
                             <Box sx={{display:'flex', mb:'1rem', width:'100%'}}>
                                 <Box sx={{width:'50%', boxSizing:'border-box', pr:'.25rem'}}>
@@ -224,14 +250,8 @@ export default function AddEventSideview({calendarData, user}) {
                                         />
                                 </Box>
                             </Box>
-                            <TextField 
-                                label='Description'
-                                value={descriptionText}
-                                onChange={handleDescriptionText}
-                                multiline
-                                rows={4}
-                                fullWidth
-                                />
+                            {/* Content */}
+                            <TopicList topics={topics} setTopics={setTopics} />
                         </Box>
                     </DialogContent>
                     {/* buttons */}

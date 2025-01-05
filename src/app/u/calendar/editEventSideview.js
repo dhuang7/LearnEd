@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState, useTransition } from "react";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import TopicList from "./topicList";
 
 
 
@@ -38,6 +39,7 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
     const [startTimeText, setStartTimeText] = useState(initTime);
     const [descriptionText, setDescriptionText] = useState('');
     const [calendarIdText, setCalendarIdText] = useState(calendarData?.[0]?.calendars.id);
+    const [topics, setTopics] = useState([]);
 
 
     useEffect(() => {
@@ -46,6 +48,8 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
         setStartTimeText(dayjs(event?.start_time));
         setDescriptionText(event?.description);
         setCalendarIdText(event?.calendar_id);
+        setTopics(event?.event_topics);
+        console.log(event?.event_topics)
     }, [event]);
 
     // makes sure that the info is loaded before finishing.
@@ -76,6 +80,7 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
         setEndTimeText(newTime.add(1, 'h'));
         setStartTimeText(newTime);
         setDescriptionText('');
+        setTopics([]);
     }
 
     function handleTitleText({target}) {
@@ -108,27 +113,27 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
         setLoading(true);
 
         if (event.id) {
-            const {data, error} = await supabase
-                .from('events')
-                .update({
-                    title: titleText,
-                    description: descriptionText,
-                    start_time: startTimeText.toISOString(),
-                    end_time: endTimeText.toISOString(),
-                    calendar_id: calendarIdText,
-                })
-                .eq('id', event.id);
+            const {data, error} = await supabase.rpc('update_event_with_topics', {
+                event_id: event.id,
+                title: titleText,
+                description: descriptionText,
+                start_time: startTimeText.toISOString(),
+                end_time: endTimeText.toISOString(),
+                calendar_id: calendarIdText,
+                color: '',
+                event_topics: topics,
+            });
         } else {
-            const {data, error} = await supabase
-                .from('events')
-                .insert({
-                    title: titleText,
-                    description: descriptionText,
-                    start_time: startTimeText.toISOString(),
-                    end_time: endTimeText.toISOString(),
-                    calendar_id: calendarIdText,
-                    user_id: event.user_id,
-                });
+            const {data, error} = await supabase.rpc('insert_event_with_topics', {
+                title: titleText,
+                description: descriptionText,
+                start_time: startTimeText.toISOString(),
+                end_time: endTimeText.toISOString(),
+                calendar_id: calendarIdText,
+                user_id: event.user_id, 
+                color: '',
+                event_topics: topics,
+            });
         }
 
         // reset everything
@@ -209,6 +214,18 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
                                     mb:'1rem'
                                 }}
                                 />
+                            {/* Focus Area */}
+                            <TextField 
+                                label='Focus Area'
+                                value={descriptionText}
+                                onChange={handleDescriptionText}
+                                multiline
+                                rows={2}
+                                fullWidth
+                                sx={{
+                                    mb:'1rem'
+                                }}
+                                />
                             {/* times */}
                             <Box sx={{display:'flex', mb:'1rem', width:'100%'}}>
                                 <Box sx={{width:'50%', boxSizing:'border-box', pr:'.25rem'}}>
@@ -252,14 +269,8 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
                                         />
                                 </Box>
                             </Box>
-                            <TextField 
-                                label='Description'
-                                value={descriptionText}
-                                onChange={handleDescriptionText}
-                                multiline
-                                rows={4}
-                                fullWidth
-                                />
+                            {/* Content */}
+                            <TopicList topics={topics} setTopics={setTopics} />
                         </Box>
                     </DialogContent>
                     {/* buttons */}

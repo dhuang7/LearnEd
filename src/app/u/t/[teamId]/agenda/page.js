@@ -30,8 +30,8 @@ export default async function Agenda({params}) {
             {/* title */}
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                    <Typography variant='h4'>Agenda</Typography>
-                    <AddAgendaModal teamId={teamId} />
+                    <Typography variant='h4'>Agenda (Work in progress)</Typography>
+                    {/* <AddAgendaModal teamId={teamId} /> */}
                 </Box>
             </Box>
             {/* norms */}
@@ -53,7 +53,7 @@ export default async function Agenda({params}) {
                     {/* Agenda list */}
                     <Box sx={{flexGrow:1, height:'100%', overflow:'hidden'}}>
                         <Box sx={{width:'100%', height:'100%', pt:'.5rem', pr:'1rem', pl:'.5rem', boxSizing:'border-box', pb:'1rem'}}>
-                            <AgendaList teamId={teamId} agendas={agendas} />
+                            {/* <AgendaList teamId={teamId} agendas={agendas} /> */}
                         </Box>
                     </Box>
                 </Box>
