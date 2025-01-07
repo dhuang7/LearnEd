@@ -40,6 +40,7 @@ export default function CalendarMemnberPermission({m, i, memberRoles, setMemberR
                     // required
                     fullWidth
                     value={memberRoles[i]}
+                    disabled={memberRoles[i] === 'owner'}
                     onChange={handleMemberRoles}
                     slotProps={{
                         // select: {
