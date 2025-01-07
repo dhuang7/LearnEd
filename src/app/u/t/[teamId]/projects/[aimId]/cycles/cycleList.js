@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import AddCycleModal from "./addCycleModal";
 import EditCycleModal from "./editCycleModal";
+import dayjs from "dayjs";
 
 
 
@@ -60,7 +61,7 @@ export default function CycleList({cycles, changeIdeas, aimId}) {
             flex:1
         },
         { field: 'objective', headerName: 'Cycle Objective', flex:2 },
-        { field: 'plan_due_date', headerName: 'Due Date', valueFormatter: readableDate, flex:1 },
+        { field: 'plan_due_date', headerName: 'Due Date', valueFormatter: v => dayjs(v).format('MM-DD-YYYY'), flex:1 },
         { field: 'act_choice', headerName: 'Next Step', flex:1 },
     ]
 
@@ -75,26 +76,7 @@ export default function CycleList({cycles, changeIdeas, aimId}) {
         act_choice: cycle.act_choice,
         cycle,
     }));
-
-    // converts time to readable date
-    function readableDate(timestampz) {
-        if (timestampz===null) return '';
-        // Convert to a Date object
-        const date = new Date(timestampz);
     
-        // Get month, day, and year
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-        const day = String(date.getDate()).padStart(2, '0');
-        const year = date.getFullYear();
-    
-        // Return formatted date
-        return `${month}-${day}-${year}`;
-    }
-
-    
-
-    
-
     return (
         <Box sx={{height:'100%', width:'100%'}}>
             <DataGrid 

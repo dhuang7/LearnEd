@@ -67,7 +67,8 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         setObjectiveText(cycle?.objective);
         setLogisticsText(cycle?.plan_logistics);
         setMeasureText(cycle?.plan_measure);
-        setDueDateText(cycle?.plan_due_date ? formatDateField(cycle.plan_due_date) : '');
+        // setDueDateText(cycle?.plan_due_date ? formatDateField(cycle.plan_due_date) : '');
+        setDueDateText(cycle?.events?.start_time ? dayjs(cycle.events.start_time).format('YYYY-MM-DD') : '');
         setObservationText(cycle?.do_observations);
         setDataText(cycle?.do_data);
         setSummaryText(cycle?.study_summary);
@@ -103,7 +104,8 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         setObjectiveText(cycle?.objective);
         setLogisticsText(cycle?.plan_logistics);
         setMeasureText(cycle?.plan_measure);
-        setDueDateText(cycle?.plan_due_date ? formatDateField(cycle.plan_due_date) : '');
+        // setDueDateText(cycle?.plan_due_date ? formatDateField(cycle.plan_due_date) : '');
+        setDueDateText(cycle?.events?.start_time ? dayjs(cycle.events.start_time).format('YYYY-MM-DD') : '');
         setObservationText(cycle?.do_observations);
         setDataText(cycle?.do_data);
         setSummaryText(cycle?.study_summary);
@@ -427,19 +429,4 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         </>
         
     )
-}
-
-
-// format date correctly
-function formatDateField(timestampz) {
-    // Convert the timestamp to a Date object
-    const date = new Date(timestampz);
-
-    // Get components in the user's local timezone
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-    const day = String(date.getDate()).padStart(2, '0');
-
-    // Construct the formatted string
-    return `${year}-${month}-${day}`;
 }
