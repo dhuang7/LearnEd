@@ -14,6 +14,7 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Tooltip from "@mui/material/Tooltip";
 import Icon from '@mui/material/Icon';
 import HandshakeRoundedIcon from '@mui/icons-material/HandshakeRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 
 import NextLink from 'next/link';
 import Image from "next/image";
@@ -36,7 +37,9 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                     selected={pathname.includes(props.path)}
                     {...props}
                     sx={{
-                        whiteSpace:'nowrap'
+                        whiteSpace:'nowrap',
+                        maxHeight:'40px',
+                        ...props.sx,
                     }}
                     >
                     {props.children}
@@ -58,7 +61,7 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                 }}
                 >
                 {/* navigation */}
-                <List>
+                <List sx={{height:'100%', display:'flex', flexDirection:'column'}}>
                     {/* <CustomNavButton path='/u/dashboard' tip='Dashboard'>
                         <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Dashboard
@@ -129,6 +132,13 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                                 <PublishedWithChangesRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Projects
+                                </Typography>
+                            </CustomNavButton>
+                            <Box sx={{flexGrow:1}}></Box>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/settings`} tip='Settings'>
+                                <SettingsRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
+                                <Typography noWrap>
+                                    Settings
                                 </Typography>
                             </CustomNavButton>
                         </>
