@@ -28,6 +28,7 @@ import theme from "@/app/theme";
 import { useEffect, useState, useTransition } from "react";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import CalendarMemnberPermission from "./calendarMemberPermission";
 
 
 
@@ -46,6 +47,7 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
     const [memberText, setMemberText] = useState('');
     const [errorText, setErrorText] = useState('');
     const [memberEmails, setMemberEmails] = useState([]);
+    const [memberRoles, setMemberRoles] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
 
     useEffect(() => {
@@ -66,7 +68,8 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
         async function getProfile() {
             const {data: profiles, error} = await supabase.rpc('get_calendar_emails', {cid: calendarData.calendars.id})
             setMemberEmails(profiles.map(p => p.email));
-            setMemberIds(profiles.map(p => p.id))
+            setMemberRoles(profiles.map(p => p.role));
+            setMemberIds(profiles.map(p => p.id));
         }
 
         getProfile();
@@ -134,6 +137,7 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
                 if (data[0]) {
                     // checks if user exists
                     setMemberEmails(m=>m.concat([memberText]));
+                    setMemberRoles(m=>m.concat(['viewer']));
                     setMemberIds(m=>m.concat([data[0].id]));
                 } else {
                     setErrorText('User does not exist');
@@ -161,6 +165,10 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
                 ...m.slice(0, value),
                 ...m.slice(value+1),
             ]);
+            setMemberRoles(m => [
+                ...m.slice(0, value),
+                ...m.slice(value+1),
+            ]);
             setMemberIds(m => [
                 ...m.slice(0, value),
                 ...m.slice(value+1),
@@ -179,7 +187,7 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
             new_description: descriptionText,
             new_default_color: colorText,
             user_ids: [
-                ...memberIds.map(v => ({user_id: v, role: 'editor'})),
+                ...memberIds.map((v, i) => ({user_id: v, role: memberRoles[i]})),
             ]
         })
 
@@ -321,14 +329,17 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
                             <Typography variant="h6">Users:</Typography>
                             <List sx={{maxHeight:'10rem', overflow:'scroll'}}>
                                 {memberEmails.map((m, i) => (
-                                    <ListItem key={i}>
-                                        <AccountCircleRoundedIcon fontSize='large' sx={{mr:'1rem'}} />
-                                        <Typography>{m}</Typography>
-                                        {/* remove user */}
-                                        <IconButton data-value={i} sx={{ml:'auto'}} onClick={handleRemoveMember}>
-                                            <PersonRemoveRoundedIcon fontSize="medium" />
-                                        </IconButton>
-                                    </ListItem>
+                                    <CalendarMemnberPermission
+                                        m={m} 
+                                        i={i} 
+                                        key={i} 
+                                        memberRoles={memberRoles} setMemberRoles={setMemberRoles} 
+                                        handleRemoveMember={handleRemoveMember} 
+                                        teamMemberObj={teamMemberObj}
+                                        memberIds={memberIds}
+                                        setErrorText={setErrorText}
+                                        user={user}
+                                        />
                                 ))}
                             </List>
                         </Box>

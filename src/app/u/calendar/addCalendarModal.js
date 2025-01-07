@@ -28,6 +28,7 @@ import theme from "@/app/theme";
 import { useEffect, useState, useTransition } from "react";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import CalendarMemnberPermission from "./calendarMemberPermission";
 
 
 
@@ -46,12 +47,14 @@ export default function AddCalendarModal({defaultOpen, teamId, teamMembers, user
     const [memberText, setMemberText] = useState('');
     const [errorText, setErrorText] = useState('');
     const [memberEmails, setMemberEmails] = useState(teamMemberObj.map(v=>v.email));
+    const [memberRoles, setMemberRoles] = useState(teamMemberObj.map(v=>'editor'));
     const [memberIds, setMemberIds] = useState(teamMemberObj.map(v=>v.id));
 
     useEffect(() => {
         const tmo = teamMembers?.filter(v => v.id !== user.id) || [];
         setTeamMemberObj(tmo);
         setMemberEmails(tmo.map(v=>v.email));
+        setMemberRoles(tmo.map(v=>'editor'));
         setMemberIds(tmo.map(v=>v.id));
     }, [teamMembers]);
 
@@ -80,6 +83,7 @@ export default function AddCalendarModal({defaultOpen, teamId, teamMembers, user
         setDescriptionText('');
         setMemberText('');
         setMemberEmails(teamMemberObj.map(v=>v.email));
+        setMemberRoles(teamMemberObj.map(v=>'editor'));
         setMemberIds(teamMemberObj.map(v=>v.id));
         setErrorText('');
         if (defaultOpen) router.back();
@@ -130,6 +134,7 @@ export default function AddCalendarModal({defaultOpen, teamId, teamMembers, user
                 if (data[0]) {
                     // checks if user exists
                     setMemberEmails(m=>m.concat([memberText]));
+                    setMemberRoles(m=>m.concat(['viewer']))
                     setMemberIds(m=>m.concat([data[0].id]));
                 } else {
                     setErrorText('User does not exist');
@@ -156,6 +161,10 @@ export default function AddCalendarModal({defaultOpen, teamId, teamMembers, user
                 ...m.slice(0, value),
                 ...m.slice(value+1),
             ]);
+            setMemberRoles(m => [
+                ...m.slice(0, value),
+                ...m.slice(value+1),
+            ]);
             setMemberIds(m => [
                 ...m.slice(0, value),
                 ...m.slice(value+1),
@@ -173,12 +182,12 @@ export default function AddCalendarModal({defaultOpen, teamId, teamMembers, user
             calendar_description: descriptionText,
             calendar_default_color: colorText,
             user_ids: [
-                ...memberIds.map(v => ({user_id: v, role: 'editor'})),
+                ...memberIds.map((v, i) => ({user_id: v, role: memberRoles[i]})),
             ],
             team_id: teamId||null,
+            is_cycles: false,
         });
 
-        console.log(data);
         console.log(error);
         // reset everything
         startTransition(() => {
@@ -292,14 +301,16 @@ export default function AddCalendarModal({defaultOpen, teamId, teamMembers, user
                             <Typography variant="h6">Users:</Typography>
                             <List sx={{maxHeight:'10rem', overflow:'scroll'}}>
                                 {memberEmails.map((m, i) => (
-                                    <ListItem key={i}>
-                                        <AccountCircleRoundedIcon fontSize='large' sx={{mr:'1rem'}} />
-                                        <Typography>{m}</Typography>
-                                        {/* remove user */}
-                                        <IconButton data-value={i} sx={{ml:'auto'}} onClick={handleRemoveMember}>
-                                            <PersonRemoveRoundedIcon fontSize="medium" />
-                                        </IconButton>
-                                    </ListItem>
+                                    <CalendarMemnberPermission 
+                                        m={m} 
+                                        i={i} 
+                                        key={i} 
+                                        memberRoles={memberRoles} setMemberRoles={setMemberRoles} 
+                                        handleRemoveMember={handleRemoveMember} 
+                                        teamMemberObj={teamMemberObj}
+                                        memberIds={memberIds}
+                                        setErrorText={setErrorText}
+                                        />
                                 ))}
                             </List>
                         </Box>
