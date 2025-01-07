@@ -98,18 +98,18 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                     {/* Team side navigation */}
                     {(teamInfo)
                         ? <>
-                            {/* <CustomNavButton path={`/u/t/${teamInfo.id}/dashboard`} tip='Dashboard'>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/dashboard`} tip='Dashboard'>
                                 <SpaceDashboardRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Dashboard
                                 </Typography>
-                            </CustomNavButton> */}
-                            <CustomNavButton path={`/u/t/${teamInfo.id}/agenda`} tip='Agenda'>
+                            </CustomNavButton>
+                            {/* <CustomNavButton path={`/u/t/${teamInfo.id}/agenda`} tip='Agenda'>
                                 <HandshakeRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Agenda
                                 </Typography>
-                            </CustomNavButton>
+                            </CustomNavButton> */}
                             <CustomNavButton path={`/u/t/${teamInfo.id}/calendar`} tip='Calendar'>
                                 <CalendarMonthRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
