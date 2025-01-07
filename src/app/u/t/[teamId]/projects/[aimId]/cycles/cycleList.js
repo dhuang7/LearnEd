@@ -71,7 +71,7 @@ export default function CycleList({cycles, changeIdeas, aimId}) {
         description: cycle.change_ideas.change_packages.description,
         stage: cycle.stage,
         objective: cycle.objective,
-        plan_due_date: cycle.plan_due_date,
+        plan_due_date: cycle.events?.start_time||null,
         act_choice: cycle.act_choice,
         cycle,
     }));

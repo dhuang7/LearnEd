@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import createClient from "@/utils/supabase/client";
 import PDSAPages from "./pdsaPages";
 import { MenuItem } from "@mui/material";
+import dayjs from "dayjs";
 
 
 
@@ -177,11 +178,21 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         // // console.log(er);
 
         // load to database
+        const time = dueDateText ? dayjs(dueDateText) : null;
         const {data, error} = await supabase.rpc('update_pdsa_cycle_with_qprs', {
             cycle_id: cycle.id,
             new_objective: objectiveText,
             new_plan_logistics: logisticsText,
             new_plan_due_date: dueDateText ? (new Date(dueDateText).toISOString()) : null,
+            event: {
+                id: cycle.events?.id,
+                title: changeIdeaObject.change_packages.name,
+                start_time: time?.toISOString(),
+                end_time: time?.add(1, 'day'),
+                description: objectiveText,
+                color: '',
+                event_topics: cycle.events?.event_topics,
+            },
             new_plan_measure: measureText,
             new_do_observations: observationText,
             new_do_data: dataText,
@@ -191,6 +202,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
             new_change_idea_id: changeIdeaObject.id,
             new_stage: stageText,
             qprs: qprsList,
+            team_id: changeIdeaObject.change_packages.team_id,
         });
 
         console.log(error);
@@ -200,6 +212,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
             .select(`
                 *,
                 pdsa_qprs(*),
+                events!events_api_ref_id_fkey(*, event_topics(*)),
                 change_ideas (
                     *,
                     change_packages (*)
@@ -231,6 +244,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
             .select(`
                 *,
                 pdsa_qprs(*),
+                events!events_api_ref_id_fkey(*, event_topics(*)),
                 change_ideas (
                     *,
                     change_packages (*)

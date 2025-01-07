@@ -24,6 +24,7 @@ import { useState } from "react";
 import createClient from "@/utils/supabase/client";
 import PDSAPages from "./pdsaPages";
 import { MenuItem } from "@mui/material";
+import dayjs from "dayjs";
 
 
 
@@ -137,11 +138,20 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
         e.preventDefault();
         setLoading(true);
 
+        const time = dueDateText ? dayjs(dueDateText) : null;
+
         // load to database
         const {data, error} = await supabase.rpc('insert_pdsa_cycle_with_qprs', {
             objective: objectiveText,
             plan_logistics: logisticsText,
             plan_due_date: dueDateText ? (new Date(dueDateText).toISOString()) : null,
+            event: {
+                title: changeIdeaObject.change_packages.name,
+                start_time: time?.toISOString(),
+                end_time: time?.add(1, 'day'),
+                description: objectiveText,
+                color: '',
+            },
             plan_measure: measureText,
             do_observations: observationText,
             do_data: dataText,
@@ -151,13 +161,16 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
             change_idea_id: changeIdeaObject.id,
             stage: stageText,
             qprs: qprsList,
+            team_id: changeIdeaObject.change_packages.team_id,
         });
+
 
         const {data: newCycles, error: newCyclesError} = await supabase
             .from('pdsa_cycles')
             .select(`
                 *,
                 pdsa_qprs(*),
+                events!events_api_ref_id_fkey(*, event_topics(*)),
                 change_ideas (
                     *,
                     change_packages (*)
@@ -165,6 +178,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
             `)
             .not('change_ideas', 'is', null)
             .eq('change_ideas.aim_id', aimId); 
+
 
         setLoading(false);
         handleCancel();

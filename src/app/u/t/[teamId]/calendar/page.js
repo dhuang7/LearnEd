@@ -16,6 +16,12 @@ export default async function Calendar({params}) {
         .from('profiles')
         .select();
 
+    // get pdsa cycle list uneditable calendar events
+    // do i want to create the events, or do i want to actually create the calendar for it as well.
+    // i will need to create the calendarData and go to calendarPage to add a check to switch
+    // editable to false for pdsa_cycle things and use that same tag to remove the ability to 
+    // look at more info about the event.
+
     // get calendars
     const {data: calendarData, error: calendarDataErrors} = await supabase
         .from('calendar_memberships')

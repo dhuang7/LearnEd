@@ -29,6 +29,7 @@ export default async function Cycles({params}) {
         .select(`
             *,
             pdsa_qprs(*),
+            events(*, event_topics(*)),
             change_ideas (
                 *,
                 change_packages (*)
@@ -36,6 +37,7 @@ export default async function Cycles({params}) {
         `)
         .not('change_ideas', 'is', null)
         .eq('change_ideas.aim_id', aimId); 
+
 
     return (
         <> 
