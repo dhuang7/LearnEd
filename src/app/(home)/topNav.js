@@ -17,7 +17,9 @@ export default function TopNav({handleOpen}) {
                 <Box sx={{display:'flex', width:'100%'}}>
                     {/* start */}
                     <Box sx={{alignItems:'center', display:'flex'}}>
-                        <Typography variant="h6" color="primary">LearnEd</Typography>
+                        <NextLink href='/' style={{ textDecoration: 'none', color:'inherit' }}>
+                            <Typography variant="h6" color="primary" sx={{fontWeight:'bold'}}>LearnEd</Typography>
+                        </NextLink>
                     </Box>
                     {/* middle */}
                     <Box flexGrow={1} />

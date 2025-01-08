@@ -4,12 +4,12 @@ import Button from "@mui/material/Button";
 
 
 import NextLink from 'next/link';
-import Image from "next/image";
-import DemoCarousel from "./demoCarousel";
+import Skeleton from "@mui/material/Skeleton";
 
 
 export default function Page() {
-    
+    const imageWidth = 1000;
+    const imageHeight = 0.53509933774 * imageWidth;
 
     return (
         <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
@@ -35,7 +35,7 @@ export default function Page() {
             </Box>
             <Box sx={{width:'100%', height:'100%'}}>
                 <Box sx={{width:'100%', height:'100%', alignItems:'center', display:'flex', justifyContent:'center'}}>
-                    <DemoCarousel />
+                    <Skeleton variant="rectangular" height={imageHeight} width={imageWidth} />
                 </Box>
             </Box>
         </Box>
