@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
+import NextLink from 'next/link';
 
 
 export default function Login({children}) {
@@ -19,7 +20,7 @@ export default function Login({children}) {
             <Box>
                 {/* title */}
                 <Typography variant='h2' align='center' color='primary' sx={{mb:'1rem', fontWeight:'bold'}}>
-                    LearnEd
+                    <NextLink href='/' style={{ textDecoration: 'none', color:'inherit' }}>LearnEd</NextLink>
                 </Typography>
                 {/* login paper */}
                 <Paper elevation={3} sx={{width:'20rem', p:'1rem', borderRadius:'1rem', display:'flex', flexDirection:'column'}}>
