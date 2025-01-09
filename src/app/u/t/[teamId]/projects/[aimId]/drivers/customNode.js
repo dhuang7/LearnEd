@@ -28,7 +28,7 @@ import ButtonTextfield from '@/components/buttonTextfield';
  
  
 export default function CustomNode({
-    id, title, name, description, measure, measureType, 
+    id, title, name, description, measure, measureData, measureType, 
     background, problem, goal, 
     teamId, conclusions, rating, changePackageId,
     table, aimId, columns, disableDelete, disableSource, disableTarget
@@ -43,6 +43,7 @@ export default function CustomNode({
     const [problemText, setProblemText] = useState('');
     const [goalText, setGoalText] = useState('');
     const [measureText, setMeasureText] = useState('');
+    const [measureDataText, setMeasureDataText] = useState('');
     const [conclusionsText, setConclusionsText] = useState('');
     const [ratingNum, setRatingNum] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -53,12 +54,13 @@ export default function CustomNode({
         setNameText(name);
         setDescriptionText(description);
         setMeasureText(measure);
+        setMeasureDataText(measureData);
         setBackgroundText(background);
         setProblemText(problem);
         setGoalText(goal);
         setConclusionsText(conclusions);
         setRatingNum(rating||0);
-    }, [name, description, measure, background, problem, goal, conclusions, rating])
+    }, [name, description, measure, measureData, background, problem, goal, conclusions, rating])
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -78,6 +80,7 @@ export default function CustomNode({
         setNameText(name);
         setDescriptionText(description);
         setMeasureText(measure);
+        setMeasureDataText(measureData);
     }
 
     function handleNameText({target}) {
@@ -104,6 +107,11 @@ export default function CustomNode({
         setMeasureText(target.value);
     }
 
+    function handleMeasureDataText({target}) {
+        if (isNaN(target.value)) return;
+        setMeasureDataText(target.value);
+    }
+
     function handleConclusionsText({target}) {
         setConclusionsText(target.value);
     }
@@ -119,10 +127,10 @@ export default function CustomNode({
         // insert data
         const insertData = {aim_id: aimId};
         const valueList = (title === 'Aim')
-            ? [id, nameText, backgroundText, problemText, goalText, measureText]
+            ? [id, nameText, backgroundText, problemText, goalText, measureText, measureDataText]
             : (title === 'Change Idea')
-                ? [id, conclusionsText, ratingNum]
-                : [id, nameText, descriptionText, measureText];
+                ? [id, conclusionsText, ratingNum, measureText, measureDataText]
+                : [id, nameText, descriptionText, measureText, measureDataText];
         // create data for the insert or update depending on what values exist
         columns.forEach((v, i) => {
             if (valueList[i]) {
@@ -323,14 +331,19 @@ export default function CustomNode({
                                 </Box>
                             }
                             {/* measure */}
-                            {(measureType) && (
-                                <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
-                                    {/* title */}
-                                    <Typography variant="h6">{measureType} Measure:</Typography>
-                                    {/* writing box and button */}
-                                    <ButtonTextfield value={measureText} onChange={handleMeasureText} color='primary' />
-                                </Box>
-                            )}
+                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                {/* title */}
+                                <Typography variant="h6">{measureType} Measure:</Typography>
+                                {/* writing box and button */}
+                                <ButtonTextfield value={measureText} onChange={handleMeasureText} color='primary' />
+                            </Box>
+                            {/* measure data */}
+                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                {/* title */}
+                                <Typography variant="h6">Measured Data %:</Typography>
+                                {/* writing box and button */}
+                                <ButtonTextfield value={measureDataText} onChange={handleMeasureDataText} color='primary' />
+                            </Box>
                             {/* change idea specific */}
                             {(title==='Change Idea') && (
                                 <>
@@ -381,7 +394,7 @@ export function AimNode({data}) {
             title='Aim'
             measureType='Outcome'
             table='projects'
-            columns={['id', 'aim_name', 'background', 'problem', 'goal', 'aim_outcome_measure']}
+            columns={['id', 'aim_name', 'background', 'problem', 'goal', 'aim_outcome_measure', 'measure_data']}
             disableDelete
             disableTarget
             />
@@ -395,7 +408,7 @@ export function PrimaryDriverNode({data}) {
             title='Primary Driver'
             measureType='Process'
             table='primary_drivers'
-            columns={['id', 'name', 'description', 'process_measure']}
+            columns={['id', 'name', 'description', 'process_measure', 'measure_data']}
             />
     );
 }
@@ -407,7 +420,7 @@ export function SecondaryDriverNode({data}) {
             title='Secondary Driver'
             measureType='Process'
             table='secondary_drivers'
-            columns={['id', 'name', 'description', 'process_measure']}
+            columns={['id', 'name', 'description', 'process_measure', 'measure_data']}
             />
     );
 }
@@ -417,9 +430,9 @@ export function ChangeIdeaNode({data}) {
         <CustomNode 
             {...data}  
             title='Change Idea'
-            measure=''
+            measureType='Process'
             table='change_ideas'
-            columns={['id', 'conclusions', 'rating']}
+            columns={['id', 'conclusions', 'rating', 'process_measure', 'measure_data']}
             disableSource
             />
     );

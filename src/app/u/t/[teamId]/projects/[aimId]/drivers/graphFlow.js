@@ -70,6 +70,7 @@ function GraphFlowLayout({
             goal: aim.goal,
             measure: aim.aim_outcome_measure,
             teamId: teamId,
+            measureData: aim.measure_data || '',
         },
         type: 'aimNode',
     }];
@@ -83,6 +84,7 @@ function GraphFlowLayout({
             description: pn.description,
             measure: pn.process_measure,
             aimId: pn.aim_id,
+            measureData: pn.measure_data || '',
         },
         type: 'primaryDriverNode'
     }));
@@ -96,6 +98,7 @@ function GraphFlowLayout({
             description: sn.description,
             measure: sn.process_measure,
             aimId: sn.aim_id,
+            measureData: sn.measure_data || '',
         },
         type: 'secondaryDriverNode'
     }));
@@ -112,6 +115,7 @@ function GraphFlowLayout({
             aimId: cn.aim_id,
             conclusions: cn.conclusions,
             rating: cn.rating,
+            measureData: cn.measure_data || '',
         },
         type: 'changeIdeaNode'
     }));
