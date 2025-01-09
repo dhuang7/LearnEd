@@ -13,7 +13,7 @@ export default async function LoadingAgenda() {
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
             {/* title */}
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
-                <Typography variant='h4'>Agenda</Typography>
+                <Typography variant='h4'>Dashboard (Work in progress)</Typography>
             </Box>
             {/* norms */}
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
