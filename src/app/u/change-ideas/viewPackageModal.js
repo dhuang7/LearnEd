@@ -217,7 +217,7 @@ export default function ViewPackageModal({open, setOpen, changePackage, projects
                                                 <Typography sx={{fontWeight:'bold'}}>
                                                     Measured Data:&nbsp;
                                                 </Typography> 
-                                                {v.measure_data}%
+                                                {v.measure_data||'--'}%
                                             </Typography>
                                         </Box>
                                     </ListItem>
