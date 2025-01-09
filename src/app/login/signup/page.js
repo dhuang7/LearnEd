@@ -7,11 +7,15 @@ import NextLink from 'next/link';
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 
 
 import { useState } from 'react';
 import createClient from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation'; 
+import OneTapComponent from '../googleOneTap';
+import MicrosoftLoginComponent from '../microsoftLogin';
 
 
 
@@ -111,6 +115,17 @@ export default function Signup() {
                     </Typography>
                 </Link>
             </Box>
+            {/* or */}
+            <Divider sx={{mb:'1rem'}}>
+                <Typography variant='caption'>
+                    or
+                </Typography>
+            </Divider>
+            {/* other logins */}
+            <Stack sx={{alignItems:'center'}} direction='column' spacing={1}>
+                <OneTapComponent />
+                <MicrosoftLoginComponent />
+            </Stack>
         </>
     );
 }
