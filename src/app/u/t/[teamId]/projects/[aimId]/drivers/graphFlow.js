@@ -64,9 +64,14 @@ function GraphFlowLayout({
 
         const channel = supabase
             .channel('graph_changes')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'change_ideas', filter: `aim_id=${aim.id}` }, handleGraphUpdates)
-            // .on('postgres_changes', { event: '*', schema: 'public', table: 'change_ideas', filter: `aim_id=${aim.id}` }, handleGraphUpdates)
-            .subscribe()
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'change_ideas' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'primary_change_edges' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'primary_drivers' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'primary_secondary_edges' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'projects' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'secondary_change_edges' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'secondary_drivers' }, handleGraphUpdates)
+            .subscribe();
 
         return () => supabase.removeChannel(channel);
     }, []);
