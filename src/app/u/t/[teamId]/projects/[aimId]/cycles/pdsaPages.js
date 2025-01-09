@@ -15,20 +15,20 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import ButtonTextfield from '@/components/buttonTextfield';
 import QPRList from './qprList';
+import MeasuresList from '../drivers/measuresList';
 
 
 export default function PDSAPages({
     page, onPageChange,
     qprsList, setQPRsList,
     logistics, measure, dueDate, observation, data, summary, nextSteps, choice,
-    onLogisticsChange, onMeasureChange, onDueDateChange, onObservationChange, onDataChange, onSummaryChange, onNextStepsChange, onChoiceChange
+    onLogisticsChange, onMeasureChange, onDueDateChange, onObservationChange, onDataChange, onSummaryChange, onNextStepsChange, onChoiceChange,
+    measuresList, setMeasuresList,
 }) {
     const [pageNum, setPageNum] = useState(page||0);
     const [logisticsText, setLogisticsText] = useState(logistics||'');
-    const [measureText, setMeasureText] = useState(measure||'');
     const [dueDateText, setDueDateText] = useState(dueDate||'');
     const [observationText, setObservationText] = useState(observation||'');
-    const [dataText, setDataText] = useState(data||'');
     const [summaryText, setSummaryText] = useState(summary||'');
     const [nextStepsText, setNextStepsText] = useState(nextSteps||'');
     const [choiceText, setChoiceText] = useState(choice||'');
@@ -45,11 +45,6 @@ export default function PDSAPages({
         onLogisticsChange && onLogisticsChange(event);
     }
 
-    function handleMeasureText(event) {
-        setMeasureText(event.target.value);
-        onMeasureChange && onMeasureChange(event);
-    }
-
     function handleDueDateText(event) {
         setDueDateText(event.target.value);
         onDueDateChange && onDueDateChange(event);
@@ -58,11 +53,6 @@ export default function PDSAPages({
     function handleObservationText(event) {
         setObservationText(event.target.value);
         onObservationChange && onObservationChange(event);
-    }
-
-    function handleDataText(event) {
-        setDataText(event.target.value);
-        onDataChange && onDataChange(event);
     }
 
     function handleSummaryText(event) {
@@ -130,11 +120,6 @@ export default function PDSAPages({
                                 color='primary' 
                                 />
                         </Box>
-                        {/* measure */}
-                        <Box sx={{pb:'.5rem'}}>
-                            <Typography variant='h6'>Measure:</Typography>
-                            <ButtonTextfield value={measureText} onChange={handleMeasureText} color='primary' />
-                        </Box>
                         {/* due date */}
                         <Box sx={{py:'1rem', width:'50%'}}>
                             <TextField 
@@ -160,6 +145,13 @@ export default function PDSAPages({
                             <Typography variant='h6'>Questions/Predictions:</Typography>
                             <QPRList qprsList={qprsList} setQPRsList={setQPRsList} hideResults />
                         </Box>
+                        {/* Measure list */}
+                        <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                            {/* title */}
+                            <Typography variant="h6">Measures:</Typography>
+                            {/* writing box and button */}
+                            <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} />
+                        </Box>
                     </CustomTabPanel>
                     {/* Do */}
                     <CustomTabPanel value={pageNum} index={1}>
@@ -172,10 +164,12 @@ export default function PDSAPages({
                                 color='primary' 
                                 />
                         </Box>
-                        {/* data */}
-                        <Box sx={{pb:'.5rem'}}>
-                            <Typography variant='h6'>Data:</Typography>
-                            <ButtonTextfield value={dataText} onChange={handleDataText} color='primary' />
+                        {/* Measure list */}
+                        <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                            {/* title */}
+                            <Typography variant="h6">Measures:</Typography>
+                            {/* writing box and button */}
+                            <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} />
                         </Box>
                     </CustomTabPanel>
                     {/* Study */}

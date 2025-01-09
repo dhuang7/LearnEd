@@ -39,10 +39,9 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
     const [stageText, setStageText] = useState('plan');
     const [objectiveText, setObjectiveText] = useState('');
     const [logisticsText, setLogisticsText] = useState('');
-    const [measureText, setMeasureText] = useState('');
+    const [measuresList, setMeasuresList] = useState([]);
     const [dueDateText, setDueDateText] = useState('');
     const [observationText, setObservationText] = useState('');
-    const [dataText, setDataText] = useState('');
     const [summaryText, setSummaryText] = useState('');
     const [nextStepsText, setNextStepsText] = useState('');
     const [choiceText, setChoiceText] = useState('');
@@ -51,7 +50,6 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         predictions:'',
         results:'',
     }]);
-
 
     useEffect(() => {
         const pageStage = {
@@ -66,11 +64,10 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         setStageText(cycle?.stage);
         setObjectiveText(cycle?.objective);
         setLogisticsText(cycle?.plan_logistics);
-        setMeasureText(cycle?.plan_measure);
+        setMeasuresList(cycle?.cycle_measures);
         // setDueDateText(cycle?.plan_due_date ? formatDateField(cycle.plan_due_date) : '');
         setDueDateText(cycle?.events?.start_time ? dayjs(cycle.events.start_time).format('YYYY-MM-DD') : '');
         setObservationText(cycle?.do_observations);
-        setDataText(cycle?.do_data);
         setSummaryText(cycle?.study_summary);
         setNextStepsText(cycle?.act_next_steps);
         setChoiceText(cycle?.act_choice);
@@ -103,11 +100,10 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         setStageText(cycle?.stage);
         setObjectiveText(cycle?.objective);
         setLogisticsText(cycle?.plan_logistics);
-        setMeasureText(cycle?.plan_measure);
+        setMeasuresList(cycle?.cycle_measures);
         // setDueDateText(cycle?.plan_due_date ? formatDateField(cycle.plan_due_date) : '');
         setDueDateText(cycle?.events?.start_time ? dayjs(cycle.events.start_time).format('YYYY-MM-DD') : '');
         setObservationText(cycle?.do_observations);
-        setDataText(cycle?.do_data);
         setSummaryText(cycle?.study_summary);
         setNextStepsText(cycle?.act_next_steps);
         setChoiceText(cycle?.act_choice);
@@ -135,20 +131,12 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         setLogisticsText(target.value);
     }
 
-    function handleMeasureText({target}) {
-        setMeasureText(target.value);
-    }
-
     function handleDueDateText({target}) {
         setDueDateText(target.value);
     }
 
     function handleObservationText(event) {
         setObservationText(event.target.value);
-    }
-
-    function handleDataText(event) {
-        setDataText(event.target.value);
     }
 
     function handleSummaryText(event) {
@@ -169,16 +157,6 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
         e.preventDefault();
         setLoading(true);
 
-        // console.log(qprsList)
-
-        // // const {data:d, error:er} = await supabase.rpc('get_qpr_ids', {
-        // //     qprs: qprsList,
-        // //     cycle_id: cycle.id
-        // // });
-
-        // // console.log(d);
-        // // console.log(er);
-
         // load to database
         const time = dueDateText ? dayjs(dueDateText) : null;
         const {data, error} = await supabase.rpc('update_pdsa_cycle_with_qprs', {
@@ -195,9 +173,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
                 color: '',
                 event_topics: cycle.events?.event_topics,
             },
-            new_plan_measure: measureText,
             new_do_observations: observationText,
-            new_do_data: dataText,
             new_study_summary: summaryText,
             new_act_next_steps: nextStepsText,
             new_act_choice: choiceText || null,
@@ -205,6 +181,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
             new_stage: stageText,
             qprs: qprsList,
             team_id: changeIdeaObject.projects.team_id,
+            measures_list: measuresList,
         });
 
         console.log(error);
@@ -215,6 +192,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
                 *,
                 pdsa_qprs(*),
                 events!events_api_ref_id_fkey(*, event_topics(*)),
+                cycle_measures(*),
                 change_ideas (
                     *,
                     projects(team_id),
@@ -248,6 +226,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
                 *,
                 pdsa_qprs(*),
                 events!events_api_ref_id_fkey(*, event_topics(*)),
+                cycle_measures(*),
                 change_ideas (
                     *,
                     projects(team_id),
@@ -395,21 +374,19 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
                                     qprsList={qprsList}
                                     setQPRsList={setQPRsList}
                                     logistics={logisticsText}
-                                    measure={measureText}
                                     dueDate={dueDateText}
                                     observation={observationText}
-                                    data={dataText}
                                     summary={summaryText}
                                     nextSteps={nextStepsText}
                                     choice={choiceText}
                                     onLogisticsChange={handleLogisticsText}
-                                    onMeasureChange={handleMeasureText}
                                     onDueDateChange={handleDueDateText}
                                     onObservationChange={handleObservationText}
-                                    onDataChange={handleDataText}
                                     onSummaryChange={handleSummaryText}
                                     onNextStepsChange={handleNextStepsText}
                                     onChoiceChange={handleChoiceText}
+                                    measuresList={measuresList}
+                                    setMeasuresList={setMeasuresList}
                                     />
                             </Box>
                         </Box>

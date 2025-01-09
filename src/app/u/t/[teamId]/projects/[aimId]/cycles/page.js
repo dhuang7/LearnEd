@@ -31,6 +31,7 @@ export default async function Cycles({params}) {
             *,
             pdsa_qprs(*),
             events(*, event_topics(*)),
+            cycle_measures(*),
             change_ideas (
                 *,
                 projects(team_id),

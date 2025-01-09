@@ -31,7 +31,6 @@ export default function NormsList({teamId, normsList}) {
     async function handleSave() {
         setSaving('Saving...');
         setToggleDelete(false);
-        console.log(norms);
         // const { data, error } = await supabase
         //     .from('norms')
         //     .upsert(norms, { onConflict: ['id'], defaultToNull: false });

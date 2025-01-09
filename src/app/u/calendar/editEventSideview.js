@@ -49,7 +49,6 @@ export default function EditEventSideview({event, calendarData, open, setOpen, c
         setDescriptionText(event?.description);
         setCalendarIdText(event?.calendar_id);
         setTopics(event?.event_topics);
-        console.log(event?.event_topics)
     }, [event]);
 
     // makes sure that the info is loaded before finishing.

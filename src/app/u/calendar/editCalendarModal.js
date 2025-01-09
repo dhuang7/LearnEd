@@ -191,7 +191,6 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
             ]
         })
 
-        console.log(data);
         console.log(error);
         // reset everything
         startTransition(() => {

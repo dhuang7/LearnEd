@@ -37,10 +37,9 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
     const [stageText, setStageText] = useState('plan');
     const [objectiveText, setObjectiveText] = useState('');
     const [logisticsText, setLogisticsText] = useState('');
-    const [measureText, setMeasureText] = useState('');
+    const [measuresList, setMeasuresList] = useState([]);
     const [dueDateText, setDueDateText] = useState('');
     const [observationText, setObservationText] = useState('');
-    const [dataText, setDataText] = useState('');
     const [summaryText, setSummaryText] = useState('');
     const [nextStepsText, setNextStepsText] = useState('');
     const [choiceText, setChoiceText] = useState('');
@@ -69,7 +68,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
         setStageText('plan');
         setObjectiveText('');
         setLogisticsText('');
-        setMeasureText('');
+        setMeasuresList([]);
         setDueDateText('');
         setSummaryText('');
         setChoiceText('');
@@ -104,20 +103,12 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
         setLogisticsText(target.value);
     }
 
-    function handleMeasureText({target}) {
-        setMeasureText(target.value);
-    }
-
     function handleDueDateText({target}) {
         setDueDateText(target.value);
     }
 
     function handleObservationText(event) {
         setObservationText(event.target.value);
-    }
-
-    function handleDataText(event) {
-        setDataText(event.target.value);
     }
 
     function handleSummaryText(event) {
@@ -152,9 +143,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
                 description: objectiveText,
                 color: '',
             },
-            plan_measure: measureText,
             do_observations: observationText,
-            do_data: dataText,
             study_summary: summaryText,
             act_next_steps: nextStepsText,
             act_choice: choiceText || null,
@@ -162,7 +151,10 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
             stage: stageText,
             qprs: qprsList,
             team_id: changeIdeaObject.projects.team_id,
+            measures_list: measuresList,
         });
+
+        console.log(error);
 
 
         const {data: newCycles, error: newCyclesError} = await supabase
@@ -171,6 +163,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
                 *,
                 pdsa_qprs(*),
                 events!events_api_ref_id_fkey(*, event_topics(*)),
+                cycle_measures(*),
                 change_ideas (
                     *,
                     projects(team_id),
@@ -331,21 +324,19 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
                                     qprsList={qprsList}
                                     setQPRsList={setQPRsList}
                                     logistics={logisticsText}
-                                    measure={measureText}
                                     dueDate={dueDateText}
                                     observation={observationText}
-                                    data={dataText}
                                     summary={summaryText}
                                     nextSteps={nextStepsText}
                                     choice={choiceText}
                                     onLogisticsChange={handleLogisticsText}
-                                    onMeasureChange={handleMeasureText}
                                     onDueDateChange={handleDueDateText}
                                     onObservationChange={handleObservationText}
-                                    onDataChange={handleDataText}
                                     onSummaryChange={handleSummaryText}
                                     onNextStepsChange={handleNextStepsText}
                                     onChoiceChange={handleChoiceText}
+                                    measuresList={measuresList}
+                                    setMeasuresList={setMeasuresList}
                                     />
                             </Box>
                         </Box>
