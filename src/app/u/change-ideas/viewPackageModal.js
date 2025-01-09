@@ -213,12 +213,12 @@ export default function ViewPackageModal({open, setOpen, changePackage, projects
                                                 ? <Typography>{v.conclusions}</Typography>
                                                 : <Typography color="textSecondary">{'(No conclusion)'}</Typography>
                                             }
-                                            <Typography sx={{mt:'.5rem', display:'flex'}}>
+                                            {/* <Typography sx={{mt:'.5rem', display:'flex'}}>
                                                 <Typography sx={{fontWeight:'bold'}} component={'span'}>
                                                     Measured Data:&nbsp;
                                                 </Typography> 
                                                 {v.measure_data||'--'}%
-                                            </Typography>
+                                            </Typography> */}
                                         </Box>
                                     </ListItem>
                                     
