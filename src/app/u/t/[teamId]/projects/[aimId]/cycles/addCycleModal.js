@@ -161,7 +161,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
             change_idea_id: changeIdeaObject.id,
             stage: stageText,
             qprs: qprsList,
-            team_id: changeIdeaObject.change_packages.team_id,
+            team_id: changeIdeaObject.projects.team_id,
         });
 
 
@@ -173,6 +173,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
                 events!events_api_ref_id_fkey(*, event_topics(*)),
                 change_ideas (
                     *,
+                    projects(team_id),
                     change_packages (*)
                 )
             `)

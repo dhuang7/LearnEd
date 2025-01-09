@@ -214,7 +214,7 @@ export default function ViewPackageModal({open, setOpen, changePackage, projects
                                                 : <Typography color="textSecondary">{'(No conclusion)'}</Typography>
                                             }
                                             <Typography sx={{mt:'.5rem', display:'flex'}}>
-                                                <Typography sx={{fontWeight:'bold'}}>
+                                                <Typography sx={{fontWeight:'bold'}} component={'span'}>
                                                     Measured Data:&nbsp;
                                                 </Typography> 
                                                 {v.measure_data||'--'}%

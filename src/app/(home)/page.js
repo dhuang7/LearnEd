@@ -19,7 +19,7 @@ export default function Page() {
                 {/* Slogan */}
                 <Typography variant="h2" color="primary" align="center" sx={{fontWeight:'bold', display:'flex'}}>
                     Empower&nbsp;
-                    <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit'}}>Educators</Typography> 
+                    <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit'}} component={'span'}>Educators</Typography> 
                     &nbsp;to lead change.
                 </Typography>
                 {/* description */}
@@ -49,7 +49,7 @@ export default function Page() {
                 <Box sx={{width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                     <Typography variant="h4" color="primary" align="center" sx={{fontWeight:'bold', display:'flex'}}>
                         Start making&nbsp;
-                        <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit'}}>change</Typography> 
+                        <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit'}} component={'span'}>change</Typography> 
                         &nbsp;happen.
                     </Typography>
                     <Button 

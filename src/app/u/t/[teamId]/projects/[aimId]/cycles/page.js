@@ -19,6 +19,7 @@ export default async function Cycles({params}) {
         .from('change_ideas')
         .select(`
             *,
+            projects(team_id),
             change_packages(*)    
         `)
         .eq('aim_id', aimId);
@@ -32,12 +33,12 @@ export default async function Cycles({params}) {
             events(*, event_topics(*)),
             change_ideas (
                 *,
+                projects(team_id),
                 change_packages (*)
             )
         `)
         .not('change_ideas', 'is', null)
         .eq('change_ideas.aim_id', aimId); 
-
 
     return (
         <> 

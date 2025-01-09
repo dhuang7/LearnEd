@@ -11,13 +11,19 @@ export default async function Drivers({params}) {
     // load projects
     const {data: projects, error: selectError} = await supabase
         .from('projects')
-        .select()
+        .select(`
+            *,
+            aim_measures(*)    
+        `)
         .eq('id', aimId);
 
     // load primary drivers
     const {data: primaryDrivers, error: primaryDriversErrors} = await supabase
         .from('primary_drivers')
-        .select()
+        .select(`
+            *,
+            primary_driver_measures(*)    
+        `)
         .eq('aim_id', aimId);
 
     // load primary secondary edges
@@ -35,7 +41,10 @@ export default async function Drivers({params}) {
     // load secondary drivers
     const {data: secondaryDrivers, error: secondaryDriversErrors} = await supabase
         .from('secondary_drivers')
-        .select()
+        .select(`
+            *,
+            secondary_driver_measures(*)    
+        `)
         .eq('aim_id', aimId);
 
     // load secondary change edges
@@ -47,7 +56,11 @@ export default async function Drivers({params}) {
     // load change ideas with join
     const {data: changeIdeas, error: changeIdeasErrors} = await supabase
         .from('change_ideas')
-        .select('*, change_packages (*)')
+        .select(`
+            *, 
+            change_packages (*),
+            change_idea_measures(*)
+        `)
         .eq('aim_id', aimId);
 
     return (

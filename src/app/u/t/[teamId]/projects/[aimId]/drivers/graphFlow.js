@@ -71,6 +71,7 @@ function GraphFlowLayout({
             measure: aim.aim_outcome_measure,
             teamId: teamId,
             measureData: aim.measure_data || '',
+            measures: aim.aim_measures,
         },
         type: 'aimNode',
     }];
@@ -85,6 +86,7 @@ function GraphFlowLayout({
             measure: pn.process_measure,
             aimId: pn.aim_id,
             measureData: pn.measure_data || '',
+            measures: pn.primary_driver_measures,
         },
         type: 'primaryDriverNode'
     }));
@@ -99,6 +101,7 @@ function GraphFlowLayout({
             measure: sn.process_measure,
             aimId: sn.aim_id,
             measureData: sn.measure_data || '',
+            measures: sn.secondary_driver_measures,
         },
         type: 'secondaryDriverNode'
     }));
@@ -115,7 +118,9 @@ function GraphFlowLayout({
             aimId: cn.aim_id,
             conclusions: cn.conclusions,
             rating: cn.rating,
+            measure: cn.process_measure,
             measureData: cn.measure_data || '',
+            measures: cn.change_idea_measures,
         },
         type: 'changeIdeaNode'
     }));
@@ -169,7 +174,8 @@ function GraphFlowLayout({
         setLoading(true);
         const {data, error} = await supabase
             .from('primary_drivers')
-            .insert({aim_id: aim.id});
+            .insert({aim_id: aim.id})
+            .select();
 
         // reset everything
         startTransition(() => {

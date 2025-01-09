@@ -96,7 +96,7 @@ export default function AddProjectModal({component, modalOnly, teamId}) {
                 name: projectNameText,
                 aim_name: aimNameText,
                 team_id: teamId,
-                aim_outcome_measure: outcomeMeasureText,
+                // aim_outcome_measure: outcomeMeasureText,
                 background: backgroundText,
                 problem: problemText,
                 goal: goalText,
@@ -208,7 +208,7 @@ export default function AddProjectModal({component, modalOnly, teamId}) {
                                 }}
                                 sx={{mb:'.5rem'}}
                                 />
-                            <TextField
+                            {/* <TextField
                                 fullWidth
                                 disabled={loading}
                                 label='Outcome Measure'
@@ -225,7 +225,7 @@ export default function AddProjectModal({component, modalOnly, teamId}) {
                                     }
                                 }}
                                 sx={{mb:'.5rem'}}
-                                />
+                                /> */}
                         </Box>
                     </DialogContent>
                     {/* buttons */}

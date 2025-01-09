@@ -14,8 +14,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
+import Drawer from "@mui/material/Drawer";
+
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
+import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
+
 
 
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -25,10 +29,11 @@ import { useState, useTransition, useEffect } from 'react';
 import theme from '@/app/theme';
 import createClient from '@/utils/supabase/client';
 import ButtonTextfield from '@/components/buttonTextfield';
+import MeasuresList from './measuresList';
  
  
 export default function CustomNode({
-    id, title, name, description, measure, measureData, measureType, 
+    id, title, name, description, measure, measureData, measureType, measures,
     background, problem, goal, 
     teamId, conclusions, rating, changePackageId,
     table, aimId, columns, disableDelete, disableSource, disableTarget
@@ -44,6 +49,7 @@ export default function CustomNode({
     const [goalText, setGoalText] = useState('');
     const [measureText, setMeasureText] = useState('');
     const [measureDataText, setMeasureDataText] = useState('');
+    const [measuresList, setMeasuresList] = useState([]);
     const [conclusionsText, setConclusionsText] = useState('');
     const [ratingNum, setRatingNum] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -55,17 +61,18 @@ export default function CustomNode({
         setDescriptionText(description);
         setMeasureText(measure);
         setMeasureDataText(measureData);
+        setMeasuresList(measures)
         setBackgroundText(background);
         setProblemText(problem);
         setGoalText(goal);
         setConclusionsText(conclusions);
         setRatingNum(rating||0);
-    }, [name, description, measure, measureData, background, problem, goal, conclusions, rating])
+    }, [name, description, measure, measureData, measures, background, problem, goal, conclusions, rating])
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
-        if (!isPending) {
-            handleClose();
+        if (!isPending && loading) {
+            handleCancel();
             setLoading(false);
         }
     }, [isPending])
@@ -77,10 +84,15 @@ export default function CustomNode({
 
     function handleClose() {
         setOpen(false);
+    }
+
+    function handleCancel() {
+        handleClose();
         setNameText(name);
         setDescriptionText(description);
         setMeasureText(measure);
         setMeasureDataText(measureData);
+        setMeasuresList(measures);
     }
 
     function handleNameText({target}) {
@@ -125,7 +137,8 @@ export default function CustomNode({
         setLoading(true);
 
         // insert data
-        const insertData = {aim_id: aimId};
+        const insertData = {measures_list: measuresList};
+        if (aimId) insertData.aim_id = aimId;
         const valueList = (title === 'Aim')
             ? [id, nameText, backgroundText, problemText, goalText, measureText, measureDataText]
             : (title === 'Change Idea')
@@ -133,17 +146,27 @@ export default function CustomNode({
                 : [id, nameText, descriptionText, measureText, measureDataText];
         // create data for the insert or update depending on what values exist
         columns.forEach((v, i) => {
-            if (valueList[i]) {
-                insertData[v] = valueList[i];
-            }
+            insertData[v] = valueList[i];
         })
 
         // update data
-        const {data: p, error: normal} = await supabase
-            .from(table)
-            .update(insertData)
-            .eq('id', id)
-            .select();
+        // const {data: p, error: normal} = await supabase
+        //     .from(table)
+        //     .update(insertData)
+        //     .eq('id', id)
+        //     .select();
+
+        const nodeMeasureNames = {
+            projects: 'update_project_with_measures',
+            primary_drivers: 'update_primary_drivers_with_measures',
+            secondary_drivers: 'update_secondary_drivers_with_measures',
+            change_ideas: 'update_change_ideas_with_measures',
+        }
+
+        console.log(measureText);
+
+        const {data: p, error: normal} = await supabase.rpc(nodeMeasureNames[table], insertData);
+        console.log(normal);
 
         if (title === 'Change Idea') {
             const {data: u, error: abnormal} = await supabase
@@ -152,16 +175,6 @@ export default function CustomNode({
                 .eq('id', changePackageId)
                 .select();
         }
-
-        // if change idea conclusions
-        // if (conclusionsText?.length||ratingNum) {
-        //     const {data: r, error: cError} = await supabase
-        //         .from('change_ideas')
-        //         .update({conclusions: conclusionsText, rating: ratingNum})
-        //         .eq('aim_id', aimId)
-        //         .eq('change_idea_id', id)
-        //         .select();
-        // }
 
 
         // reset everything
@@ -268,32 +281,55 @@ export default function CustomNode({
 
             
             {/* open dialog */}
-            <Dialog
+            <Drawer
                 open={open}
-                maxWidth='sm'
-                fullWidth
-                fullScreen={fullScreen}
+                anchor='right'
+                // hideBackdrop
+                ModalProps={{
+                    slotProps: {
+                        backdrop: {
+                            onClick:handleClose,
+                            sx:{
+                                backgroundColor: 'rgba(0, 0, 0, 0)',
+                            }
+                        }
+                    },
+                }}
+                onClose={handleClose}
+                elevation={5}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                onClose={handleClose}
+                PaperProps={{
+                    sx: {
+                        width:{xs:'100%', md:'35rem'},
+                        display:'flex',
+                        flexDirection:'row',
+                        alignItems:'flex-start',
+                        overflow:'hidden'
+                    }
+                }}
                 >
+                {/* close arrow button */}
+                <Box sx={{px:'.25rem', boxSizing:'border-box'}}>
+                    <IconButton size='small' onClick={handleClose} sx={{mt:'1.1rem', borderRadius:1}}><LastPageRoundedIcon /></IconButton>
+                </Box>
                 {/* form */}
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} style={{height:'100%', width:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
                     {/* title */}
-                    <DialogTitle id="alert-dialog-title" sx={{pb:0, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                    <DialogTitle id="alert-dialog-title" sx={{pl:0, display:'flex', alignItems:'center'}}>
                         <Typography variant="inherit">
                             Edit Node
                         </Typography>
                         {(disableDelete) ||
-                            <IconButton disabled={loading} size="small" onClick={handleDelete}>
+                            <IconButton disabled={loading} size="small" onClick={handleDelete} sx={{ml:'auto'}}>
                                 <DeleteRoundedIcon />
                             </IconButton>
                         }
                         
                     </DialogTitle>
                     {/* content */}
-                    <DialogContent>
-                        <Box sx={{pt:1, px:'1rem', boxSizing:'border-box'}}>
+                    <DialogContent sx={{pb:0, pl:0}}>
+                        <Box sx={{pt:1, display:'flex', flexDirection:'column', height:'100%', boxSizing:'border-box',}}>
                             {/* name */}
                             <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
                                 {/* title */}
@@ -330,20 +366,6 @@ export default function CustomNode({
                                     <ButtonTextfield value={descriptionText} onChange={handleDescriptionText} color='primary' />
                                 </Box>
                             }
-                            {/* measure */}
-                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
-                                {/* title */}
-                                <Typography variant="h6">{measureType} Measure:</Typography>
-                                {/* writing box and button */}
-                                <ButtonTextfield value={measureText} onChange={handleMeasureText} color='primary' />
-                            </Box>
-                            {/* measure data */}
-                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
-                                {/* title */}
-                                <Typography variant="h6">Measured Data %:</Typography>
-                                {/* writing box and button */}
-                                <ButtonTextfield value={measureDataText} onChange={handleMeasureDataText} color='primary' />
-                            </Box>
                             {/* change idea specific */}
                             {(title==='Change Idea') && (
                                 <>
@@ -369,11 +391,32 @@ export default function CustomNode({
                                     </Box>
                                 </>
                             )}
+                            {/* measure */}
+                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                {/* title */}
+                                <Typography variant="h6">{measureType} Measure:</Typography>
+                                {/* writing box and button */}
+                                <ButtonTextfield value={measureText} onChange={handleMeasureText} color='primary' />
+                            </Box>
+                            {/* measure data */}
+                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                {/* title */}
+                                <Typography variant="h6">Measured Data %:</Typography>
+                                {/* writing box and button */}
+                                <ButtonTextfield value={measureDataText} onChange={handleMeasureDataText} color='primary' />
+                            </Box>
+                            {/* Measure list */}
+                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                {/* title */}
+                                <Typography variant="h6">{measureType} Measure:</Typography>
+                                {/* writing box and button */}
+                                <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} />
+                            </Box>
                         </Box>
                     </DialogContent>
                     {/* buttons */}
                     <DialogActions>
-                        <Button disabled={loading} onClick={handleClose}>Cancel</Button>
+                        <Button disabled={loading} onClick={handleCancel}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)
                                 ? <CircularProgress size='1rem' />
@@ -382,7 +425,7 @@ export default function CustomNode({
                         </Button>
                     </DialogActions>
                 </form>
-            </Dialog>
+            </Drawer>
         </>
     );
 }
