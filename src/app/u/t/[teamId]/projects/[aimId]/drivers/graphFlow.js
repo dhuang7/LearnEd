@@ -56,6 +56,20 @@ function GraphFlowLayout({
     };
 
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        function handleGraphUpdates() {
+            router.refresh();
+        }
+
+        const channel = supabase
+            .channel('graph_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'change_ideas', filter: `aim_id=${aim.id}` }, handleGraphUpdates)
+            // .on('postgres_changes', { event: '*', schema: 'public', table: 'change_ideas', filter: `aim_id=${aim.id}` }, handleGraphUpdates)
+            .subscribe()
+
+        return () => supabase.removeChannel(channel);
+    }, []);
     
     // reformat all nodes
     const aimNodes = [{
