@@ -7,7 +7,6 @@ import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import IconButton from "@mui/material/IconButton";
-import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 
 
@@ -118,19 +117,6 @@ export default function TopicListItem({topic, setTopics, listOrder, handleDelete
                         </Button>
                     </Box>
                 }
-                {/* cycles */}
-                {/* <Autocomplete 
-                    options={[{label:'test'}]}
-                    sx={{width:'9rem', boxSizing:'border-box', pr:'.5rem'}} 
-                    size='small'
-                    renderInput={(params) => (
-                        <TextField 
-                            {...params} 
-                            label="Cycles" 
-                            sx={{width:'9rem'}}
-                            />
-                    )}
-                    /> */}
                 {/* trash */}
                 <IconButton data-order={listOrder} onClick={handleDeleteTopic}><DeleteRoundedIcon /></IconButton>
             </Box>

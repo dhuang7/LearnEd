@@ -6,21 +6,18 @@ import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import SpaceDashboardRoundedIcon from '@mui/icons-material/SpaceDashboardRounded';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
-import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import LightbulbRoundedIcon from '@mui/icons-material/LightbulbRounded';
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Tooltip from "@mui/material/Tooltip";
 import Icon from '@mui/material/Icon';
-import HandshakeRoundedIcon from '@mui/icons-material/HandshakeRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 
 import NextLink from 'next/link';
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Typography } from "@mui/material";
-import { useTeamContext } from "./layout";
 
 export default function SideNav({open, teamInfo, aimInfo}) {
     const pathname = usePathname();

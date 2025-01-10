@@ -2,15 +2,9 @@
 
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Typography from "@mui/material/Typography";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import IconButton from "@mui/material/IconButton";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useState } from "react";
 
 import TopicListItem from './topicListItem';
 
@@ -72,11 +66,9 @@ export default function TopicList({topics, setTopics}) {
                         <ListItem>
                             <Button 
                                 color='info' 
-                                // variant='contained' disableElevation 
                                 sx={{borderRadius:3, textTransform:'none'}} 
                                 startIcon={<AddRoundedIcon />}
                                 onClick={handleAddTopic}
-                                // disabled={loading}
                                 >
                                 Topic
                             </Button>

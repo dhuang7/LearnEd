@@ -20,7 +20,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 import './calendar.css';
 import dayjs from 'dayjs';
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useState } from "react";
 import EditEventSideview from "./editEventSideview";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
