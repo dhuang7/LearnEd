@@ -49,7 +49,7 @@ export default function CyclesTasks({cycles}) {
             {/* Title section */}
             <Box sx={{display:'flex', alignItems:'center'}}>
                 {/* title */}
-                <Typography variant="h6">Cycles:</Typography>
+                <Typography variant="h6">Cycles Ran:</Typography>
             </Box>
             {/* pie chart */}
             <Box sx={{flexGrow:1, overflow:'hidden'}}>

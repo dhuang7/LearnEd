@@ -3,9 +3,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import NextLink from 'next/link';
+import { redirect } from 'next/navigation';
+import createClient from '@/utils/supabase/server';
 
 
-export default function Login({children}) {
+
+export default async function Login({children}) {
+    const supabase = await createClient();
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) redirect('/u');
 
     return (
         <Box 
