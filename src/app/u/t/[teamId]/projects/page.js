@@ -17,7 +17,7 @@ export default async function RedirectToFirstProject({params}) {
 
     projects = p;
 
-    
+    console.log('cool')
 
     // create project if project doesn't exist
     if (projects.length === 0) {

@@ -30,6 +30,7 @@ import theme from '@/app/theme';
 import createClient from '@/utils/supabase/client';
 import ButtonTextfield from '@/components/buttonTextfield';
 import MeasuresList from './measuresList';
+import { useTeamContext } from '@/app/u/layout';
  
  
 export default function CustomNode({
@@ -38,6 +39,7 @@ export default function CustomNode({
     teamId, conclusions, rating, changePackageId,
     table, aimId, columns, disableDelete, disableSource, disableTarget
 }) {
+    const [_, __, ___, setAimInfo] = useTeamContext();
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -179,6 +181,12 @@ export default function CustomNode({
         //         .eq('change_idea_id', id);
         // }
         // reset everything
+        if (table === 'projects') {
+            setAimInfo(null);
+            router.push('../..');
+            return;
+        }
+
         startTransition(() => {
             router.refresh();
         })
