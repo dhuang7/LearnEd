@@ -337,6 +337,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
                                     onChoiceChange={handleChoiceText}
                                     measuresList={measuresList}
                                     setMeasuresList={setMeasuresList}
+                                    aimId={aimId}
                                     />
                             </Box>
                         </Box>

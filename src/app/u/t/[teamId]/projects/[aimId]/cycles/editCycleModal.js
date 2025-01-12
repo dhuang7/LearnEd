@@ -387,6 +387,7 @@ export default function EditCycleModal({cycle, changeIdeas, aimId, setCurrCycles
                                     onChoiceChange={handleChoiceText}
                                     measuresList={measuresList}
                                     setMeasuresList={setMeasuresList}
+                                    aimId={aimId}
                                     />
                             </Box>
                         </Box>

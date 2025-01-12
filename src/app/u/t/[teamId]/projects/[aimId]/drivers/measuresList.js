@@ -8,12 +8,47 @@ import Typography from '@mui/material/Typography';
 import ButtonTextfield from '@/components/buttonTextfield';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { useEffect, useState } from 'react';
+import createClient from '@/utils/supabase/client';
+import AddMeasureTypeModal from './addMeasureTypeModal';
+import dayjs from 'dayjs';
 
 
 export default function MeasuresList({
-    measuresList, setMeasuresList, 
+    measuresList, setMeasuresList, aimId,
 }) {
+    const supabase = createClient();
+
+    const [measureTypes, setMeasureTypes] = useState([]);
+
+    useEffect(() => {
+        async function getMeasureTypes() {
+            const {data, error} = await supabase
+                .from('measure_types')
+                .select()
+                .eq('aim_id', aimId);
+
+            console.log(error);
+            setMeasureTypes(data);
+        }
+
+        getMeasureTypes();
+    }, []);
+
+    function handleMeasureTypes({target}, value) {
+        if (target.value === 'button') return true;
+        setMeasuresList(ts => {
+            ts[value] = {
+                ...ts[value],
+                measure_types_id: target.value,
+            }
+
+            return [...ts];
+        })
+    }
 
     function handleAddMeasure() {
         setMeasuresList(l => [
@@ -22,6 +57,7 @@ export default function MeasuresList({
                 order_num: l.length,
                 description: '',
                 data: '',
+                date: '',
             }
         ])
     }
@@ -46,21 +82,9 @@ export default function MeasuresList({
     }
 
     // handle typing
-    function handleDescriptionText(e, value) {
-        const {target} = e;
-        setMeasuresList(ts => {
-            ts[value] = {
-                ...ts[value],
-                description: target.value,
-            }
-
-            return [...ts];
-        })
-    }
-
     function handleDataText(e, value) {
         const {target} = e;
-        if (isNaN(target.value)) return;
+        // if (isNaN(target.value)) return;
         setMeasuresList(ts => {
             ts[value] = {
                 ...ts[value],
@@ -71,6 +95,24 @@ export default function MeasuresList({
         })
     }
 
+    function handleDateText(e, value) {
+        const {target} = e;
+        // if (isNaN(target.value)) return;
+        setMeasuresList(ts => {
+            ts[value] = {
+                ...ts[value],
+                date: dayjs(target.value).toISOString(),
+            }
+
+            return [...ts];
+        })
+    }
+
+    // handlers various
+    function handleShowPicker({target}) {
+        target.showPicker?.();
+    }
+
     return (
         <List disablePadding dense>
             {measuresList.map((v, i) => (
@@ -79,17 +121,82 @@ export default function MeasuresList({
                         <Box sx={{display:'flex', alignItems:'flex-start'}}>
                             {/* Content */}
                             <Box sx={{flexGrow:1}}>
-                                {/* Measure Description */}
-                                <Typography variant='body1' sx={{fontWeight:'bold'}}>Description:</Typography>
-                                <ButtonTextfield value={measuresList[i].description} data-order={i} onChange={e=>handleDescriptionText(e, i)}></ButtonTextfield>
+                                {/* Choose Measure */}
+                                <Box sx={{width:'100%', display:'flex', alignItems:'center'}}>
+                                    <TextField
+                                        select
+                                        label='Measure'
+                                        value={v.measure_types_id||''}
+                                        onChange={e => handleMeasureTypes(e, i)}
+                                        fullWidth
+                                        slotProps={{
+                                            // select: {
+                                            //     renderValue:(v) => v.name,
+                                            // },
+                                            htmlInput: {
+                                                sx: {
+                                                    py:'.5rem'
+                                                }
+                                            },
+                                            inputLabel: {
+                                                shrink: true,
+                                            }
+                                        }}
+                                        >
+                                        {measureTypes.map((m, i) => (
+                                            <MenuItem key={i} value={m.id}>
+                                                {m.name}
+                                            </MenuItem>
+                                        ))}
+                                        {/* Add new project */}
+                                        <AddMeasureTypeModal aimId={aimId} measureTypes={measureTypes} setMeasureTypes={setMeasureTypes} component={(props) => <MenuItem disableGutters value={'button'} {...props}/>} />
+                                    </TextField>
+                                    {/* trash */}
+                                    <IconButton size='small' data-order={i} onClick={handleDeleteMeasure} sx={{ml:'.5rem'}}>
+                                        <DeleteRoundedIcon fontSize='small' />
+                                    </IconButton>
+                                </Box>
+                                {/* date */}
+                                <TextField
+                                    label='Date'
+                                    type='date'
+                                    value={dayjs(v.date).format('YYYY-MM-DD')}
+                                    onChange={e => handleDateText(e, i)}
+                                    onFocus={handleShowPicker}
+                                    fullWidth
+                                    slotProps={{
+                                        htmlInput: {
+                                            sx: {
+                                                py:'.5rem'
+                                            }
+                                        },
+                                        inputLabel: {
+                                            shrink: true,
+                                        }
+                                    }}
+                                    sx={{mt:'.5rem'}}
+                                    />
                                 {/* Measure Results */}
-                                <Typography variant='body1' sx={{fontWeight:'bold'}}>Data:</Typography>
-                                <ButtonTextfield value={measuresList[i].data} data-order={i} onChange={e=>handleDataText(e, i)}></ButtonTextfield>
+                                <Box sx={{display:'flex', alignItems:'center', mt:'.5rem'}}>
+                                    <Typography variant='body1' sx={{fontWeight:'bold'}}>Data:</Typography>
+                                    <TextField
+                                        type='number'
+                                        value={v.data||''} data-order={i} onChange={e=>handleDataText(e, i)}
+                                        slotProps={{
+                                            htmlInput: {
+                                                sx: {
+                                                    py:'.5rem'
+                                                }
+                                            },
+                                        }}
+                                        sx={{ml:'.5rem'}}
+                                        />
+                                </Box>
                             </Box>
                             {/* trash */}
-                            <IconButton size='small' data-order={i} onClick={handleDeleteMeasure}>
+                            {/* <IconButton size='small' data-order={i} onClick={handleDeleteMeasure}>
                                 <DeleteRoundedIcon fontSize='small' />
-                            </IconButton>
+                            </IconButton> */}
                         </Box>
                         
                     </Box>

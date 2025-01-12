@@ -23,7 +23,7 @@ export default function PDSAPages({
     qprsList, setQPRsList,
     logistics, measure, dueDate, observation, data, summary, nextSteps, choice,
     onLogisticsChange, onMeasureChange, onDueDateChange, onObservationChange, onDataChange, onSummaryChange, onNextStepsChange, onChoiceChange,
-    measuresList, setMeasuresList,
+    measuresList, setMeasuresList, aimId,
 }) {
     const [pageNum, setPageNum] = useState(page||0);
     const [logisticsText, setLogisticsText] = useState(logistics||'');
@@ -150,7 +150,7 @@ export default function PDSAPages({
                             {/* title */}
                             <Typography variant="h6">Measures:</Typography>
                             {/* writing box and button */}
-                            <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} />
+                            <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} aimId={aimId} />
                         </Box>
                     </CustomTabPanel>
                     {/* Do */}
@@ -169,7 +169,7 @@ export default function PDSAPages({
                             {/* title */}
                             <Typography variant="h6">Measures:</Typography>
                             {/* writing box and button */}
-                            <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} />
+                            <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} aimId={aimId} />
                         </Box>
                     </CustomTabPanel>
                     {/* Study */}

@@ -379,7 +379,7 @@ export default function CustomNode({
                                 {/* title */}
                                 <Typography variant="h6">{measureType} Measure:</Typography>
                                 {/* writing box and button */}
-                                <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} />
+                                <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} aimId={aimId||id} />
                             </Box>
                         </Box>
                     </DialogContent>
