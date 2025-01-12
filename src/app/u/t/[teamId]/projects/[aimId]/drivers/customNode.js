@@ -407,7 +407,7 @@ export function AimNode({data}) {
             measureType='Outcome'
             table='projects'
             columns={['id', 'aim_name', 'background', 'problem', 'goal']}
-            disableDelete
+            // disableDelete
             disableTarget
             />
     );
