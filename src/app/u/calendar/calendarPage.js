@@ -183,7 +183,7 @@ function allDayContent(args) {
 }
 
 function CustomToolbar({calendar, handleRerender}) {
-    const [currentView, setCurrentView] = useState("timeGridWeek");
+    const [currentView, setCurrentView] = useState("dayGridMonth");
 
     function handlePref() {
         handleRerender();
