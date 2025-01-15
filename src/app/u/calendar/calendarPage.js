@@ -106,7 +106,7 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
                 eventResize={handleEventTimeChanged}
                 snapDuration={'00:15:00'}
                 fixedWeekCount={false}
-                initialView="timeGridWeek"
+                initialView="dayGridMonth"
                 nowIndicator
                 dayMaxEvents
                 eventClick={handleEventClicked}
