@@ -90,6 +90,7 @@ export default function Page() {
                         // backgroundColor:'primary.main',
                     }}
                     >
+                    {/* driver */}
                     <Fade in timeout={{enter:750}} >
                         <Box 
                             sx={{
@@ -100,6 +101,7 @@ export default function Page() {
                             <Image src={'/driver-demo.png'} alt={'demo'} fill />
                         </Box>
                     </Fade>
+                    {/* dashbaord cycle */}
                     <Fade in timeout={{enter:750}}>
                         <Box 
                             sx={{
@@ -111,6 +113,7 @@ export default function Page() {
                             <Image src={'/cycles-ran.png'} alt={'demo'} fill />
                         </Box>
                     </Fade>
+                    {/* calendar event */}
                     <Fade in timeout={{enter:750}}>
                         <Box 
                             sx={{
@@ -141,6 +144,7 @@ export default function Page() {
                             boxSizing:'border-box', px:'5rem'
                         }}
                         >
+                        {/* Search bar */}
                         <TextField
                             fullWidth
                             variant="standard"
