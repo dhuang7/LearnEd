@@ -12,7 +12,7 @@ export default async function Login({children}) {
     const supabase = await createClient();
 
     const { data: { session } } = await supabase.auth.getSession();
-    if (session) redirect('/u');
+    if (session) redirect('/u/teams');
 
     return (
         <Box 

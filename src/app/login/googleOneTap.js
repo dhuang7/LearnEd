@@ -21,7 +21,7 @@ export default function OneTapComponent() {
             return;
         }
 
-        router.push('/u')
+        router.push('/u/teams')
     }
 
     // Initializes the button itself
