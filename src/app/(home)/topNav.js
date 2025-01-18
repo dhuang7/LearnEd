@@ -25,7 +25,7 @@ export default function TopNav({handleOpen}) {
                     <Box flexGrow={1} />
                     {/* end */}
                     <Box sx={{alignItems:'center', display:'flex'}}>
-                        <IconButton><HelpOutlineRoundedIcon /></IconButton>
+                        <IconButton component={NextLink} href='/help'><HelpOutlineRoundedIcon /></IconButton>
                         <Button 
                             variant="outlined" 
                             sx={{textTransform:'none', borderRadius:3, width:'5.5rem', py:'.5rem', ml:'.5rem'}}

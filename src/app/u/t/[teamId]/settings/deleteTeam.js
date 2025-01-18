@@ -1,5 +1,6 @@
 'use client'
 
+import { useTeamContext } from "@/app/u/layout";
 import createClient from "@/utils/supabase/client";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,7 @@ import { useRouter } from "next/navigation";
 export default function DeleteTeam({teamId}) {
     const supabase = createClient();
     const router = useRouter();
+    const [teamInfo, setTeamInfo, aimInfo, setAimInfo] = useTeamContext();
 
     async function handleDelete() {
         const {error} = await supabase
@@ -17,6 +19,7 @@ export default function DeleteTeam({teamId}) {
             .eq('id', teamId);
 
         console.log(error);
+        setTeamInfo(null);
         router.push('/u/teams');
     }
 

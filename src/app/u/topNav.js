@@ -6,6 +6,8 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
+
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from "@mui/material/Typography";
@@ -71,11 +73,13 @@ export default function TopNav({handleOpen}) {
                     {/* middle */}
                     <Box flexGrow={1} />
                     {/* end */}
-                    <Box sx={{alignContent:'center', display:'flex'}}>
+                    <Box sx={{alignItems:'center', display:'flex'}}>
                         {/* display user email */}
                         <Typography variant="body2" sx={{alignContent:'center', px:'.5rem'}}>
                             {user?.email}
                         </Typography>
+                        {/* help */}
+                        <IconButton target="_blank" component={NextLink} href='/help' sx={{mr:'.1rem'}}><HelpOutlineRoundedIcon /></IconButton>
                         {/* account button */}
                         <IconButton color="inherit" size="small" onClick={handleClick}>
                             <AccountCircleRoundedIcon fontSize="large" />
