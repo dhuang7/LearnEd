@@ -37,14 +37,14 @@ export default function Page() {
         {
             title: 'Projects',
             description: 'Learn how to create and manage your first projects.',
-            videoLength: '1:21',
+            videoLength: '1:25',
             img: {
                 src: '/thumbnails/create-project-thumbnail.png',
                 height:343,
                 width:640,
                 aspectRatio: 640/343
             },
-            videoSrc: 'https://www.youtube.com/embed/nunruLJnz6I',
+            videoSrc: 'https://www.youtube.com/embed/rU4FclQb0L4',
         }
     ]
 
