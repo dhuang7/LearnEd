@@ -183,7 +183,7 @@ export default function CustomNode({
         // reset everything
         if (table === 'projects') {
             setAimInfo(null);
-            router.push('../..');
+            router.push('../');
             return;
         }
 
