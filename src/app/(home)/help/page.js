@@ -3,7 +3,6 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import Icon from "@mui/material/Icon";
 import Fade from '@mui/material/Fade';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -14,6 +13,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import NextLink from 'next/link';
 import Image from "next/image";
 import ContactUs from "../contactUs";
+import VideoCard from "./videoCard";
 
 
 export default function Page() {
@@ -31,37 +31,22 @@ export default function Page() {
 
     const searchBarHeight = 7.5;
 
-    // custom Video card
-    const VideoCard = (video) => {
-        return (
-            <Paper 
-                elevation={0} 
-                sx={{
-                    m:'1rem', width:'20rem', p:'1rem', 
-                    borderRadius:3, border: '1px solid', borderColor: 'grey.300',
-                    textDecoration:'none',
-                    transition: 'border-color 0.25s',
-                    '&:hover': {
-                        borderColor: 'info.main', // Change the border color on hover
-                    },
-                }} 
-                // component={NextLink} 
-                // href={'/u/t/'+team.team.id}
-                >
-                <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
-                    <Icon sx={{p:'1rem', width:'100%', height:'7.5rem'}}>
-                        <Image src={'/icon.svg'} alt={'icon'} width={1} height={1} style={{width:'auto', height:'100%'}} />
-                    </Icon>
-                </Box>
-                <Box>
-                    <Typography noWrap variant="h4" align="center">
-                        {/* {team.team.name} */}
-                        video
-                    </Typography>
-                </Box>
-            </Paper>
-        )
-    }
+    
+
+    const videos = [
+        {
+            title: 'Projects',
+            description: 'Learn how to create and manage your first projects.',
+            videoLength: '1:21',
+            img: {
+                src: '/thumbnails/create-project-thumbnail.png',
+                height:343,
+                width:640,
+                aspectRatio: 640/343
+            },
+            videoSrc: 'https://www.youtube.com/embed/nunruLJnz6I',
+        }
+    ]
 
     return (
         <Box sx={{width:'100%', height:'100%', overflow:'scroll', backgroundColor:'grey.100'}}>
@@ -171,10 +156,10 @@ export default function Page() {
             </Box>
             {/* videos */}
             <Box sx={{width:'100%', display:'flex', justifyContent:'center', flexWrap:'wrap', pb:'1rem', pt:`${searchBarHeight/2+1}rem`, boxSizing:'border-box'}}>
-                <Typography color="textSecondary" sx={{height:'30rem', mt:'2rem'}}>No videos yet...</Typography>
-                {/* {[1,2,3,4,5,6].map((video, i) => (
+                {/* <Typography color="textSecondary" sx={{height:'30rem', mt:'2rem'}}>No videos yet...</Typography> */}
+                {videos.map((video, i) => (
                     <VideoCard key={i} video={video} />
-                ))} */}
+                ))}
             </Box>
             {/* Ending login */}
             <Box sx={{width:'100%', height:'50%', backgroundColor: 'grey.300'}}>
