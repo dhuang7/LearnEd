@@ -1,16 +1,11 @@
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Fade from '@mui/material/Fade';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 
 import Image from "next/image";
-import VideoCard from "./videoCard";
 import Footer from "../footer";
+import Videos from "./videos";
 
 
 export default function Page() {
@@ -30,7 +25,7 @@ export default function Page() {
     const videos = [
         {
             title: 'Projects',
-            description: 'Learn how to create and manage your first projects.',
+            description: 'Learn how to create, manage, and delete your projects.',
             videoLength: '1:25',
             img: {
                 src: '/thumbnails/create-project-thumbnail.png',
@@ -106,55 +101,7 @@ export default function Page() {
                     </Fade>
                 </Box>
             </Box>
-            {/* search bar */}
-            <Box sx={{width:'100%', display:'flex', justifyContent:'center', height:0}}>
-                <Paper
-                    sx={{
-                        width:'80%', height:`${searchBarHeight}rem`,
-                        border:'1px solid', borderColor:'grey.300', borderRadius:3,
-                        position:'relative', top:`-${searchBarHeight/2}rem`,
-                        boxShadow:0,
-                    }}
-                    >
-                    <Box 
-                        sx={{
-                            display:'flex', justifyContent:'center', alignItems:'center', 
-                            height:'100%',
-                            boxSizing:'border-box', px:'5rem'
-                        }}
-                        >
-                        {/* Search bar */}
-                        <TextField
-                            fullWidth
-                            variant="standard"
-                            placeholder='Search...'
-                            slotProps={{
-                                input:{
-                                    endAdornment:(
-                                        <InputAdornment position='end'>
-                                            <IconButton size='large' edge="end">
-                                                <SearchRoundedIcon fontSize="large" />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    )
-                                },
-                                htmlInput:{
-                                    sx:{
-                                        fontSize:'2rem'
-                                    }
-                                }
-                            }}
-                            />
-                    </Box>
-                </Paper>
-            </Box>
-            {/* videos */}
-            <Box sx={{width:'100%', display:'flex', justifyContent:'center', flexWrap:'wrap', pb:'1rem', pt:`${searchBarHeight/2+1}rem`, boxSizing:'border-box'}}>
-                {/* <Typography color="textSecondary" sx={{height:'30rem', mt:'2rem'}}>No videos yet...</Typography> */}
-                {videos.map((video, i) => (
-                    <VideoCard key={i} video={video} />
-                ))}
-            </Box>
+            <Videos videos={videos} searchBarHeight={searchBarHeight} />
             <Footer />
         </Box>
     );
