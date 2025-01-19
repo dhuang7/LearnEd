@@ -14,9 +14,6 @@ import Footer from "../footer";
 
 
 export default function Page() {
-    const linkedInIconWidth = 25;
-    const linkedInIconHeight = 0.85039370078 * linkedInIconWidth;
-
     const imageWidth = 600;
     const imageHeight = 0.53509933774 * imageWidth;
 
