@@ -34,6 +34,18 @@ export default function Page() {
                 aspectRatio: 640/343
             },
             videoSrc: 'https://www.youtube.com/embed/rU4FclQb0L4',
+        },
+        {
+            title: 'Aims',
+            description: 'Learn how to create, manage, and delete your aims.',
+            videoLength: '0:58',
+            img: {
+                src: '/thumbnails/manage-aim-thumbnail.png',
+                height:343,
+                width:640,
+                aspectRatio: 640/343
+            },
+            videoSrc: 'https://www.youtube.com/embed/5UcYtpUfCxI',
         }
     ]
 
