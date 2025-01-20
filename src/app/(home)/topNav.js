@@ -8,6 +8,7 @@ import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 
 
 import NextLink from 'next/link';
+import NavMenus from "./navMenus";
 
 export default function TopNav({handleOpen}) {
 
@@ -17,9 +18,14 @@ export default function TopNav({handleOpen}) {
                 <Box sx={{display:'flex', width:'100%'}}>
                     {/* start */}
                     <Box sx={{alignItems:'center', display:'flex'}}>
+                        {/* logo */}
                         <NextLink href='/' style={{ textDecoration: 'none', color:'inherit' }}>
                             <Typography variant="h6" color="primary" sx={{fontWeight:'bold'}}>LearnEd</Typography>
                         </NextLink>
+                        {/* nav */}
+                        <Box sx={{display:'flex', alignItems:'center', ml:'1rem'}}>
+                            <NavMenus />
+                        </Box>
                     </Box>
                     {/* middle */}
                     <Box flexGrow={1} />
