@@ -35,6 +35,7 @@ export default function VideoCard({video}) {
                     transition: 'border-color 0.25s',
                     '&:hover': {
                         borderColor: 'info.main', // Change the border color on hover
+                        cursor: 'pointer',
                     },
                 }} 
                 onClick={() => setOpen(true)}
