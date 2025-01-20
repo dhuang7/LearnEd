@@ -48,6 +48,8 @@ export default function VideoCard({video}) {
                             position:'relative',
                             borderRadius:2,
                             overflow:'hidden',
+                            border:'1px solid',
+                            borderColor:'grey.300',
                         }}
                         >
                         <Image src={video.img.src} alt={'icon'} fill />

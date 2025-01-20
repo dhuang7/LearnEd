@@ -46,7 +46,19 @@ export default function Page() {
                 aspectRatio: 640/343
             },
             videoSrc: 'https://www.youtube.com/embed/5UcYtpUfCxI',
-        }
+        },
+        {
+            title: 'Drivers',
+            description: 'Learn how to create, manage, and delete your drivers.',
+            videoLength: '2:18',
+            img: {
+                src: '/thumbnails/manage-drivers-thumbnail.png',
+                height:343,
+                width:640,
+                aspectRatio: 640/343
+            },
+            videoSrc: 'https://www.youtube.com/embed/ds_tg6eDhLQ',
+        },
     ]
 
     return (
