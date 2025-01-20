@@ -83,6 +83,18 @@ export default function Page() {
             },
             videoSrc: 'https://www.youtube.com/embed/IKmIxJOkyM8',
         },
+        {
+            title: 'Cycles',
+            description: 'Learn how to create, manage, and delete your cycles.',
+            videoLength: '1:15',
+            img: {
+                src: '/thumbnails/manage-cycles-thumbnail.png',
+                height:343,
+                width:640,
+                aspectRatio: 640/343
+            },
+            videoSrc: 'https://www.youtube.com/embed/YFDE_bOwnxU',
+        },
     ]
 
     return (
