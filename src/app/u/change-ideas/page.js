@@ -53,7 +53,8 @@ export default async function Page() {
         .select(`
             *,
             teams (name)
-        `);
+        `)
+        .not('teams', 'is', null);
     
 
     return (
