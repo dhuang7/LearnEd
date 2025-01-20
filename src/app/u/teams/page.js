@@ -35,7 +35,7 @@ export default async function Teams() {
                     },
                 }} 
                 component={NextLink} 
-                href={'/u/t/'+team.team.id}
+                href={'/u/t/'+team.team.id+'/dashboard'}
                 >
                 <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
                     <Icon sx={{p:'1rem', width:'100%', height:'7.5rem'}}>
