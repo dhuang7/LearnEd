@@ -59,6 +59,18 @@ export default function Page() {
             },
             videoSrc: 'https://www.youtube.com/embed/ds_tg6eDhLQ',
         },
+        {
+            title: 'Change Ideas',
+            description: 'Learn how to create, manage, and delete your change ideas.',
+            videoLength: '1:31',
+            img: {
+                src: '/thumbnails/manage-change-ideas-thumbnail.png',
+                height:343,
+                width:640,
+                aspectRatio: 640/343
+            },
+            videoSrc: 'https://www.youtube.com/embed/Jjx4XVVe1ug',
+        },
     ]
 
     return (
