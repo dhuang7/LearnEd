@@ -71,6 +71,18 @@ export default function Page() {
             },
             videoSrc: 'https://www.youtube.com/embed/Jjx4XVVe1ug',
         },
+        {
+            title: 'Measures',
+            description: 'Learn how to create, manage, and delete your measures.',
+            videoLength: '1:14',
+            img: {
+                src: '/thumbnails/manage-measures-thumbnail.png',
+                height:343,
+                width:640,
+                aspectRatio: 640/343
+            },
+            videoSrc: 'https://www.youtube.com/embed/IKmIxJOkyM8',
+        },
     ]
 
     return (
