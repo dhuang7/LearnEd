@@ -5,8 +5,9 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
+import Icon from '@mui/material/Icon';
 
-
+import Image from "next/image";
 import NextLink from 'next/link';
 import NavMenus from "./navMenus";
 
@@ -19,7 +20,10 @@ export default function TopNav({handleOpen}) {
                     {/* start */}
                     <Box sx={{alignItems:'center', display:'flex'}}>
                         {/* logo */}
-                        <NextLink href='/' style={{ textDecoration: 'none', color:'inherit' }}>
+                        <NextLink href='/' style={{ textDecoration: 'none', color:'inherit', display:'flex', alignItems:'center' }}>
+                            <Icon sx={{height:'2.5rem', width:'2.5rem', position:'relative', mr:'.5rem'}}>
+                                <Image src={'/icon.svg'} alt={'icon'} fill />
+                            </Icon>
                             <Typography variant="h6" color="primary" sx={{fontWeight:'bold'}}>LearnEd</Typography>
                         </NextLink>
                         {/* nav */}
