@@ -1,18 +1,18 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
+import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
+import YoutubeSearchedForRoundedIcon from '@mui/icons-material/YoutubeSearchedForRounded';
 
 import NextLink from 'next/link';
 import DemoCarousel from "./demoCarousel";
 import Image from "next/image";
-import ContactUs from "./contactUs";
 import Footer from "./footer";
+import Reasons from "./reasons";
 
 
 export default function Page() {
-    const linkedInIconWidth = 25;
-    const linkedInIconHeight = 0.85039370078 * linkedInIconWidth;
 
     return (
         <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
@@ -45,6 +45,97 @@ export default function Page() {
                     <DemoCarousel />
                 </Box>
             </Box>
+            {/* first reasoning */}
+            <Box sx={{width:'100%', height:'100%', backgroundColor:'grey.100'}}>
+                <Box sx={{width:'100%', height:'100%', alignItems:'center', display:'flex'}}>
+                    {/* broken */}
+                    <Box sx={{width:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+                        {/* titles */}
+                        <Box sx={{width:'75%', mb:'2rem'}}>
+                            <Typography variant="h3" color="secondary" align="center" sx={{fontWeight:'bold'}}>Work is broken.</Typography>
+                            <Typography variant="h6" color="textSecondary" align="center">
+                                PLCs fail to collaborate effectively because of a lack of organized learning.
+                            </Typography>
+                        </Box>
+                        {/* image */}
+                        <Box 
+                            sx={{
+                                width:'25rem', height:'25rem', 
+                                overflow:'hidden', borderRadius:5, boxShadow:3, 
+                                position:'relative',
+                            }}
+                            >
+                            <Image src='/fragmented-work.png' alt='fragmented work' fill />
+                        </Box>
+                    </Box>
+                    {/* fixed */}
+                    <Box sx={{width:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+                        {/* titles */}
+                        <Box sx={{width:'75%', mb:'2rem'}}>
+                            <Typography variant="h3" color="secondary" align="center" sx={{fontWeight:'bold'}}>Let's improve.</Typography>
+                            <Typography variant="h6" color="textSecondary" align="center">
+                                Organize your work, learning, and collaboration all in one central hub.
+                            </Typography>
+                        </Box>
+                        {/* images */}
+                        <Box 
+                            sx={{
+                                width:'25rem', height:'25rem', 
+                                overflow:'hidden', 
+                                position:'relative',
+                            }}
+                            >
+                            <Image src='/icon.png' alt='icon' fill />
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
+            {/* Title reason */}
+            <Box sx={{width:'100%', height:'50%'}}>
+                <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+                    <Box sx={{width:'40%'}}>
+                        <Typography variant="h3" color="primary" align="center" sx={{fontWeight:'bold', mb:'1rem'}}>Save time and learn more.</Typography>
+                        <Typography variant="h6" color="textSecondary" align="center">
+                            Streamline collaboration, manage cycles, and drive improvement effortlessly so that you can focus on what matters most.
+                        </Typography>
+                    </Box>
+                </Box>
+            </Box>
+            {/* reasons */}
+            <Reasons 
+                icon={YoutubeSearchedForRoundedIcon}
+                title='Find proven practices.'
+                description={
+                    `Streamline professional learning communities using proven change ideas. 
+                    Simplify agenda planning, track progress, and foster continuous improvement—all in one platform.`
+                }
+                buttonText='Discover now'
+                image='/icon.png'
+                backgroundColor={'grey.100'}
+                />
+            <Reasons 
+                icon={GroupsRoundedIcon}
+                title='Collaborate efficiently.'
+                description={
+                    `Empowers educators to streamline teamwork, align goals, and share insights effortlessly. 
+                    From building agendas to tracking progress, everything you need to foster meaningful collaboration is at your fingertips.`
+                }
+                buttonText='Start Collaborating'
+                image='/icon.png'
+                reverse
+                />
+            <Reasons 
+                icon={PublishedWithChangesRoundedIcon}
+                title='Manage cycles.'
+                description={
+                    `Seamlessly organize and track Plan-Do-Study-Act cycles.
+                    Monitor progress, document outcomes, and drive continuous improvement with ease. 
+                    Simplify the process and stay focused on achieving your goals.`
+                }
+                buttonText='Create a cycle'
+                image='/icon.png'
+                backgroundColor={'grey.100'}
+                />
             <Footer />
         </Box>
     );
