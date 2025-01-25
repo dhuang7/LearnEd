@@ -50,7 +50,7 @@ export default function Reasons({icon, title, description, buttonText, image, re
     );
 
     return (
-        <Box sx={{width:'100%', height:'75%', boxSizing:'border-box', px:'5%', backgroundColor:backgroundColor||'common.white'}}>
+        <Box sx={{width:'100%', height:'85%', boxSizing:'border-box', px:'5%', backgroundColor:backgroundColor||'common.white'}}>
             <Box sx={{width:'100%', height:'100%', alignItems:'center', display:'flex'}}>
                 {reverse
                     ? <>
