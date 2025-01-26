@@ -6,7 +6,7 @@ import NextLink from 'next/link';
 import Image from "next/image";
 
 
-export default function Reasons({icon, title, description, buttonText, image, reverse, backgroundColor}) {
+export default function Reasons({icon, title, description, buttonText, image, reverse, backgroundColor, imageStyle}) {
     const Icon = icon;
 
     const Text = () => (
@@ -42,6 +42,7 @@ export default function Reasons({icon, title, description, buttonText, image, re
                     width:'25rem', height:'25rem', 
                     overflow:'hidden', 
                     position:'relative',
+                    ...(imageStyle||{}),
                 }}
                 >
                 <Image src={image} alt='icon' fill />

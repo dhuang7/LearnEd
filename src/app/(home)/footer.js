@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-
+import Icon from '@mui/material/Icon';
 
 import NextLink from 'next/link';
 import Image from "next/image";
@@ -40,7 +40,13 @@ export default function Footer() {
             <Box sx={{width:'100%', display:'flex', boxSizing:'border-box', py:'2rem', backgroundColor:'common.white'}}>
                 <Box sx={{width:'30%', display:'flex', justifyContent:'center', alignItems:'flex-end', flexDirection:'column'}}>
                     {/* logo and social */}
-                    <Typography variant="h3" color="primary" sx={{fontWeight:'bold'}}>LearnEd</Typography>
+                    {/* logo */}
+                    <Box sx={{display:'flex', alignItems:'center'}}>
+                        <Icon sx={{height:'5rem', width:'5rem', position:'relative', mr:'.5rem'}}>
+                            <Image src={'/icon.svg'} alt={'icon'} fill />
+                        </Icon>
+                        <Typography variant="h3" color="primary" sx={{fontWeight:'bold'}}>LearnEd</Typography>
+                    </Box>
                     {/* social */}
                     <Box sx={{display:'flex', alignItems:'center'}}>
                         {/* email */}

@@ -110,7 +110,13 @@ export default function Page() {
                     Simplify agenda planning, track progress, and foster continuous improvement—all in one platform.`
                 }
                 buttonText='Discover now'
-                image='/icon.png'
+                image='/search-ideas.png'
+                imageStyle={{
+                    borderRadius:3, border:'1px solid', borderColor:'grey.300',
+                    boxShadow:5,
+                    width:'45rem',
+                    height:`${45*(1612/3024)}rem`
+                }}
                 backgroundColor={'grey.100'}
                 />
             <Reasons 
@@ -121,7 +127,13 @@ export default function Page() {
                     From building agendas to tracking progress, everything you need to foster meaningful collaboration is at your fingertips.`
                 }
                 buttonText='Start Collaborating'
-                image='/icon.png'
+                image='/collaborate-calendar.png'
+                imageStyle={{
+                    borderRadius:3, border:'1px solid', borderColor:'grey.300',
+                    boxShadow:5,
+                    width:'45rem',
+                    height:`${45*(1612/3024)}rem`
+                }}
                 reverse
                 />
             <Reasons 
@@ -133,7 +145,13 @@ export default function Page() {
                     Simplify the process and stay focused on achieving your goals.`
                 }
                 buttonText='Create a cycle'
-                image='/icon.png'
+                image='/manage-cycles.png'
+                imageStyle={{
+                    borderRadius:3, border:'1px solid', borderColor:'grey.300',
+                    boxShadow:5,
+                    width:'45rem',
+                    height:`${45*(1612/3024)}rem`
+                }}
                 backgroundColor={'grey.100'}
                 />
             <Footer />

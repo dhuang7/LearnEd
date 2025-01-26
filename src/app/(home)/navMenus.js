@@ -24,7 +24,7 @@ export default function NavMenus() {
     return (
         <>
             {/* resources */}
-            <Button onClick={handleOpenResources} sx={{textTransform:'none'}} endIcon={<ExpandMoreRoundedIcon sx={{color:'text.secondary'}} />}>
+            <Button onClick={handleOpenResources} sx={{textTransform:'none', mr:'.25rem'}} endIcon={<ExpandMoreRoundedIcon sx={{color:'text.secondary'}} />}>
                 <Typography variant="body1" color="textSecondary">Resources</Typography>
             </Button>
             <Menu
@@ -35,6 +35,10 @@ export default function NavMenus() {
                 <MenuItem onClick={handleCloseResources} component={NextLink} href='/'>Blog</MenuItem>
                 <MenuItem onClick={handleCloseResources} component={NextLink} href='/help'>Help Center</MenuItem>
             </Menu>
+            {/* pricing */}
+            <Button sx={{textTransform:'none', mr:'.25rem'}} component={NextLink} href='/pricing' >
+                <Typography variant="body1" color="textSecondary">Pricing</Typography>
+            </Button>
         </>
     );
 }
