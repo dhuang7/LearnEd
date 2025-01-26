@@ -27,7 +27,7 @@ export default function Page() {
                     The tool is completely free for now!
                 </Typography>
                 <Typography variant="h5" align="center" sx={{width:'60%', mt:'1rem', color:'primary.contrastText'}}>
-                    Possible future pricing below:
+                    Possible future monthly pricing below:
                 </Typography>
             </Box>
             <Box sx={{position:'relative', width:'100%', height:'40rem', display:'flex', justifyContent:'center'}}>
