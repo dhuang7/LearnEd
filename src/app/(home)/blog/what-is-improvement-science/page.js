@@ -1,4 +1,6 @@
 import ArticleFormat, { Header, LIParagraph, Paragraph } from "../articleFormat";
+import NextLink from 'next/link';
+
 
 export const info = {
     title: 'What is Improvement Science?',
@@ -26,7 +28,8 @@ export default function Page() {
                 Improvement science is a belief and approach towards making changes in a system or organization that lead to improvement. Its foundational principle is the belief that all systems and organizations are perfectly designed to produce the outcomes they produce; thus, without any change introduced to the system or organization, no improvement will ever happen. This isn’t to say that change will always lead to improvement, but, without change, improvement will never happen.
             </Paragraph>
             <Paragraph>
-                The approach of improvement science is the use of running iterative cycles of change for learning and improvement. These cycles are run at a small scale to maximize learning and minimize risk. When a change that leads to improvement is found, it is then scaled to a wider context, thus leading to maximized improvement with mitigated risks. With the combination of this belief and approach, improvement science has found itself quite popular–first starting in the healthcare system and now being applied to the education system.
+                The approach of improvement science is the use of running iterative cycles of change for learning and improvement. These cycles are run at a small scale to maximize learning and minimize risk. When a change that leads to improvement is found, it is then scaled to a wider context, thus leading to maximized improvement with mitigated risks. With the combination of this belief and approach, improvement science has found itself quite popular–
+                first starting in the <NextLink target="_blank" href='https://www.ihi.org/resources/how-improve-model-improvement'>healthcare system</NextLink> and now being applied to the education system.
             </Paragraph>
 
             {/* The PDSA Framework */}
@@ -34,7 +37,8 @@ export default function Page() {
                 The PDSA Framework
             </Header>
             <Paragraph>
-                The most common framework in improvement science is the Plan-Do-Study-Act (PDSA) Framework. This framework is often aided by other charts or diagrams like the Driver Diagram; nevertheless, the framework can be practiced in isolation. The Model for Improvement developed by W. Edwards Deming details the PDSA Framework in its simplest form. 
+                The most common framework in improvement science is the Plan-Do-Study-Act (PDSA) Framework. This framework is often aided by other charts or diagrams like the Driver Diagram; nevertheless, the framework can be practiced in isolation. 
+                The <NextLink target="_blank" href="https://www.apiweb.org/">Model for Improvement</NextLink> developed by W. Edwards Deming details the PDSA Framework in its simplest form. 
             </Paragraph>
             <Paragraph inline>
                 The PDSA Framework focuses on three key questions to drive purposeful and effective improvement efforts:
