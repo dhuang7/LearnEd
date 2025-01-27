@@ -32,7 +32,7 @@ export default function NavMenus() {
                 open={Boolean(anchorResources)}
                 onClose={handleCloseResources}
                 >
-                <MenuItem onClick={handleCloseResources} component={NextLink} href='/'>Blog</MenuItem>
+                <MenuItem onClick={handleCloseResources} component={NextLink} href='/blog'>Blog</MenuItem>
                 <MenuItem onClick={handleCloseResources} component={NextLink} href='/help'>Help Center</MenuItem>
             </Menu>
             {/* pricing */}
