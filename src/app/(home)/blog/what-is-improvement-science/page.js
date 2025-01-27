@@ -22,7 +22,7 @@ export default function Page() {
             >
             {/* What is improvement Science? */}
             <Header>
-                What is improvement Science?
+                What is Improvement Science?
             </Header>
             <Paragraph>
                 Improvement science is a belief and approach towards making changes in a system or organization that lead to improvement. Its foundational principle is the belief that all systems and organizations are perfectly designed to produce the outcomes they produce; thus, without any change introduced to the system or organization, no improvement will ever happen. This isn’t to say that change will always lead to improvement, but, without change, improvement will never happen.
