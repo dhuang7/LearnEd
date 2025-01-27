@@ -1,9 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Fade from '@mui/material/Fade';
 
-
-import Image from "next/image";
 import Footer from "../footer";
 import Articles from "./articles";
 import HeadArticleCard from "./headArticleCard";

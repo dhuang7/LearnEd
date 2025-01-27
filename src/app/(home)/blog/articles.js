@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 
-// import VideoCard from "./videoCard";
 import { useEffect, useState } from "react";
 import ArticleCard from "./articleCard";
 

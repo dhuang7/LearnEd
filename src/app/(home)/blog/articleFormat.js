@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Fade from '@mui/material/Fade';
 
 
 import Image from "next/image";
@@ -74,5 +73,29 @@ export default function ArticleFormat({children, aspectRatio, title, author, len
             </Box>
             <Footer />
         </Box>
+    );
+}
+
+export function Header({children}) {
+    return (
+        <Typography variant="h4" sx={{fontWeight:'bold', my:'1rem'}}>
+            {children}
+        </Typography>
+    );
+}
+
+export function Paragraph({children, inline, bolded}) {
+    return (
+        <Typography sx={{fontSize:'1.25rem', lineHeight:'2.5rem', mb:inline?0:'2rem', fontWeight:bolded&&'bold'}}>
+            {children}
+        </Typography>
+    );
+}
+
+export function LIParagraph({children, bolded}) {
+    return (
+        <li style={{fontSize:'1.25rem', lineHeight:'2.5rem', fontWeight:bolded&&'bold'}}>
+            {children}
+        </li>
     );
 }

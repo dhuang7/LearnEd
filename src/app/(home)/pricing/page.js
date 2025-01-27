@@ -72,7 +72,7 @@ export default function Page() {
                         href='/login'
                         color='ForestGreen'
                         title='School and District'
-                        description='Best for instructional leads.'
+                        description='Best organizations.'
                         price="Let's talk"
                         priceSize='h3'
                         buttonText='Contact sales'
