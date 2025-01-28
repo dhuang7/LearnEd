@@ -10,7 +10,7 @@ import { Divider } from "@mui/material";
 export default function ArticleFormat({children, aspectRatio, title, author, length, description, href, thumbnail}) {
 
     return (
-        <Box sx={{width:'100%', height:'100%', overflow:'scroll', backgroundColor:'common.white'}}>
+        <Box sx={{width:'100%', height:'100%', overflow:'scroll', backgroundColor:'grey.100'}}>
             <Box 
                 sx={{
                     width:'100%', height:'70%', boxSizing:'border-box',
