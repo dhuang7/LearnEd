@@ -8,13 +8,13 @@ const theme = createTheme({
     },
     palette: {
         primary: {
-            main: '#0000ffff',
+            main: '#0066ff',
             // light: will be calculated from palette.primary.main,
             // dark: will be calculated from palette.primary.main,
             // contrastText: will be calculated to contrast with palette.primary.main
         },
         secondary: {
-            main: '#b715e1',
+            main: '#ff9900',
             // light: will be calculated from palette.primary.main,
             // dark: will be calculated from palette.primary.main,
             // contrastText: will be calculated to contrast with palette.primary.main
