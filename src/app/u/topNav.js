@@ -7,7 +7,6 @@ import IconButton from "@mui/material/IconButton";
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
-
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from "@mui/material/Typography";
@@ -17,6 +16,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import createClient from "@/utils/supabase/client";
 import NextLink from 'next/link';
+import HelpButton from "./helpButton";
 
 export default function TopNav({handleOpen}) {
     const router = useRouter(); // Initialize the router
@@ -79,7 +79,8 @@ export default function TopNav({handleOpen}) {
                             {user?.email}
                         </Typography>
                         {/* help */}
-                        <IconButton target="_blank" component={NextLink} href='/help' sx={{mr:'.1rem'}}><HelpOutlineRoundedIcon /></IconButton>
+                        {/* <IconButton target="_blank" component={NextLink} href='/help' sx={{mr:'.1rem'}}><HelpOutlineRoundedIcon /></IconButton> */}
+                        <HelpButton />
                         {/* account button */}
                         <IconButton color="inherit" size="small" onClick={handleClick}>
                             <AccountCircleRoundedIcon fontSize="large" />
