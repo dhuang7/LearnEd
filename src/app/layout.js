@@ -3,6 +3,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import { Roboto, Nunito } from 'next/font/google';
 import Box from "@mui/material/Box";
+import { Analytics } from "@vercel/analytics/react";
 
 // const roboto = Roboto({
 //   weight: ['300', '400', '500', '700'],
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
                     <Box sx={{width:'100vw', height:'100vh', minWidth:'1000px', minHeight:'700px', overflow:'hidden'}}>
                     {/* <Box sx={{width:'100vw', height:'100vh'}}> */}
                         {children}
+                        <Analytics />
                     </Box>
                 </ThemeProvider>
             </AppRouterCacheProvider>

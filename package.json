@@ -27,6 +27,7 @@
     "@mui/x-date-pickers": "^7.23.3",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
+    "@vercel/analytics": "^1.4.1",
     "@xyflow/react": "^12.3.6",
     "dayjs": "^1.11.13",
     "next": "15.0.3",
