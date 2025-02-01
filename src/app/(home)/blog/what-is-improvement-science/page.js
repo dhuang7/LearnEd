@@ -1,5 +1,4 @@
 import ArticleFormat, { ArticleLink, Header, LIParagraph, Paragraph } from "../articleFormat";
-import NextLink from 'next/link';
 
 
 export const info = {

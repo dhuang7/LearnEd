@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-
+import NextLink from 'next/link';
 import Image from "next/image";
 import Footer from "../footer";
 import { Divider } from "@mui/material";
