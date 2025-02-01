@@ -99,3 +99,9 @@ export function LIParagraph({children, bolded}) {
         </li>
     );
 }
+
+export function ArticleLink({children, href}) {
+    return (
+        <NextLink target="_blank" href={href}>{children}</NextLink>
+    );
+}

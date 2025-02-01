@@ -1,4 +1,4 @@
-import ArticleFormat, { Header, LIParagraph, Paragraph } from "../articleFormat";
+import ArticleFormat, { ArticleLink, Header, LIParagraph, Paragraph } from "../articleFormat";
 import NextLink from 'next/link';
 
 
@@ -29,7 +29,7 @@ export default function Page() {
             </Paragraph>
             <Paragraph>
                 The approach of improvement science is the use of running iterative cycles of change for learning and improvement. These cycles are run at a small scale to maximize learning and minimize risk. When a change that leads to improvement is found, it is then scaled to a wider context, thus leading to maximized improvement with mitigated risks. With the combination of this belief and approach, improvement science has found itself quite popular–
-                first starting in the <NextLink target="_blank" href='https://www.ihi.org/resources/how-improve-model-improvement'>healthcare system</NextLink> and now being applied to the education system.
+                first starting in the <ArticleLink href='https://www.ihi.org/resources/how-improve-model-improvement'>healthcare system</ArticleLink> and now being applied to the education system.
             </Paragraph>
 
             {/* The PDSA Framework */}
@@ -38,7 +38,7 @@ export default function Page() {
             </Header>
             <Paragraph>
                 The most common framework in improvement science is the Plan-Do-Study-Act (PDSA) Framework. This framework is often aided by other charts or diagrams like the Driver Diagram; nevertheless, the framework can be practiced in isolation. 
-                The <NextLink target="_blank" href="https://www.apiweb.org/">Model for Improvement</NextLink> developed by W. Edwards Deming details the PDSA Framework in its simplest form. 
+                The <ArticleLink href="https://www.apiweb.org/">Model for Improvement</ArticleLink> developed by W. Edwards Deming details the PDSA Framework in its simplest form. 
             </Paragraph>
             <Paragraph inline>
                 The PDSA Framework focuses on three key questions to drive purposeful and effective improvement efforts:
@@ -177,7 +177,8 @@ export default function Page() {
                 Improvement science is relatively new in education, but its popularity has spread quickly. Unlike traditional reforms that often rely on broad, one-size-fits-all solutions, improvement science emphasizes understanding the root causes of problems, using data to drive decisions, and testing small, iterative changes in real-world settings. This methodology actively involves educators, students, and communities in the improvement process, fostering collaboration and ownership. By focusing on context-specific solutions and continuously learning from what works, improvement science ensures that reforms are not only effective but also equitable and sustainable, breaking the cycle of initiative fatigue and slow progress that has long plagued education systems.
             </Paragraph>
             <Paragraph>
-                As the main framework for Professional Learning Communities (PLCs), many PLCs have seen substantial measurable growth over the years. In one particular Algebra 1 team, they saw a 24% reduction in D/F rates while making sure that it was not a result of grade inflation. These improvements align with the framework because they provide clarity and purpose around everything in a PLC. Assessments no longer become data collection tools for administrators but for the improvement cycles. New initiatives become purposeful because they are defined by the ones implementing them. The power of change is handed back to the educator to make purposeful changes for improvement in their classroom alongside their colleagues. 
+                As the main framework for Professional Learning Communities (PLCs), many PLCs have seen substantial measurable growth over the years. 
+                For example, <ArticleLink href='https://edpolicyinca.org/sites/default/files/R_Kennedy_Oct19_0.pdf'>Ayers Elementary</ArticleLink> saw an increase in SBAC scores by 10% overall. Fresno Unified as a whole district saw the number of eligible students applying to a range of University of California and California State University campuses by over 50 percent. In my own experience as the instructional lead for my Algebra 1 team, we saw a 24% reduction in D/F rates while making sure that it was not a result of grade inflation. These improvements align with the framework because they provide clarity and purpose around everything in a PLC. Assessments no longer become data collection tools for administrators but for the improvement cycles. New initiatives become purposeful because they are defined by the ones implementing them. The power of change is handed back to the educator to make purposeful changes for improvement in their classroom alongside their colleagues. 
             </Paragraph>
             
             {/* Conclusion */}
