@@ -4,6 +4,8 @@ import theme from './theme';
 import { Roboto, Nunito } from 'next/font/google';
 import Box from "@mui/material/Box";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 
 // const roboto = Roboto({
 //   weight: ['300', '400', '500', '700'],
@@ -34,6 +36,7 @@ export default function RootLayout({ children }) {
                     {/* <Box sx={{width:'100vw', height:'100vh'}}> */}
                         {children}
                         <Analytics />
+                        <SpeedInsights />
                     </Box>
                 </ThemeProvider>
             </AppRouterCacheProvider>
