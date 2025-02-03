@@ -37,7 +37,7 @@ export default function Page() {
             </Header>
             <Paragraph>
                 The most common framework in improvement science is the Plan-Do-Study-Act (PDSA) Framework. This framework is often aided by other charts or diagrams like the Driver Diagram; nevertheless, the framework can be practiced in isolation. 
-                The <ArticleLink href="https://www.apiweb.org/">Model for Improvement</ArticleLink> developed by W. Edwards Deming details the PDSA Framework in its simplest form. 
+                The <ArticleLink href="https://www.apiweb.org/">Model for Improvement</ArticleLink> developed by Associates in Process Improvement details the PDSA Framework in its simplest form. 
             </Paragraph>
             <Paragraph inline>
                 The PDSA Framework focuses on three key questions to drive purposeful and effective improvement efforts:
