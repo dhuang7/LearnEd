@@ -92,6 +92,7 @@ export default function TopNav({handleOpen}) {
                             onClose={handleClose}
                             >
                             <MenuItem onClick={handleClose} href='/u/profile' component={NextLink}>Profile</MenuItem>
+                            {/* <MenuItem onClick={handleClose} href='/u/settings' component={NextLink}>Settings</MenuItem> */}
                             {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
                             <MenuItem onClick={handleLogout}>Logout</MenuItem>
                         </Menu>

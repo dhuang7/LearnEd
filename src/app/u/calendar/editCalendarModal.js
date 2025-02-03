@@ -18,7 +18,8 @@ import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import List from "@mui/material/List";
 import InputAdornment from "@mui/material/InputAdornment";
 import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
-
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+import Tooltip from '@mui/material/Tooltip';
 
 
 import theme from "@/app/theme";
@@ -26,7 +27,7 @@ import { useEffect, useState, useTransition } from "react";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import CalendarMemnberPermission from "./calendarMemberPermission";
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function EditCalendarModal({calendarData, teamMembers, user}) {
@@ -46,6 +47,9 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
     const [memberEmails, setMemberEmails] = useState([]);
     const [memberRoles, setMemberRoles] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
+    const [calendarURL, setCalendarURL] = useState(`https://www.learnedplc.com/api/calendar?ics_token=${calendarData.calendars.ics_token}&calendar_id=${calendarData.calendars.id}`);
+    const [copied, setCopied] = useState(false);
+    const [copyText, setCopyText] = useState('Click to copy');
 
     useEffect(() => {
         setTeamMemberObj(teamMembers?.filter(v => v.id !== user.id) || []);
@@ -107,6 +111,42 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
         // member text
         setMemberText(target.value);
         if (errorText.length > 0) setErrorText('');
+    }
+
+    function handleOpenTooltipCopy() {
+        setCopied(true);
+    }
+
+    function handleCloseTooltipCopy() {
+        setCopied(false);
+        setCopyText('Click to copy');
+    }
+
+    async function handleCalendarURLSelect(e) {
+        if (!e.target.select) return;
+        e.target.select();
+        setCopyText('Copied!')
+        try {
+            await navigator.clipboard.writeText(calendarURL);
+            setCopied(true);
+            // setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    }
+
+    async function handleRefreshCalendarURL(e) {
+        e.stopPropagation();
+
+        const {data, error} = await supabase
+            .from('calendars')
+            .update({ics_token: uuidv4()})
+            .eq('id', calendarData.calendars.id)
+            .select();
+        
+        if (data.length) {
+            setCalendarURL(`https://www.learnedplc.com/api/calendar?ics_token=${data[0].ics_token}&calendar_id=${calendarData.calendars.id}`);
+        }
     }
 
     function handleKeyDown(e) {
@@ -294,7 +334,49 @@ export default function EditCalendarModal({calendarData, teamMembers, user}) {
                                     mb:'1rem'
                                 }}
                                 />
-
+                            {/* Calendar url */}
+                            <Tooltip 
+                                placement="top" open={copied} 
+                                title={copyText} 
+                                onClose={handleCloseTooltipCopy} onOpen={handleOpenTooltipCopy}
+                                slotProps={{
+                                    popper: {
+                                        modifiers: [{
+                                            name: 'offset',
+                                            options: {
+                                                offset: [0, -25],
+                                            },
+                                        }],
+                                    },
+                                }}
+                                >
+                                <TextField 
+                                    label='Calendar URL'
+                                    fullWidth
+                                    value={calendarURL}
+                                    onClick={handleCalendarURLSelect}
+                                    // helperText={copied&&'Copied!'}
+                                    slotProps={{
+                                        input:{
+                                            endAdornment:(
+                                                <InputAdornment position='end'>
+                                                    <IconButton 
+                                                        // disabled={notAdmin} 
+                                                        size='large' edge="end" 
+                                                        onClick={handleRefreshCalendarURL}
+                                                        >
+                                                        <RefreshRoundedIcon />
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }
+                                    }}
+                                    sx={{
+                                        mb:'1rem',
+                                    }}
+                                    />
+                            </Tooltip>
+                            
                             {/* add users */}
                             <TextField 
                                 disabled={disableType}
