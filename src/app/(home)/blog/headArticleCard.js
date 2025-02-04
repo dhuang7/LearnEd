@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
+import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 
 
 import Image from "next/image";
@@ -40,6 +40,10 @@ export default function HeadArticleCard({article}) {
                 component={NextLink}
                 href={article.href}
                 >
+                <Box sx={{display:'flex'}}>
+                    <Typography color="textSecondary"><StarsRoundedIcon sx={{mr:'.5rem'}} /></Typography>
+                    <Typography color="textSecondary">Featured</Typography>
+                </Box>
                 {/* thumbnail */}
                 <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
                     <Box 
