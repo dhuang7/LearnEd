@@ -15,6 +15,7 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
 
@@ -28,7 +29,7 @@ import { useRouter } from "next/navigation";
 
 
 
-const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender}, ref) => {
+const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender, initialView}, ref) => {
     const supabase = createClient();
     const router = useRouter();
     const [event, setEvent] = useState();
@@ -91,10 +92,10 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
                 display:'flex', flexDirection:'column'
             }}
             >
-            <CustomToolbar calendar={calendar} handleRerender={handleRerender} />
+            <CustomToolbar calendar={calendar} handleRerender={handleRerender} initialView={initialView} />
             <FullCalendar
                 ref={ref}
-                plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
+                plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin ]}
                 slotDuration={'00:60:00'}
                 expandRows
                 selectable
@@ -106,7 +107,7 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
                 eventResize={handleEventTimeChanged}
                 snapDuration={'00:15:00'}
                 fixedWeekCount={false}
-                initialView="dayGridMonth"
+                initialView={initialView || "dayGridMonth"}
                 nowIndicator
                 dayMaxEvents
                 eventClick={handleEventClicked}
@@ -115,8 +116,13 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender},
                         titleFormat: { year: 'numeric', month: 'short' },
                         dayMaxEventRows: 3,
                         dayMaxEvents: false,
+                    },
+                    list: {
+                        listDayFormat: {weekday: 'long', month: 'long', day: 'numeric', year:'numeric'},
+                        listDaySideFormat: {weekday:'long'}
                     }
                 }}
+                // listDaySideFormat={{ weekday: 'long', month: 'long', day: 'numeric', year:'numeric' }} 
                 headerToolbar='false'
                 height='100%'
                 dayHeaderContent={dayHeaderContent}
@@ -182,8 +188,8 @@ function allDayContent(args) {
     );
 }
 
-function CustomToolbar({calendar, handleRerender}) {
-    const [currentView, setCurrentView] = useState("dayGridMonth");
+function CustomToolbar({calendar, handleRerender, initialView}) {
+    const [currentView, setCurrentView] = useState(initialView || "dayGridMonth");
 
     function handlePref() {
         handleRerender();
@@ -219,26 +225,30 @@ function CustomToolbar({calendar, handleRerender}) {
                 >
                 Today
             </Button>
-            <TextField
-                select
-                label='View'
-                value={currentView}
-                onChange={handleViewChange}
-                slotProps={{
-                    htmlInput: {
-                        sx: {
-                            py:'.5rem'
-                        }
-                    },
-                    inputLabel: {
-                        shrink: true,
-                    }
-                }}
-                sx={{width:'7.5rem', mr:'.5rem'}}
-                >
-                <MenuItem value='timeGridWeek'>Week</MenuItem>
-                <MenuItem value='dayGridMonth'>Month</MenuItem>
-            </TextField>
+            {initialView 
+                ? null 
+                : (
+                    <TextField
+                        select
+                        label='View'
+                        value={currentView}
+                        onChange={handleViewChange}
+                        slotProps={{
+                            htmlInput: {
+                                sx: {
+                                    py:'.5rem'
+                                }
+                            },
+                            inputLabel: {
+                                shrink: true,
+                            }
+                        }}
+                        sx={{width:'7.5rem', mr:'.5rem'}}
+                        >
+                        <MenuItem value='timeGridWeek'>Week</MenuItem>
+                        <MenuItem value='dayGridMonth'>Month</MenuItem>
+                    </TextField>
+            )}
             <Box sx={{display:'flex', alignItems:'center'}}>
                 <IconButton 
                     size="small" 
