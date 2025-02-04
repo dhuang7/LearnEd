@@ -9,17 +9,23 @@ import Videos from "./videos";
 
 
 export default function Page() {
-    const imageWidth = 600;
-    const imageHeight = 0.53509933774 * imageWidth;
+    const imageWidth = '40';
+    const imageHeight = 1/0.53509933774;
 
-    const cyclesRanWidth = 250;
-    const cyclesRanHeight = 634/844 * cyclesRanWidth;
+    const cyclesRanWidth = `${Number(imageWidth)*250/600}`;
+    const cyclesRanHeight = 1/(634/844);
+    const cyclesMr = `${Number(imageWidth)*(28.5/40)}`;
+    const cyclesMt = `${Number(imageWidth)*(12.5/40)}`;
 
-    const editEventWidth = 200;
-    const editEventHeight = 1616/999 * editEventWidth;
+    const editEventWidth = `${Number(imageWidth)*200/600}`;
+    const editEventHeight = 1/(1616/999);
+    const editEventMl = `${Number(imageWidth)*(37/40)}`;
+    const editEventMt = `${Number(imageWidth)*(5.5/40)}`;
 
     const searchBarHeight = 7.5;
 
+    
+    
     
 
     const videos = [
@@ -121,6 +127,7 @@ export default function Page() {
                         alignItems:'center', display:'flex', justifyContent:'center', 
                         mt:'3rem', 
                         position:'relative', left:'-1.5rem', 
+                        // transform:'scale(100vw)'
                         // backgroundColor:'primary.main',
                     }}
                     >
@@ -129,7 +136,8 @@ export default function Page() {
                         <Box 
                             sx={{
                                 borderRadius:3, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
-                                position:'relative', width:imageWidth, height: imageHeight,
+                                position:'relative', width:imageWidth+'%', 
+                                aspectRatio: imageHeight,
                             }}
                             >
                             <Image src={'/driver-demo.png'} alt={'demo'} fill />
@@ -140,8 +148,9 @@ export default function Page() {
                         <Box 
                             sx={{
                                 borderRadius:3, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
-                                position:'absolute', width: cyclesRanWidth, height: cyclesRanHeight,
-                                mr:'27rem', mt:'12rem'
+                                position:'absolute', width: cyclesRanWidth+'%', 
+                                aspectRatio: cyclesRanHeight,
+                                mr:cyclesMr+'%', mt:cyclesMt+'%'
                             }}
                             >
                             <Image src={'/cycles-ran.png'} alt={'demo'} fill />
@@ -152,8 +161,9 @@ export default function Page() {
                         <Box 
                             sx={{
                                 borderRadius:3, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
-                                position:'absolute', width: editEventWidth, height: editEventHeight,
-                                ml:'35rem', mt:'5rem'
+                                position:'absolute', width: editEventWidth+'%', 
+                                aspectRatio: editEventHeight,
+                                ml:editEventMl+'%', mt:editEventMt+'%'
                             }}
                             >
                             <Image src={'/edit-event.png'} alt={'demo'} fill />
