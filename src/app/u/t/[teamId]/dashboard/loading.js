@@ -14,7 +14,7 @@ export default async function LoadingAgenda() {
             {/* title */}
             <Box sx={{width:'100%', p:'1rem', pb:0, boxSizing:'border-box'}}>
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                    <Typography variant='h4'>Dashboard (Work in progress)</Typography>
+                    <Typography variant='h4'>Dashboard</Typography>
                     {/* <AddAgendaModal teamId={teamId} /> */}
                 </Box>
             </Box>
@@ -83,6 +83,33 @@ export default async function LoadingAgenda() {
                                     <Typography variant="h6">Cycles Ran:</Typography>
                                 </Box>
                                 <Skeleton variant="rectangular" height='100%' />
+                            </Paper>
+                        </Box>
+                    </Box>
+                    {/* rest */}
+                    <Box sx={{width:'100%', height:'100%', display:'flex', boxSizing:'border-box', px:'.5rem', py:'1rem'}}>
+                        <Box sx={{width:'50%', boxSizing:'border-box', px:'.5rem'}}>
+                            <Paper 
+                                elevation={0} 
+                                sx={{
+                                    borderRadius:3, boxSizing:'border-box', border:'1px solid', borderColor: 'grey.300',
+                                    p:'1rem', height:'100%', 
+                                    display:'flex', flexDirection:'column'
+                                }}
+                                >
+                                {Array(10).fill(0).map((v, i) => <Skeleton key={i} height='20%' />)}
+                            </Paper>
+                        </Box>
+                        <Box sx={{width:'50%', height:'100%', boxSizing:'border-box', px:'.5rem'}}>
+                            <Paper
+                                elevation={0} 
+                                sx={{
+                                    borderRadius:3, boxSizing:'border-box', border:'1px solid', borderColor: 'grey.300',
+                                    p:'1rem', height:'100%', 
+                                    display:'flex', flexDirection:'column'
+                                }}
+                                >
+                                (Under construction)
                             </Paper>
                         </Box>
                     </Box>
