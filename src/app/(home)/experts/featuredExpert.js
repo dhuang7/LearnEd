@@ -30,7 +30,7 @@ export default function FeaturedExpert({expert}) {
             <Paper 
                 elevation={0} 
                 sx={{
-                    m:'1rem', width:'30rem', p:'1rem', 
+                    m:'1rem', width:'85%', p:'1rem', 
                     borderRadius:3, border: '1px solid', borderColor: 'grey.300',
                     boxShadow:5,
                     textDecoration:'none',
@@ -51,17 +51,17 @@ export default function FeaturedExpert({expert}) {
                 <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
                     <Box 
                         sx={{
-                            width:345, 
-                            height:345, 
+                            width:'50%', 
+                            aspectRatio: 1,
                             display:'flex', alignItems:'center', justifyContent:'center',
                             position:'relative',
-                            borderRadius:9999,
+                            borderRadius:5,
                             overflow:'hidden',
                             border:'1px solid',
                             borderColor:'grey.300',
                         }}
                         >
-                        <Image src={expert.thumbnail} alt={'icon'} width={expert.aspectRatio*345} height={345}/>
+                        <Image src={expert.thumbnail} alt={'icon'} fill style={{objectFit:'contain'}}/>
                     </Box>
                 </Box>
                 {/* text */}

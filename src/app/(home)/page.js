@@ -114,8 +114,9 @@ export default function Page() {
                 imageStyle={{
                     borderRadius:3, border:'1px solid', borderColor:'grey.300',
                     boxShadow:5,
-                    width:'45rem',
-                    height:`${45*(1612/3024)}rem`
+                    width:'100%',
+                    aspectRatio: '3024/1612',
+                    display:'flex',
                 }}
                 backgroundColor={'grey.100'}
                 />
@@ -131,8 +132,8 @@ export default function Page() {
                 imageStyle={{
                     borderRadius:3, border:'1px solid', borderColor:'grey.300',
                     boxShadow:5,
-                    width:'45rem',
-                    height:`${45*(1612/3024)}rem`
+                    width:'100%',
+                    aspectRatio: '3024/1612',
                 }}
                 reverse
                 />
@@ -149,8 +150,8 @@ export default function Page() {
                 imageStyle={{
                     borderRadius:3, border:'1px solid', borderColor:'grey.300',
                     boxShadow:5,
-                    width:'45rem',
-                    height:`${45*(1612/3024)}rem`
+                    width:'100%',
+                    aspectRatio: '3024/1612',
                 }}
                 backgroundColor={'grey.100'}
                 />

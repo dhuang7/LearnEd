@@ -39,7 +39,8 @@ export default function Reasons({icon, title, description, buttonText, image, re
             {/* images */}
             <Box 
                 sx={{
-                    width:'25rem', height:'25rem', 
+                    // width:'25rem', 
+                    // height:'25rem', 
                     overflow:'hidden', 
                     position:'relative',
                     ...(imageStyle||{}),

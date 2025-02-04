@@ -27,7 +27,7 @@ export default function HeadArticleCard({article}) {
             <Paper 
                 elevation={0} 
                 sx={{
-                    m:'1rem', width:'40rem', p:'1rem', 
+                    m:'1rem', width:'85%', p:'1rem', 
                     borderRadius:3, border: '1px solid', borderColor: 'grey.300',
                     boxShadow:5,
                     textDecoration:'none',
@@ -48,8 +48,9 @@ export default function HeadArticleCard({article}) {
                 <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
                     <Box 
                         sx={{
-                            width:640, 
-                            height:345, 
+                            // width:640, 
+                            width:'100%',
+                            aspectRatio: 640/345,
                             display:'flex', alignItems:'center', justifyContent:'center',
                             position:'relative',
                             borderRadius:2,
@@ -58,7 +59,7 @@ export default function HeadArticleCard({article}) {
                             borderColor:'grey.300',
                         }}
                         >
-                        <Image src={article.thumbnail} alt={'icon'} width={article.aspectRatio*345} height={345}/>
+                        <Image src={article.thumbnail} alt={'icon'} fill style={{objectFit:'contain'}}/>
                     </Box>
                 </Box>
                 {/* text */}
