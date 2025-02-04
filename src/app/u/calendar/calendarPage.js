@@ -118,11 +118,9 @@ const CalendarPage = forwardRef(({calendar, user, calendarData, handleRerender, 
                         dayMaxEvents: false,
                     },
                     list: {
-                        listDayFormat: {weekday: 'long', month: 'long', day: 'numeric', year:'numeric'},
-                        listDaySideFormat: {weekday:'long'}
+                        listDayFormat: {weekday: 'long', month: 'numeric', day: 'numeric'},
                     }
                 }}
-                // listDaySideFormat={{ weekday: 'long', month: 'long', day: 'numeric', year:'numeric' }} 
                 headerToolbar='false'
                 height='100%'
                 dayHeaderContent={dayHeaderContent}
