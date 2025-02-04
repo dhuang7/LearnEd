@@ -6,11 +6,13 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from "@mui/material/Typography";
-
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -91,10 +93,16 @@ export default function TopNav({handleOpen}) {
                             open={open}
                             onClose={handleClose}
                             >
-                            <MenuItem onClick={handleClose} href='/u/profile' component={NextLink}>Profile</MenuItem>
+                            <MenuItem onClick={handleClose} href='/u/settings' component={NextLink}>
+                                <ListItemIcon><SettingsRoundedIcon fontSize="small" /></ListItemIcon>
+                                <ListItemText>Settings</ListItemText>
+                            </MenuItem>
                             {/* <MenuItem onClick={handleClose} href='/u/settings' component={NextLink}>Settings</MenuItem> */}
                             {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
-                            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                            <MenuItem onClick={handleLogout}>
+                                <ListItemIcon><LogoutRoundedIcon fontSize="small" /></ListItemIcon>
+                                <ListItemText>Logout</ListItemText>
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Box>

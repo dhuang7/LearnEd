@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 
 
-export default async function Profile() {
+export default async function Settings() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     let { data: [profile], error } = await supabase
@@ -15,7 +15,7 @@ export default async function Profile() {
     return (
         <Box sx={{pt:'1rem', px:'1rem'}}>
             {/* title */}
-            <Typography variant="h3">Profile</Typography>
+            <Typography variant="h3">Settings</Typography>
             {/* content profile */}
             <Box sx={{pl:'1rem'}}>
                 <Typography variant="body1"><b>First Name: </b>{profile.first_name}</Typography>

@@ -12,7 +12,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import FeedbackRoundedIcon from '@mui/icons-material/FeedbackRounded';
 
 import theme from "@/app/theme";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -101,9 +103,14 @@ export default function HelpButton() {
                 open={open}
                 onClose={handleCloseMenu}
                 >
-                <MenuItem onClick={handleCloseMenu} target="_blank" component={NextLink} href='/help'>Help Center</MenuItem>
-                {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
-                <MenuItem onClick={handleOpenDialog}>Give Feedback</MenuItem>
+                <MenuItem onClick={handleCloseMenu} target="_blank" component={NextLink} href='/help'>
+                    <ListItemIcon><HelpOutlineRoundedIcon fontSize="small" /></ListItemIcon>
+                    <ListItemText>Help Center</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleOpenDialog}>
+                    <ListItemIcon><FeedbackRoundedIcon fontSize="small" /></ListItemIcon>
+                    <ListItemText>Give Feedback</ListItemText>
+                </MenuItem>
             </Menu>
 
             <Dialog
