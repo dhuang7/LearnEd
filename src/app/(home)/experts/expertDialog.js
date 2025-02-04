@@ -76,7 +76,7 @@ export default function ExportDialog({expert, open, setOpen}) {
                                 <Image src={expert.thumbnail} alt={'icon'} width={expert.aspectRatio*345} height={345} />
                             </Box>
                         </Box>
-                        <Box sx={{width:345, justifyContent:'center', alignItems:'center', display:'flex'}}>
+                        <Box sx={{width:520, justifyContent:'center', alignItems:'center', display:'flex'}}>
                             <Box>
                                 <Typography variant="h4" color="primary">{expert.name}</Typography>
                                 <Typography variant="body1" color="primary">{expert.role}</Typography>
