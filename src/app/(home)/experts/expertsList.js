@@ -11,6 +11,7 @@ export const expertsList = [
         aspectRatio: 1,
         linkedIn: 'https://www.linkedin.com/in/derekjhuang/',
         email:'derekhuang7@gmail.com',
+        website:'https://www.learnedplc.com'
     },
 
 ];
