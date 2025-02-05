@@ -2,12 +2,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Kanban from "./kanban";
+import { data } from "./fakedata";
 
 
 
 export default function Tasks() {
-
-    
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
@@ -20,7 +19,7 @@ export default function Tasks() {
             {/* norms */}
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', pb:'1rem', pt:'.5rem', boxSizing: 'border-box'}}>
-                    <Kanban />
+                    <Kanban tasks={data} />
                 </Box>
             </Box>
         </Box>
