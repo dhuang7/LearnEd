@@ -15,13 +15,13 @@ export default function Section({sectionTitle, tasks}) {
         <Box sx={{boxSizing:'border-box', px:'.5rem', width:'25%', height:'100%', display:'flex', flexDirection:'column',}}>
             {/* section title */}
             <Typography variant="h6" align="center" sx={{fontWeight:'bold'}}>{sectionTitle}</Typography>
-            {/* tasks container */}
+            {/* section container */}
             <Box sx={{flexGrow:1, overflow:'hidden', width:'100%'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
-                    {/* tasks */}
+                    {/* tasks container */}
                     <Box sx={{width:'100%', overflow:'hidden'}}>
                         <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
-                            {/* first task */}
+                            {/* tasks */}
                             {tasks.map((v, i) => (
                                 <TaskItem key={i} task={v} />
                             ))}

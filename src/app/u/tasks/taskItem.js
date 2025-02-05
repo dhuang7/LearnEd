@@ -23,11 +23,14 @@ export default function TaskItem({task}) {
                 mt:'1rem'
             }}
             >
+            {/* check box */}
             <Box sx={{boxSizing:'border-box'}}>
                 <Checkbox size="small" icon={<RadioButtonUncheckedRoundedIcon />} checkedIcon={<RadioButtonCheckedRoundedIcon />} />
             </Box>
             <Box sx={{pt:'.15rem', boxSizing:'border-box'}}>
+                {/* title */}
                 <Typography variant="h6" noWrap>{task.title}</Typography>
+                {/* description */}
                 <Typography 
                     variant="body2" 
                     color="textSecondary"
@@ -44,6 +47,7 @@ export default function TaskItem({task}) {
                     >
                     {task.description}
                 </Typography>
+                {/* person assigned */}
                 {task.assigned && (
                     <Typography noWrap color='textSecondary' sx={{display:'flex', alignItems:'center', mt:'.5rem'}}>
                         <AccountCircleRoundedIcon color="info" sx={{mx:'.5rem'}} />
