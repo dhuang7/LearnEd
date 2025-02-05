@@ -23,7 +23,24 @@ export default async function LoadingAgenda() {
                 <Box sx={{width:'100%', height:'100%'}}>
                     {/* top dash */}
                     <Box sx={{width:'100%', display:'flex', height:'20rem', boxSizing:'border-box', px:'.5rem'}}>
-                        <Box sx={{width:'33%', boxSizing:'border-box', px:'.5rem'}}>
+                        <Box sx={{width:'33.33%', boxSizing:'border-box', px:'.5rem'}}>
+                            <Paper 
+                                elevation={0} 
+                                sx={{
+                                    borderRadius:3, boxSizing:'border-box', border:'1px solid', borderColor: 'grey.300',
+                                    p:'1rem', height:'100%', 
+                                    display:'flex', flexDirection:'column'
+                                }}
+                                >
+                                {/* Title section */}
+                                <Box sx={{display:'flex', alignItems:'center'}}>
+                                    {/* title */}
+                                    <Typography variant="h6">Cycles Ran:</Typography>
+                                </Box>
+                                <Skeleton variant="rectangular" height='100%' />
+                            </Paper>
+                        </Box>
+                        <Box sx={{width:'33.33%', boxSizing:'border-box', px:'.5rem'}}>
                             <Paper 
                                     elevation={0} 
                                     sx={{
@@ -42,7 +59,7 @@ export default async function LoadingAgenda() {
                                     {Array(4).fill(0).map((v, i) => <Skeleton key={i} height='20%' />)}
                             </Paper>
                         </Box>
-                        <Box sx={{width:'33%', boxSizing:'border-box', px:'.5rem'}}>
+                        <Box sx={{width:'33.33%', boxSizing:'border-box', px:'.5rem'}}>
                             <Paper 
                                 elevation={0} 
                                 sx={{
@@ -66,23 +83,6 @@ export default async function LoadingAgenda() {
                                     <IconButton  size='small'><SaveRoundedIcon /></IconButton>
                                 </Box>
                                 {Array(4).fill(0).map((v, i) => <Skeleton key={i} height='20%' />)}
-                            </Paper>
-                        </Box>
-                        <Box sx={{width:'33%', boxSizing:'border-box', px:'.5rem'}}>
-                            <Paper 
-                                elevation={0} 
-                                sx={{
-                                    borderRadius:3, boxSizing:'border-box', border:'1px solid', borderColor: 'grey.300',
-                                    p:'1rem', height:'100%', 
-                                    display:'flex', flexDirection:'column'
-                                }}
-                                >
-                                {/* Title section */}
-                                <Box sx={{display:'flex', alignItems:'center'}}>
-                                    {/* title */}
-                                    <Typography variant="h6">Cycles Ran:</Typography>
-                                </Box>
-                                <Skeleton variant="rectangular" height='100%' />
                             </Paper>
                         </Box>
                     </Box>
