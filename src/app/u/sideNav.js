@@ -13,6 +13,7 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Tooltip from "@mui/material/Tooltip";
 import Icon from '@mui/material/Icon';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 
 import NextLink from 'next/link';
 import Image from "next/image";
@@ -67,10 +68,10 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                         <CalendarMonthRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         My Calendar
                     </CustomNavButton>
-                    {/* <CustomNavButton path='/u/tasks' tip='Tasks'>
+                    <CustomNavButton path='/u/tasks' tip='Tasks'>
                         <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Tasks
-                    </CustomNavButton> */}
+                    </CustomNavButton>
                     <CustomNavButton path='/u/change-ideas' divider tip='Search Ideas'>
                         <LightbulbRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                         Search Ideas
