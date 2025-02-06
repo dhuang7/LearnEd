@@ -9,8 +9,8 @@ import { useEffect, useState } from "react";
 
 
 
-export default function ButtonTextfield(params) {
-    const {value, onChange, color, inputPadding, inputLineHeight, typeVariant, disabled} = params;
+export default function ButtonTextfield({value, onChange, color, inputPadding, inputLineHeight, typeVariant, disabled, ...params}) {
+    // const {value, onChange, color, inputPadding, inputLineHeight, typeVariant, disabled} = params;
     
     const [valueText, setValueText] = useState('');
     const [editValue, setEditValue] = useState(false);
@@ -45,13 +45,15 @@ export default function ButtonTextfield(params) {
                             value={valueText}
                             onChange={handleChange}
                             onBlur={handleEditValue}
+                            disabled={disabled}
                             multiline
                             slotProps={{
                                 input: {
-                                    sx: {
+                                    sx: theme => ({
                                         p:inputPadding||'6px 8px',
                                         lineHeight:inputLineHeight||'1.5',
-                                    }
+                                        fontSize: theme.typography[typeVariant],
+                                    })
                                 },
                             }}
                             {...params}

@@ -6,11 +6,12 @@ import Button from "@mui/material/Button";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 import TaskItem from "./taskItem";
+import AddTaskSideview from "./addTaskSideview";
 
 
 
 
-export default function Section({sectionTitle, tasks}) {
+export default function Section({sectionTitle, tasks, teamMembers, user}) {
     return (
         <Box sx={{boxSizing:'border-box', px:'.5rem', width:'25%', height:'100%', display:'flex', flexDirection:'column',}}>
             {/* section title */}
@@ -23,14 +24,22 @@ export default function Section({sectionTitle, tasks}) {
                         <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
                             {/* tasks */}
                             {tasks.map((v, i) => (
-                                <TaskItem key={i} task={v} />
+                                <TaskItem key={i} task={v} teamMembers={teamMembers} user={user} />
                             ))}
                         </Box>
                     </Box>
                     {/* add button */}
-                    <Button sx={{mt:'.5rem', borderRadius:3, textTransform:'none'}} startIcon={<AddRoundedIcon />}>
-                        Add task
-                    </Button>
+                    <AddTaskSideview 
+                        user={user}
+                        teamMembers={teamMembers}
+                        tasks={tasks}
+                        sectionStatus={sectionTitle.toLowerCase()}
+                        customButton={(props) => (
+                            <Button {...props} color="info" sx={{mt:'.5rem', borderRadius:3, textTransform:'none'}} startIcon={<AddRoundedIcon />}>
+                                Add task
+                            </Button>
+                        )}
+                        />
                 </Box>
             </Box>
         </Box>
