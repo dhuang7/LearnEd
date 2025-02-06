@@ -59,7 +59,11 @@ export default async function Agenda({params}) {
             )
         `)
         .eq('user_id', user.id)
+        .eq('calendars.team_id', teamId)
+        .not('calendars', 'is', null)
         .order('calendar_id');
+
+    console.log(calendarData);
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
