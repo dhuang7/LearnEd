@@ -103,7 +103,6 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
                                 textDecoration: isDone && 'line-through'
                             }}
                             >
-                            {task.id}
                             {task.description}
                         </Typography>
                         {/* person assigned */}

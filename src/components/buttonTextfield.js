@@ -42,7 +42,7 @@ export default function ButtonTextfield({value, onChange, color, inputPadding, i
                             size='small'
                             fullWidth
                             autoFocus
-                            value={valueText}
+                            value={value||valueText}
                             onChange={handleChange}
                             onBlur={handleEditValue}
                             disabled={disabled}
