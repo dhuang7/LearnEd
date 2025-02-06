@@ -34,11 +34,16 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
         setNodeRef,
         transform,
         transition,
-    } = useSortable({id: task.id});
+        isSorting
+    } = useSortable({
+        id: task.id
+    });
     
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition: transition + (activeTask?.id === task.id ? '' : ', border-color 0.25s'),
+        // transform: isSorting ? undefined : CSS.Translate.toString(transform), 
+        // transition: transition + (activeTask?.id === task.id ? '' : ', border-color 0.25s'),
+        transition: (activeTask?.id === task.id ? '' : ', border-color 0.25s'),
     };
 
     return (

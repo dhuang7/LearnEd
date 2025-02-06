@@ -43,13 +43,26 @@ export default function Kanban({originalTasks, teamMembers, user}) {
 
     function handleDragOver(event) {
         const {active, over} = event;
-        const newStatus = over.id.slice(10);
+        let newStatus;
 
+        if (!over) return;
+
+        // check if it is a droppable container
         if (over.id.includes('droppable-')) {
-            setActiveTask(t => {
-                t.status = newStatus;
-                return {...t};
-            });
+            newStatus = over.id.slice(10);
+        } else {
+            const overTask = tasks.filter(v => v.id === over.id)[0];
+            newStatus = overTask.status;
+        }
+
+        // set tasks
+        if (newStatus !== activeTask.status) {
+            setTimeout(() => {
+                setActiveTask(t => {
+                    t.status = newStatus;
+                    return {...t};
+                });
+            }, 0);
 
             setTasks(t => {
                 t.forEach(v => {
@@ -60,83 +73,56 @@ export default function Kanban({originalTasks, teamMembers, user}) {
 
                 return [...t];
             })
-        } else if (active.id !== over.id) {
-            
-            const overTask = tasks.filter(v => v.id === over.id)[0];
-            
-            if (overTask.status !== activeTask.status) {
-                setActiveTask(t => {
-                    t.status = overTask.status;
-                    return {...t};
-                });
-
-                setTasks(t => {
-                    t.forEach(v => {
-                        if (v.id === activeTask.id) {
-                            v.status = overTask.status;
-                        }
-                    })
-
-                    return [...t];
-                })
-            }
         }
     }
     
     async function handleDragEnd(event) {
-        const {active, over} = event;
+        let {active, over} = event;
         const newStatus = over.id.slice(10);
 
-        console.log(over.id)
-
         if (over.id.includes('droppable-')) {
-            const {data, error} = await supabase
-                .from('tasks')
-                .update({
-                    order_num: 0,
-                    status: newStatus,
-                })
-                .eq('id', activeTask.id);
-
-            router.refresh();
-
-            console.log(error);
-
-        } else {
-            // filter tasks
-            const filteredTasks = tasks.filter(v => activeTask.status === v.status);
-
-            // create new order of the filter task
-            const oldIndex = filteredTasks.map(v => v.id).indexOf(active.id);
-            const newIndex = filteredTasks.map(v => v.id).indexOf(over.id);
-            const newOrderTasks = arrayMove(filteredTasks, oldIndex, newIndex);
-
-            // change the order_num
-            newOrderTasks.forEach((v, i) => {
-                v.order_num = i;
-            })
-
-            const saveOld = tasks;
-
-            
-
-            // update on backend
-            const {data, error} = await supabase
-                .from('tasks')
-                .upsert(newOrderTasks);
-
-            // update on front end
-            setTasks(t => {
-                const unchangedTasks = t.filter(v => activeTask.status !== v.status);
-                return [...unchangedTasks, ...newOrderTasks];
-            });
-
-            // make sure front end is up to date
-            if (error) setTasks(saveOld);
-            router.refresh();
+            over = active;
         }
+
+        ///////////////////////////////// DOES IT HAVE TO BE FILTERED?
+        // filter tasks
+        const filteredTasks = tasks.filter(v => activeTask.status === v.status);
+
+        // create new order of the filter task
+        const oldIndex = filteredTasks.map(v => v.id).indexOf(active.id);
+        const newIndex = filteredTasks.map(v => v.id).indexOf(over.id);
+        const newOrderTasks = arrayMove(filteredTasks, oldIndex, newIndex);
+
         
+        ////////////////// WELL THIS MAKES IT SEEM IT HAS TO BE FILTERED
+        ////////////// BUT I AM GOING THROUGH EACH ONE. I COULD JUST PROGRAM AND SET THE CORRECT ORDER_NUMS
+        ////////////// ESPECIALLY NOT BOTH COLUMNS WOULD BE ORGANIZED CORRECTLY?
+        // change the order_num
+        newOrderTasks.forEach((v, i) => {
+            v.order_num = i;
+        })
+
+        const saveOld = tasks;
+
+        // update on front end
+        setTasks(t => {
+            const unchangedTasks = t.filter(v => activeTask.status !== v.status);
+            return [...unchangedTasks, ...newOrderTasks];
+        });
+
         setActiveTask(null);
+
+        // update on backend
+        const {data, error} = await supabase
+            .from('tasks')
+            .upsert(newOrderTasks);
+
+
+        // make sure front end is up to date
+        if (error) setTasks(saveOld);
+        // // router.refresh();
+        
+        
     }
 
     return (
