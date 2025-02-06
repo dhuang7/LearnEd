@@ -13,6 +13,7 @@ export default async function Tasks({users}) {
     const {data, error} = await supabase
         .from('tasks')
         .select()
+        .order('status')
         .order('order_num');
 
     const {data: [user], error: userError} = await supabase
@@ -35,7 +36,7 @@ export default async function Tasks({users}) {
             {/* paper */}
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', pb:'1rem', pt:'.5rem', boxSizing: 'border-box'}}>
-                    <Kanban tasks={data} teamMembers={teamMembers} user={user} />
+                    <Kanban originalTasks={data} teamMembers={teamMembers} user={user} />
                 </Box>
             </Box>
         </Box>

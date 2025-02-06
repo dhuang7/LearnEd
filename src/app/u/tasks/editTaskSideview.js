@@ -24,15 +24,17 @@ import ButtonTextfield from "@/components/buttonTextfield";
 
 
 
-export default function EditTaskSideview({teamMembers, task, open, setOpen, user}) {
+export default function EditTaskSideview({teamMembers, task, open, setOpen, user, tasks}) {
     const supabase = createClient();
     const router = useRouter();
+    const filteredTasks = tasks.filter(v => v.status === task.status);
     const [isPending, startTransition] = useTransition();
     const [loading, setLoading] = useState(false);
     const [titleText, setTitleText] = useState(task.title);
     const [descriptionText, setDescriptionText] = useState(task.description);
     const [assignedText, setAssignedText] = useState(task.assigned_id||'');
     const [statusText, setStatusText] = useState(task.status);
+
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -104,10 +106,11 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
 
     async function handleDelete() {
         setLoading(true);
-        const { error } = await supabase
-            .from('tasks')
-            .delete()
-            .eq('id', task.id);
+
+        await supabase.rpc('delete_task_and_update_order', {
+            task_id: task.id,
+            task_ids: filteredTasks.map(v => v.id).filter(v => v !== task.id),
+        })
 
         startTransition(() => {
             router.refresh();
@@ -195,6 +198,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                             </TextField>
                             {/* Status */}
                             <TextField
+                                disabled
                                 select
                                 label='Status'
                                 value={statusText}

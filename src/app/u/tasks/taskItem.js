@@ -10,8 +10,10 @@ import { useState } from "react";
 import EditTaskSideview from "./editTaskSideview";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-export default function TaskItem({task, teamMembers, user}) {
+export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
     const supabase = createClient();
     const router = useRouter();
     const isDone = task.status==='done';
@@ -27,21 +29,38 @@ export default function TaskItem({task, teamMembers, user}) {
         router.refresh();
     }
 
+    const {
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({id: task.id});
+    
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition: transition + (activeTask?.id === task.id ? '' : ', border-color 0.25s'),
+    };
+
     return (
         <>
             <Box
+                ref={setNodeRef}
+                {...listeners}
                 onClick={() => setOpen(true)}
                 sx={{
                     display:'flex',
                     width:'100%',
                     pb:'.5rem', pt:'.2rem',pr:'1rem', boxSizing:'border-box', 
                     border:'1px solid', borderColor:'grey.300', borderRadius:3,
-                    transition: 'border-color 0.25s',
-                    '&:hover': {
+                    // transition: 'border-color 0.25s',
+                    '&:hover': activeTask?.id === task.id || {
                         borderColor: 'info.main', // Change the border color on hover
                         cursor:'pointer',
                     },
-                    mt:'1rem'
+                    mt:'1rem',
+                    ...style,
+                    '& *': { visibility: activeTask?.id === task.id && 'hidden' },
+                    backgroundColor: activeTask?.id === task.id ? 'grey.300' : 'common.white'
                 }}
                 >
                 {/* check box */}
@@ -84,6 +103,7 @@ export default function TaskItem({task, teamMembers, user}) {
                                 textDecoration: isDone && 'line-through'
                             }}
                             >
+                            {task.id}
                             {task.description}
                         </Typography>
                         {/* person assigned */}
@@ -101,7 +121,7 @@ export default function TaskItem({task, teamMembers, user}) {
 
 
             {/* dialog */}
-            <EditTaskSideview task={task} user={user} setOpen={setOpen} open={open} teamMembers={teamMembers} />
+            <EditTaskSideview task={task} user={user} setOpen={setOpen} open={open} teamMembers={teamMembers} tasks={tasks} />
         </>
     );
 }

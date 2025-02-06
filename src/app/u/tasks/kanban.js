@@ -5,39 +5,138 @@ import Paper from "@mui/material/Paper";
 
 
 import Section from "./section";
-import { useState } from "react";
-import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { useEffect, useState } from "react";
+import { closestCenter, DndContext, DragOverlay, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import createClient from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import TaskItem from "./taskItem";
 
-export default function Kanban({tasks, teamMembers, user}) {
-    const [activeId, setActiveId] = useState(null);
+export default function Kanban({originalTasks, teamMembers, user}) {
+    const supabase = createClient();
+    const router = useRouter();
+    const [activeTask, setActiveTask] = useState(null);
+    const [tasks, setTasks] = useState(originalTasks);
 
+    useEffect(() => {
+        setTasks(originalTasks);
+    }, [originalTasks]);
+
+    // drag sensors
     const sensors = useSensors(
-        useSensor(PointerSensor),
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance:2.5,
+            }
+        }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
 
+    // handlers
     function handleDragStart(event) {
         const {active} = event;
         
-        setActiveId(active.id);
+        setActiveTask(tasks.filter(v => v.id === active.id)[0]);
+    }
+
+    function handleDragOver(event) {
+        const {active, over} = event;
+        const newStatus = over.id.slice(10);
+
+        if (over.id.includes('droppable-')) {
+            setActiveTask(t => {
+                t.status = newStatus;
+                return {...t};
+            });
+
+            setTasks(t => {
+                t.forEach(v => {
+                    if (v.id === activeTask.id) {
+                        v.status = newStatus;
+                    }
+                })
+
+                return [...t];
+            })
+        } else if (active.id !== over.id) {
+            
+            const overTask = tasks.filter(v => v.id === over.id)[0];
+            
+            if (overTask.status !== activeTask.status) {
+                setActiveTask(t => {
+                    t.status = overTask.status;
+                    return {...t};
+                });
+
+                setTasks(t => {
+                    t.forEach(v => {
+                        if (v.id === activeTask.id) {
+                            v.status = overTask.status;
+                        }
+                    })
+
+                    return [...t];
+                })
+            }
+        }
     }
     
-    function handleDragEnd(event) {
+    async function handleDragEnd(event) {
         const {active, over} = event;
-        
-        if (active.id !== over.id) {
-            setItems((items) => {
-                const oldIndex = items.indexOf(active.id);
-                const newIndex = items.indexOf(over.id);
-                
-                return arrayMove(items, oldIndex, newIndex);
+        const newStatus = over.id.slice(10);
+
+        console.log(over.id)
+
+        if (over.id.includes('droppable-')) {
+            const {data, error} = await supabase
+                .from('tasks')
+                .update({
+                    order_num: 0,
+                    status: newStatus,
+                })
+                .eq('id', activeTask.id);
+
+            router.refresh();
+
+            console.log(error);
+
+        } else {
+            // filter tasks
+            const filteredTasks = tasks.filter(v => activeTask.status === v.status);
+
+            // create new order of the filter task
+            const oldIndex = filteredTasks.map(v => v.id).indexOf(active.id);
+            const newIndex = filteredTasks.map(v => v.id).indexOf(over.id);
+            const newOrderTasks = arrayMove(filteredTasks, oldIndex, newIndex);
+
+            // change the order_num
+            newOrderTasks.forEach((v, i) => {
+                v.order_num = i;
+            })
+
+            const saveOld = tasks;
+
+            
+
+            // update on backend
+            const {data, error} = await supabase
+                .from('tasks')
+                .upsert(newOrderTasks);
+
+            // update on front end
+            setTasks(t => {
+                const unchangedTasks = t.filter(v => activeTask.status !== v.status);
+                return [...unchangedTasks, ...newOrderTasks];
             });
+
+            // make sure front end is up to date
+            if (error) setTasks(saveOld);
+            router.refresh();
         }
         
-        setActiveId(null);
+        setActiveTask(null);
     }
 
     return (
@@ -54,30 +153,30 @@ export default function Kanban({tasks, teamMembers, user}) {
                     sensors={sensors}
                     collisionDetection={closestCenter}
                     onDragStart={handleDragStart}
+                    onDragOver={handleDragOver}
                     onDragEnd={handleDragEnd}
                     >
                     {/* section */}
-                    <SortableContext
-                        items={tasks.filter(v => v.status === 'to do')}
-                        strategy={verticalListSortingStrategy}
-                        >
-                        <Section 
-                            user={user} teamMembers={teamMembers} sectionTitle={'To do'} 
-                            tasks={tasks.filter(v => v.status === 'to do')} 
-                            />
-                    </SortableContext>
+                    <Section 
+                        user={user} teamMembers={teamMembers} sectionTitle={'To do'} 
+                        tasks={tasks} activeTask={activeTask}
+                        />
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'In progress'} 
-                        tasks={tasks.filter(v => v.status === 'in progress')} 
+                        tasks={tasks} activeTask={activeTask}
                         />
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'Review'} 
-                        tasks={tasks.filter(v => v.status === 'review')} 
+                        tasks={tasks} activeTask={activeTask}
                         />
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'Done'} 
-                        tasks={tasks.filter(v => v.status === 'done')} 
+                        tasks={tasks} activeTask={activeTask}
                         />
+                    {/* overlay to drag */}
+                    <DragOverlay>
+                        <TaskItem task={activeTask} teamMembers={teamMembers} tasks={tasks}  />
+                    </DragOverlay>
                 </DndContext>
             </Paper>
         </Box>
