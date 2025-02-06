@@ -118,85 +118,76 @@ export default function MeasuresList({
             {measuresList.map((v, i) => (
                 <ListItem key={i}>
                     <Box sx={{borderRadius:3, border:'1px solid', borderColor:'grey.300', boxSizing:'border-box', p:'.5rem', width:'100%', boxShadow:2}}>
-                        <Box sx={{display:'flex', alignItems:'flex-start'}}>
-                            {/* Content */}
-                            <Box sx={{flexGrow:1}}>
-                                {/* Choose Measure */}
-                                <Box sx={{width:'100%', display:'flex', alignItems:'center'}}>
-                                    <TextField
-                                        select
-                                        label='Measure'
-                                        value={v.measure_types_id||''}
-                                        onChange={e => handleMeasureTypes(e, i)}
-                                        fullWidth
-                                        slotProps={{
-                                            // select: {
-                                            //     renderValue:(v) => v.name,
-                                            // },
-                                            htmlInput: {
-                                                sx: {
-                                                    py:'.5rem'
-                                                }
-                                            },
-                                            inputLabel: {
-                                                shrink: true,
-                                            }
-                                        }}
-                                        >
-                                        {measureTypes.map((m, i) => (
-                                            <MenuItem key={i} value={m.id}>
-                                                {m.name}
-                                            </MenuItem>
-                                        ))}
-                                        {/* Add new project */}
-                                        <AddMeasureTypeModal aimId={aimId} measureTypes={measureTypes} setMeasureTypes={setMeasureTypes} component={(props) => <MenuItem disableGutters value={'button'} {...props}/>} />
-                                    </TextField>
-                                    {/* trash */}
-                                    <IconButton size='small' data-order={i} onClick={handleDeleteMeasure} sx={{ml:'.5rem'}}>
-                                        <DeleteRoundedIcon fontSize='small' />
-                                    </IconButton>
-                                </Box>
-                                {/* date */}
-                                <TextField
-                                    label='Date'
-                                    type='date'
-                                    value={dayjs(v.date).format('YYYY-MM-DD')}
-                                    onChange={e => handleDateText(e, i)}
-                                    onFocus={handleShowPicker}
-                                    fullWidth
-                                    slotProps={{
-                                        htmlInput: {
-                                            sx: {
-                                                py:'.5rem'
-                                            }
-                                        },
-                                        inputLabel: {
-                                            shrink: true,
+                        {/* Choose Measure */}
+                        <Box sx={{width:'100%', display:'flex', alignItems:'center'}}>
+                            <TextField
+                                select
+                                label='Measure'
+                                value={v.measure_types_id||''}
+                                onChange={e => handleMeasureTypes(e, i)}
+                                fullWidth
+                                slotProps={{
+                                    // select: {
+                                    //     renderValue:(v) => v.name,
+                                    // },
+                                    htmlInput: {
+                                        sx: {
+                                            py:'.5rem'
                                         }
-                                    }}
-                                    sx={{mt:'.5rem'}}
-                                    />
-                                {/* Measure Results */}
-                                <Box sx={{display:'flex', alignItems:'center', mt:'.5rem'}}>
-                                    <Typography variant='body1' sx={{fontWeight:'bold'}}>Data:</Typography>
-                                    <TextField
-                                        type='number'
-                                        value={v.data||''} data-order={i} onChange={e=>handleDataText(e, i)}
-                                        slotProps={{
-                                            htmlInput: {
-                                                sx: {
-                                                    py:'.5rem'
-                                                }
-                                            },
-                                        }}
-                                        sx={{ml:'.5rem'}}
-                                        />
-                                </Box>
-                            </Box>
+                                    },
+                                    inputLabel: {
+                                        shrink: true,
+                                    }
+                                }}
+                                >
+                                {measureTypes.map((m, i) => (
+                                    <MenuItem key={i} value={m.id}>
+                                        {m.name}
+                                    </MenuItem>
+                                ))}
+                                {/* Add new project */}
+                                <AddMeasureTypeModal aimId={aimId} measureTypes={measureTypes} setMeasureTypes={setMeasureTypes} component={(props) => <MenuItem disableGutters value={'button'} {...props}/>} />
+                            </TextField>
                             {/* trash */}
-                            {/* <IconButton size='small' data-order={i} onClick={handleDeleteMeasure}>
+                            <IconButton size='small' data-order={i} onClick={handleDeleteMeasure} sx={{ml:'.5rem'}}>
                                 <DeleteRoundedIcon fontSize='small' />
-                            </IconButton> */}
+                            </IconButton>
+                        </Box>
+                        {/* date */}
+                        <TextField
+                            label='Date'
+                            type='date'
+                            value={dayjs(v.date).format('YYYY-MM-DD')}
+                            onChange={e => handleDateText(e, i)}
+                            onFocus={handleShowPicker}
+                            fullWidth
+                            slotProps={{
+                                htmlInput: {
+                                    sx: {
+                                        py:'.5rem'
+                                    }
+                                },
+                                inputLabel: {
+                                    shrink: true,
+                                }
+                            }}
+                            sx={{mt:'.5rem'}}
+                            />
+                        {/* Measure Results */}
+                        <Box sx={{display:'flex', alignItems:'center', mt:'.5rem'}}>
+                            <Typography variant='body1' sx={{fontWeight:'bold'}}>Data:</Typography>
+                            <TextField
+                                type='number'
+                                value={v.data||''} data-order={i} onChange={e=>handleDataText(e, i)}
+                                slotProps={{
+                                    htmlInput: {
+                                        sx: {
+                                            py:'.5rem'
+                                        }
+                                    },
+                                }}
+                                sx={{ml:'.5rem'}}
+                                />
                         </Box>
                         
                     </Box>
