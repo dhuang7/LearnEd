@@ -195,7 +195,6 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                             </TextField>
                             {/* Status */}
                             <TextField
-                                disabled
                                 select
                                 label='Status'
                                 value={statusText}
