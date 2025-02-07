@@ -16,12 +16,12 @@ export default function Page() {
 
     return (
         <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
-            <Box sx={{width:'100%', display:'flex', pt:'5%', boxSizing:'border-box', alignItems: 'center', flexDirection:'column'}}>
+            <Box sx={{width:'100%', display:'flex', pt:'5%', px:'.5rem', boxSizing:'border-box', alignItems: 'center', flexDirection:'column'}}>
                 {/* Slogan */}
                 <Typography variant="h2" color="primary" align="center" sx={{fontWeight:'bold', display:'flex', flexWrap:'wrap', justifyContent:'center'}}>
-                    Empower&nbsp;
-                    <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit'}} component={'span'}>Educators</Typography> 
-                    &nbsp;to lead change.
+                    Empower
+                    <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit', mx:'1.25rem'}} component={'span'}>Educators</Typography> 
+                    to lead change.
                 </Typography>
                 {/* description */}
                 <Typography variant="h5" color="textSecondary" align="center" sx={{width:'60%', mt:'2rem'}}>

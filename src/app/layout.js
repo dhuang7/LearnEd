@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
             <AppRouterCacheProvider>
                 <ThemeProvider theme={theme}>
                     {/* <Box sx={{width:'100vw', height:'100vh', minWidth:'1000px', minHeight:'700px', overflow:'hidden'}}> */}
-                    <Box sx={{width:'100vw', height:'100vh'}}>
+                    <Box sx={{width:'100dvw', height:'100dvh'}}>
                         {children}
                         <Analytics />
                         <SpeedInsights />
