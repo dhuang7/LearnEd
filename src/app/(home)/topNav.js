@@ -10,6 +10,7 @@ import Icon from '@mui/material/Icon';
 import Image from "next/image";
 import NextLink from 'next/link';
 import NavMenus from "./navMenus";
+import MobileMenu from "./mobileMenu";
 
 export default function TopNav({handleOpen}) {
 
@@ -52,6 +53,8 @@ export default function TopNav({handleOpen}) {
                             >
                             Sign up
                         </Button>
+                        {/* Mobile Menu */}
+                        <MobileMenu />
                     </Box>
                 </Box>
             </Toolbar>
