@@ -44,10 +44,10 @@ export default function DemoCarousel() {
             <Box sx={{display:'flex', justifyContent:'center', width:'100%'}}>
                 {/* tabs */}
                 {/* MAKE THESE TABS SCROLLABLE */}
-                <Tabs value={tab} onChange={handleChange} centered sx={{width:'100%'}}>
-                    <Tab label="Driver Diagram" icon={<AccountTreeRoundedIcon fontSize="large" />} sx={{width:'15%'}} />
-                    <Tab label="Cycles" icon={<PublishedWithChangesRoundedIcon fontSize="large" />} sx={{width:'15%'}}/>
-                    <Tab label="Calendar" icon={<CalendarMonthRoundedIcon fontSize="large" />} sx={{width:'15%'}}/>
+                <Tabs value={tab} onChange={handleChange}  sx={{width:{sx:'70%', md:'45%'}}} scrollButtons='auto' allowScrollButtonsMobile variant="scrollable">
+                    <Tab label="Driver Diagram" icon={<AccountTreeRoundedIcon fontSize="large" />} sx={{width:'33.33%'}} />
+                    <Tab label="Cycles" icon={<PublishedWithChangesRoundedIcon fontSize="large" />} sx={{width:'33.33%'}}/>
+                    <Tab label="Calendar" icon={<CalendarMonthRoundedIcon fontSize="large" />} sx={{width:'33.33%'}}/>
                 </Tabs>
             </Box>
             {/* demos to be shown */}
