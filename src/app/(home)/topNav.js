@@ -27,7 +27,7 @@ export default function TopNav({handleOpen}) {
                             <Typography variant="h6" color="primary" sx={{fontWeight:'bold'}}>LearnEd</Typography>
                         </NextLink>
                         {/* nav */}
-                        <Box sx={{display:'flex', alignItems:'center', ml:'1rem'}}>
+                        <Box sx={{display:{xs:'none', md:'flex'}, alignItems:'center', ml:'1rem'}}>
                             <NavMenus />
                         </Box>
                     </Box>
@@ -38,7 +38,7 @@ export default function TopNav({handleOpen}) {
                         <IconButton component={NextLink} href='/help'><HelpOutlineRoundedIcon /></IconButton>
                         <Button 
                             variant="outlined" 
-                            sx={{textTransform:'none', borderRadius:3, width:'5.5rem', py:'.5rem', ml:'.5rem'}}
+                            sx={{textTransform:'none', borderRadius:3, width:'5.5rem', py:'.5rem', ml:'.5rem', display:{xs:'none', md:'flex'}}}
                             component={NextLink}
                             href='/login'
                             >
@@ -46,7 +46,7 @@ export default function TopNav({handleOpen}) {
                         </Button>
                         <Button 
                             variant="contained" disableElevation 
-                            sx={{ml: '.5rem', textTransform:'none', borderRadius:3, width:'5.5rem', py:'.5rem'}}
+                            sx={{ml: '.5rem', textTransform:'none', borderRadius:3, width:'5.5rem', py:'.5rem', display:{xs:'none', md:'flex'}}}
                             component={NextLink}
                             href='/login/signup'
                             >
