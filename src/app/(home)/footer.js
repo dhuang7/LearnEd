@@ -20,9 +20,9 @@ export default function Footer() {
             <Box sx={{width:'100%', height:'50%', backgroundColor: 'grey.300'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                     <Typography variant="h4" color="primary" align="center" sx={{fontWeight:'bold', display:'flex', justifyContent:'center', flexWrap:'wrap'}}>
-                        Start making&nbsp;
-                        <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit'}} component={'span'}>change</Typography> 
-                        &nbsp;happen.
+                        Start making
+                        <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit', mx:'.5rem'}} component={'span'}>change</Typography> 
+                        happen.
                     </Typography>
                     <Button 
                         variant="contained" disableElevation 
