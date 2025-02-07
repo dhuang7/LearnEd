@@ -70,7 +70,7 @@ export default function MobileMenu() {
                             {/* start */}
                             <Box sx={{alignItems:'center', display:'flex'}}>
                                 {/* logo */}
-                                <NextLink href='/' style={{ textDecoration: 'none', color:'inherit', display:'flex', alignItems:'center' }}>
+                                <NextLink onClick={handleClose} href='/' style={{ textDecoration: 'none', color:'inherit', display:'flex', alignItems:'center' }}>
                                     <Icon sx={{height:'2.5rem', width:'2.5rem', position:'relative', mr:'.5rem'}}>
                                         <Image src={'/icon.svg'} alt={'icon'} fill />
                                     </Icon>
@@ -81,7 +81,7 @@ export default function MobileMenu() {
                             <Box flexGrow={1} />
                             {/* end */}
                             <Box sx={{alignItems:'center', display:'flex'}}>
-                                <IconButton component={NextLink} href='/help'><HelpOutlineRoundedIcon /></IconButton>
+                                <IconButton onClick={handleClose} component={NextLink} href='/help'><HelpOutlineRoundedIcon /></IconButton>
                                 <IconButton
                                     color="inherit"
                                     onClick={handleClose}
