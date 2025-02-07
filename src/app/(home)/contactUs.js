@@ -32,7 +32,7 @@ export default function ContactUs() {
 
     return (
         <form style={{width:'100%'}} onSubmit={handleSubmit}>
-            <Box sx={{boxSizing:'border-box', px:'20%', display:'flex', alignItems:'center', flexDirection:'column'}}>
+            <Box sx={{boxSizing:'border-box', px:{xs:'10%', md:'20%'}, display:'flex', alignItems:'center', flexDirection:'column'}}>
                 <Typography variant="h4" color="primary" sx={{mb:'1rem'}}>Contact us!</Typography>
                 <TextField
                     label='Email'

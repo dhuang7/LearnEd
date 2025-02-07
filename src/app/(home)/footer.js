@@ -19,7 +19,7 @@ export default function Footer() {
             {/* Ending login */}
             <Box sx={{width:'100%', height:'50%', backgroundColor: 'grey.300'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                    <Typography variant="h4" color="primary" align="center" sx={{fontWeight:'bold', display:'flex'}}>
+                    <Typography variant="h4" color="primary" align="center" sx={{fontWeight:'bold', display:'flex', justifyContent:'center', flexWrap:'wrap'}}>
                         Start making&nbsp;
                         <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit'}} component={'span'}>change</Typography> 
                         &nbsp;happen.
@@ -37,8 +37,16 @@ export default function Footer() {
                 </Box>
             </Box>
             {/* footer */}
-            <Box sx={{width:'100%', display:'flex', boxSizing:'border-box', py:'2rem', backgroundColor:'common.white'}}>
-                <Box sx={{width:'30%', display:'flex', justifyContent:'center', alignItems:'flex-end', flexDirection:'column'}}>
+            <Box sx={{
+                    width:'100%', 
+                    display:'flex', 
+                    boxSizing:'border-box', py:'2rem', backgroundColor:'common.white', 
+                    flexDirection:{xs:'column', md:'row'},
+                    justifyContent:'center',
+                    alignItems:'center',
+                }} 
+                >
+                <Box sx={{width:{xs:'auto', md:'30%'}, mb:{xs:'2rem', md:0}, display:'flex', justifyContent:'center', alignItems:'flex-end', flexDirection:'column'}}>
                     {/* logo and social */}
                     {/* logo */}
                     <Box sx={{display:'flex', alignItems:'center'}}>
@@ -63,7 +71,7 @@ export default function Footer() {
                         </Box>
                     </Box>
                 </Box>
-                <Box sx={{width:'70%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+                <Box sx={{width:{xs:'100%', md:'70%'}, display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
                     <ContactUs />
                 </Box>
             </Box>

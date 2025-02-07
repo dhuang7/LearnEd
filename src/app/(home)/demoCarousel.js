@@ -29,8 +29,8 @@ export default function DemoCarousel() {
             <Fade in={show} timeout={{enter:750}}>
                 <Box 
                     sx={{
-                        borderRadius:5, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 3,
-                        width:imageWidth, height: imageHeight, position:'relative',
+                        borderRadius:{xs:2, sm:4, md:5}, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 3,
+                        width:'80%', aspectRatio: 1/0.53509933774, position:'relative',
                     }}
                     >
                     <Image src={src} alt={'demo'} fill />
@@ -40,13 +40,14 @@ export default function DemoCarousel() {
     }
 
     return (
-        <Box>
-            <Box>
+        <Box sx={{display:'flex', flexDirection:'column', alignItems:'center', width:'100%'}}>
+            <Box sx={{display:'flex', justifyContent:'center', width:'100%'}}>
                 {/* tabs */}
-                <Tabs value={tab} onChange={handleChange} centered>
-                    <Tab label="Driver Diagram" icon={<AccountTreeRoundedIcon fontSize="large" />} sx={{width:'10rem'}} />
-                    <Tab label="Cycles" icon={<PublishedWithChangesRoundedIcon fontSize="large" />} sx={{width:'10rem'}}/>
-                    <Tab label="Calendar" icon={<CalendarMonthRoundedIcon fontSize="large" />} sx={{width:'10rem'}}/>
+                {/* MAKE THESE TABS SCROLLABLE */}
+                <Tabs value={tab} onChange={handleChange} centered sx={{width:'100%'}}>
+                    <Tab label="Driver Diagram" icon={<AccountTreeRoundedIcon fontSize="large" />} sx={{width:'15%'}} />
+                    <Tab label="Cycles" icon={<PublishedWithChangesRoundedIcon fontSize="large" />} sx={{width:'15%'}}/>
+                    <Tab label="Calendar" icon={<CalendarMonthRoundedIcon fontSize="large" />} sx={{width:'15%'}}/>
                 </Tabs>
             </Box>
             {/* demos to be shown */}

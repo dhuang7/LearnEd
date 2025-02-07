@@ -10,7 +10,7 @@ export default function Reasons({icon, title, description, buttonText, image, re
     const Icon = icon;
 
     const Text = () => (
-        <Box sx={{width:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+        <Box sx={{width:{xs:'80%', md:'50%'}, my:'10%', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
             {/* titles */}
             <Box sx={{width:'80%'}}>
                 <Typography variant="h3" color="textSecondary" sx={{mb:'.5rem'}}><Icon fontSize="inherit" /></Typography>
@@ -35,7 +35,7 @@ export default function Reasons({icon, title, description, buttonText, image, re
     );
 
     const Images = () => (
-        <Box sx={{width:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+        <Box sx={{width:{xs:'80%', md:'50%'}, mb:'10%', mt:{xs:0, md:'10%'}, display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
             {/* images */}
             <Box 
                 sx={{
@@ -52,8 +52,8 @@ export default function Reasons({icon, title, description, buttonText, image, re
     );
 
     return (
-        <Box sx={{width:'100%', height:'85%', boxSizing:'border-box', px:'5%', backgroundColor:backgroundColor||'common.white'}}>
-            <Box sx={{width:'100%', height:'100%', alignItems:'center', display:'flex'}}>
+        <Box sx={{width:'100%', boxSizing:'border-box', px:'5%', backgroundColor:backgroundColor||'common.white'}}>
+            <Box sx={{width:'100%', alignItems:'center', display:'flex', flexDirection:{xs:`column${reverse ? '-reverse' : ''}`, md:'row'}}}>
                 {reverse
                     ? <>
                         {/* text */}

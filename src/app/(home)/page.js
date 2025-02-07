@@ -18,7 +18,7 @@ export default function Page() {
         <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
             <Box sx={{width:'100%', display:'flex', pt:'5%', boxSizing:'border-box', alignItems: 'center', flexDirection:'column'}}>
                 {/* Slogan */}
-                <Typography variant="h2" color="primary" align="center" sx={{fontWeight:'bold', display:'flex'}}>
+                <Typography variant="h2" color="primary" align="center" sx={{fontWeight:'bold', display:'flex', flexWrap:'wrap', justifyContent:'center'}}>
                     Empower&nbsp;
                     <Typography variant="inherit" color="secondary" sx={{fontWeight:'inherit'}} component={'span'}>Educators</Typography> 
                     &nbsp;to lead change.
@@ -46,10 +46,19 @@ export default function Page() {
                 </Box>
             </Box>
             {/* first reasoning */}
-            <Box sx={{width:'100%', height:'100%', backgroundColor:'grey.100'}}>
-                <Box sx={{width:'100%', height:'100%', alignItems:'center', display:'flex'}}>
+            <Box sx={{width:'100%', backgroundColor:'grey.100'}}>
+                <Box sx={{
+                    width:'100%', boxSizing:'border-box', py:{xs:'5rem', md:'10%'}, 
+                    alignItems:'center', display:'flex', flexDirection:{xs:'column', md:'row'},
+                    }}
+                    >
                     {/* broken */}
-                    <Box sx={{width:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+                    <Box sx={{
+                            width:{xs:'100%', md:'50%'}, 
+                            display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column',
+                            // pt:{xs:'2rem', md:0}, boxSizing:'border-box'
+                        }}
+                        >
                         {/* titles */}
                         <Box sx={{width:'75%', mb:'2rem'}}>
                             <Typography variant="h3" color="secondary" align="center" sx={{fontWeight:'bold'}}>Work is broken.</Typography>
@@ -60,7 +69,7 @@ export default function Page() {
                         {/* image */}
                         <Box 
                             sx={{
-                                width:'25rem', height:'25rem', 
+                                width:{xs: '80%',sm:'25rem'}, aspectRatio:1, 
                                 overflow:'hidden', borderRadius:5, boxShadow:3, 
                                 position:'relative',
                             }}
@@ -69,7 +78,12 @@ export default function Page() {
                         </Box>
                     </Box>
                     {/* fixed */}
-                    <Box sx={{width:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+                    <Box sx={{
+                            width:{xs:'100%', md:'50%'}, 
+                            display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column',
+                            pt:{xs:'4rem', md:0}, boxSizing:'border-box'
+                        }}
+                        >
                         {/* titles */}
                         <Box sx={{width:'75%', mb:'2rem'}}>
                             <Typography variant="h3" color="secondary" align="center" sx={{fontWeight:'bold'}}>Let's improve.</Typography>
@@ -80,7 +94,7 @@ export default function Page() {
                         {/* images */}
                         <Box 
                             sx={{
-                                width:'25rem', height:'25rem', 
+                                width:{xs: '80%',sm:'25rem'}, aspectRatio:1, 
                                 overflow:'hidden', 
                                 position:'relative',
                             }}
@@ -91,9 +105,9 @@ export default function Page() {
                 </Box>
             </Box>
             {/* Title reason */}
-            <Box sx={{width:'100%', height:'50%'}}>
+            <Box sx={{width:'100%', minHeight:'50%', boxSizing:'border-box', py:'5rem'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-                    <Box sx={{width:'40%'}}>
+                    <Box sx={{width:{xs:'80%', md:'40%'}}}>
                         <Typography variant="h3" color="primary" align="center" sx={{fontWeight:'bold', mb:'1rem'}}>Save time and learn more.</Typography>
                         <Typography variant="h6" color="textSecondary" align="center">
                             Streamline collaboration, manage cycles, and drive improvement effortlessly so that you can focus on what matters most.
