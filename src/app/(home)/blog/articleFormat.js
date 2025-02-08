@@ -13,17 +13,17 @@ export default function ArticleFormat({children, aspectRatio, title, author, len
         <Box sx={{width:'100%', height:'100%', overflow:'scroll', backgroundColor:'grey.100'}}>
             <Box 
                 sx={{
-                    width:'100%', height:'70%', boxSizing:'border-box',
-                    display:'flex', alignItems:'center', justifyContent:'center',
+                    width:'100%', minHeight:'70%', boxSizing:'border-box',
+                    display:'flex', alignItems:'center', justifyContent:'center', flexDirection:{xs:'column', lg:'row'},
                     backgroundColor:'primary.main',
-                    px:'10rem', boxSizing:'border-box',
+                    px:{xs:'1rem', md:'5rem', lg:'10rem'}, boxSizing:'border-box',
                     }}
                 >
-                <Box sx={{width:'50%', minWidth:'35rem', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+                <Box sx={{width:{xs:'90%', lg:'50%'}, py:{xs:'3rem', lg:0}, boxSizing:'border-box', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
                     {/* images */}
                     <Box 
                         sx={{
-                            width:550, height:1/aspectRatio*550, 
+                            width:{xs:'80%', lg:'90%'}, aspectRatio:aspectRatio, 
                             overflow:'hidden', 
                             position:'relative',
                             border:'1px solid', borderColor:'grey.300', borderRadius:3,
@@ -33,7 +33,7 @@ export default function ArticleFormat({children, aspectRatio, title, author, len
                         <Image src={thumbnail} alt='icon' fill />
                     </Box>
                 </Box>
-                <Box sx={{width:'50%', boxSizing:'border-box', px:'.5rem'}}>
+                <Box sx={{width:{xs:'90%', lg:'50%'}, boxSizing:'border-box', px:'.5rem', pb:{xs:'3rem', lg:0}}}>
                     {/* title */}
                     <Typography variant="h3" align="left" sx={{fontWeight:'bold', color:'primary.contrastText', overflowWrap:'break-word'}} >
                         {title}
@@ -53,14 +53,14 @@ export default function ArticleFormat({children, aspectRatio, title, author, len
                         variant="h6" align="left" 
                         sx={{
                             whiteSpace: 'pre-wrap',
-                            wordBreak: 'break-word',
-                            maxHeight:'100%',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 3,
-                            lineClamp: 3,
-                            overflow: 'hidden',
-                            WebkitBoxOrient: 'vertical',
-                            height:`${3*1.25}rem`,
+                            // wordBreak: 'break-word',
+                            // maxHeight:'100%',
+                            // display: '-webkit-box',
+                            // WebkitLineClamp: 3,
+                            // lineClamp: 3,
+                            // overflow: 'hidden',
+                            // WebkitBoxOrient: 'vertical',
+                            // height:`${3*1.25}rem`,
                             color:'primary.contrastText', overflowWrap:'break-word',
                         }}
                         >
@@ -68,7 +68,7 @@ export default function ArticleFormat({children, aspectRatio, title, author, len
                     </Typography>
                 </Box>
             </Box>
-            <Box sx={{width:'100%', px:'20rem', py: '2rem', boxSizing:'border-box',}}>
+            <Box sx={{width:'100%', px:{xs:'1rem', lg:'20rem'}, py: '2rem', boxSizing:'border-box',}}>
                 {children}
             </Box>
             <Footer />
