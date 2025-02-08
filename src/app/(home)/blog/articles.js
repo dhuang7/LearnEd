@@ -37,7 +37,7 @@ export default function Articles({articles, searchBarHeight}) {
             <Box sx={{width:'100%', display:'flex', justifyContent:'center', height:0}}>
                 <Paper
                     sx={{
-                        width:'80%', height:`${searchBarHeight}rem`,
+                        width:{xs:'90%', lg:'80%'}, height:`${searchBarHeight}rem`,
                         border:'1px solid', borderColor:'grey.300', borderRadius:3,
                         position:'relative', top:`-${searchBarHeight/2}rem`,
                         boxShadow:0,
@@ -47,7 +47,7 @@ export default function Articles({articles, searchBarHeight}) {
                         sx={{
                             display:'flex', justifyContent:'center', alignItems:'center', 
                             height:'100%',
-                            boxSizing:'border-box', px:'5rem'
+                            boxSizing:'border-box', px:{xs:'1rem', lg:'5rem'}
                         }}
                         >
                         {/* Search bar */}

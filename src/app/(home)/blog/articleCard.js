@@ -3,27 +3,22 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 
 
 import Image from "next/image";
-import { useState } from "react";
-import theme from "@/app/theme";
 import NextLink from 'next/link';
 
 
 
 export default function ArticleCard({article}) {
-    const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
-
 
     return (
         <>
             <Paper 
                 elevation={0} 
                 sx={{
-                    m:'1rem', width:'20rem', p:'1rem', 
+                    m:'1rem', width:{xs:'90%', sm:'20rem'}, p:'1rem', boxSizing:'border-box',
                     borderRadius:3, border: '1px solid', borderColor: 'grey.300',
                     textDecoration:'none',
                     transition: 'border-color 0.25s',
@@ -38,8 +33,9 @@ export default function ArticleCard({article}) {
                 <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
                     <Box 
                         sx={{
-                            width:640/2, 
-                            height:345/2, 
+                            width:'100%', 
+                            aspectRatio:article.aspectRatio,
+                            // height:345/2, 
                             display:'flex', alignItems:'center', justifyContent:'center',
                             position:'relative',
                             borderRadius:2,
@@ -48,7 +44,7 @@ export default function ArticleCard({article}) {
                             borderColor:'grey.300',
                         }}
                         >
-                        <Image src={article.thumbnail} alt={'icon'} width={article.aspectRatio*345/2} height={345/2}/>
+                        <Image src={article.thumbnail} alt={'icon'} fill/>
                     </Box>
                 </Box>
                 {/* text */}
