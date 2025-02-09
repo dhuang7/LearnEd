@@ -30,18 +30,19 @@ export default function Page() {
                     Possible future monthly pricing below:
                 </Typography>
             </Box>
-            <Box sx={{position:'relative', width:'100%', height:'40rem', display:'flex', justifyContent:'center'}}>
+            <Box sx={{position:'relative', width:'100%', minHeight:'40rem', display:'flex', justifyContent:'center'}}>
                 <Box
                     sx={{
-                        width:'75%', minWidth:'65rem', minHeight:'40rem',
+                        width:{xs:'90%', sm:'80%'}, minHeight:'40rem',
                         border:'1px solid', borderColor:'grey.300', borderRadius:3,
                         backgroundColor:'common.white',
-                        top:'-10rem', position:'absolute',
-                        display:'flex',
+                        top:'-10rem', position:'relative',
+                        display:'flex', 
+                        flexDirection:{xs:'column', lg:'row'}
                     }}
                     >
                     <PricingColumn 
-                        width={'33.33%'} 
+                        width={{xs:'100%', lg:'33.33%'}} 
                         href='/login'
                         color='chocolate'
                         title='Free Forever'
@@ -54,7 +55,7 @@ export default function Page() {
                         ]}
                         />
                     <PricingColumn 
-                        width={'33.33%'} 
+                        width={{xs:'100%', lg:'33.33%'}} 
                         href='/login'
                         color='RoyalBlue'
                         title='Unlimited'
@@ -67,7 +68,7 @@ export default function Page() {
                         ]}
                         />
                     <PricingColumn 
-                        width={'33.33%'} 
+                        width={{xs:'100%', lg:'33.33%'}} 
                         noBorder
                         href='/login'
                         color='ForestGreen'
