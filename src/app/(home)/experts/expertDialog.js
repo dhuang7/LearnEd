@@ -81,7 +81,9 @@ export default function ExportDialog({expert, open, setOpen}) {
                                 <Typography variant="h4" color="primary">{expert.name}</Typography>
                                 <Typography variant="body1" color="primary">{expert.role}</Typography>
                                 <Typography variant="body1" color="secondary" sx={{mb:'.5rem'}}>{expert.company}</Typography>
-                                <Typography variant="body1" sx={{mb:'1rem'}}>{expert.description}</Typography>
+                                {expert.description.split('\n').map((v, i) => (
+                                    <Typography key={i} variant="body1" sx={{mb:'1rem'}}>{v}</Typography>
+                                ))}
                                 {/* social */}
                                 <Box sx={{display:'flex', alignItems:'center'}}>
                                     {/* website */}

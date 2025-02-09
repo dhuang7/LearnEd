@@ -17,7 +17,7 @@ export const expertsList = [
         name: 'Ryoji Bunden',
         role: 'Founder',
         company: 'AchieveMetrics',
-        description: `18 years in education spanning from instruction to instructional coaching and instructional leadership. I've been fortunate to teach in the US and abroad in content areas of mathematics, AVID, andTheory of Knowledge. AP, IB, CCSS, CCR, PLC, Continuous Improvement, PDSA, and leading teams through standards implementation, understanding Smarter Balanced Item Specifications, Achievement Level Descriptors, and how to effectively measure student understanding. Student achievement is at the core of everything I do as an Educator and Educational Leader. We must be working to increase student achievement by leveraging Improvement Science and increasing educator capacity.`,
+        description: `18 years in education spanning from instruction to instructional coaching and instructional leadership. I've been fortunate to teach in the US and abroad in content areas of mathematics, AVID, andTheory of Knowledge. AP, IB, CCSS, CCR, PLC, Continuous Improvement, PDSA, and leading teams through standards implementation, understanding Smarter Balanced Item Specifications, Achievement Level Descriptors, and how to effectively measure student understanding. \nStudent achievement is at the core of everything I do as an Educator and Educational Leader. We must be working to increase student achievement by leveraging Improvement Science and increasing educator capacity.`,
         thumbnail:'/expert-profile-pic/ryojibunden.png',
         aspectRatio: 1,
         linkedIn: 'https://www.linkedin.com/in/ryoji-bunden-7052b9309/',

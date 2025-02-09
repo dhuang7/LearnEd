@@ -9,7 +9,6 @@ import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 import Image from "next/image";
 import { useState } from "react";
 import theme from "@/app/theme";
-import NextLink from 'next/link';
 import ExportDialog from "./expertDialog";
 
 
