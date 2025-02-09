@@ -18,18 +18,20 @@ import theme from "@/app/theme";
 
 export default function VideoCard({video}) {
     const [open, setOpen] = useState();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     // video size ratios
     const width = 750;
     const height = width * 270/480;
+
+    const aspectRatio = 480/270;
 
     return (
         <>
             <Paper 
                 elevation={0} 
                 sx={{
-                    m:'1rem', width:'20rem', p:'1rem', 
+                    m:'1rem', width:{xs:'15rem', sm:'20rem'}, p:'1rem', 
                     borderRadius:3, border: '1px solid', borderColor: 'grey.300',
                     textDecoration:'none',
                     transition: 'border-color 0.25s',
@@ -45,7 +47,8 @@ export default function VideoCard({video}) {
                     <Box 
                         sx={{
                             width:`20rem`, 
-                            height:`${20*(1/video.img.aspectRatio)}rem`, 
+                            aspectRatio:aspectRatio,
+                            // height:`${20*(1/video.img.aspectRatio)}rem`, 
                             position:'relative',
                             borderRadius:2,
                             overflow:'hidden',
@@ -117,12 +120,13 @@ export default function VideoCard({video}) {
                 </DialogTitle>
                 
                 {/* video frame */}
-                <Box sx={{overflow:'scroll', width:'100%', height:'100%'}}>
+                <Box sx={{overflow:'scroll', width:'100%', height:'100%', display:'flex', justifyContent:'center'}}>
                     <Box
                         sx={{
                             borderRadius:4,
-                            height:height,
-                            width:width,
+                            // height:height,
+                            aspectRatio:aspectRatio,
+                            width:{xs:'100%', md:width},
                             mx:'1.5rem',
                             mb:'1.5rem',
                             overflow:'hidden',

@@ -9,22 +9,23 @@ import Videos from "./videos";
 
 
 export default function Page() {
-    const imageWidth = '40';
+    const imageWidth = 500;
+    const xsImageWidth = '80';
     const imageHeight = 1/0.53509933774;
 
-    const cyclesRanWidth = `${Number(imageWidth)*250/600}`;
+    const cyclesRanWidth = imageWidth => `${Number(imageWidth)*250/600}`;
     const cyclesRanHeight = 1/(634/844);
-    const cyclesMr = `${Number(imageWidth)*(28.5/40)}`;
-    const cyclesMt = `${Number(imageWidth)*(12.5/40)}`;
+    const cyclesMr = imageWidth => (typeof imageWidth === 'string') ? `${Number(imageWidth)*(28.5/40)}` : Number(imageWidth)*(28.5/300);
+    const cyclesMt = imageWidth => (typeof imageWidth === 'string') ? `${Number(imageWidth)*(12.5/40)}` : Number(imageWidth)*(12.5/300);
 
-    const editEventWidth = `${Number(imageWidth)*200/600}`;
+    const editEventWidth = imageWidth => `${Number(imageWidth)*200/600}`;
     const editEventHeight = 1/(1616/999);
-    const editEventMl = `${Number(imageWidth)*(37/40)}`;
-    const editEventMt = `${Number(imageWidth)*(5.5/40)}`;
+    const editEventMl = imageWidth => (typeof imageWidth === 'string') ? `${Number(imageWidth)*(37/40)}` : Number(imageWidth)*(37/300);
+    const editEventMt = imageWidth => (typeof imageWidth === 'string') ? `${Number(imageWidth)*(5.5/40)}` : Number(imageWidth)*(5.5/300);
 
     const searchBarHeight = 7.5;
 
-    
+    console.log(cyclesMr(imageWidth));
     
     
 
@@ -107,7 +108,7 @@ export default function Page() {
         <Box sx={{width:'100%', height:'100%', overflow:'scroll', backgroundColor:'grey.100'}}>
             <Box 
                 sx={{
-                    width:'100%', height:'100%', pb:`${searchBarHeight+2}rem`, boxSizing:'border-box',
+                    width:'100%', minHeight:'100%', pb:`${searchBarHeight+2}rem`, boxSizing:'border-box',
                     display:'flex', alignItems:'center', flexDirection:'column', 
                     backgroundColor:'primary.main', 
                     }}
@@ -117,7 +118,7 @@ export default function Page() {
                     How can we help?
                 </Typography>
                 {/* description */}
-                <Typography variant="h5" align="center" sx={{width:'60%', mt:'2rem', color:'primary.contrastText'}}>
+                <Typography variant="h5" align="center" sx={{width:{xs:'90%', md:'60%'}, mt:'2rem', color:'primary.contrastText'}}>
                     Look below for some of our favorite videos to help you streamline your PLC process!
                 </Typography>
                 {/* image */}
@@ -126,7 +127,7 @@ export default function Page() {
                         width:'100%', 
                         alignItems:'center', display:'flex', justifyContent:'center', 
                         mt:'3rem', 
-                        position:'relative', left:'-1.5rem', 
+                        position:'relative', left:{xs:'-2.5%', sm:'-1.5rem'}
                         // transform:'scale(100vw)'
                         // backgroundColor:'primary.main',
                     }}
@@ -135,8 +136,8 @@ export default function Page() {
                     <Fade in timeout={{enter:750}} >
                         <Box 
                             sx={{
-                                borderRadius:3, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
-                                position:'relative', width:imageWidth+'%', 
+                                borderRadius:{xs:2, sm:3}, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
+                                position:'relative', width:{xs:xsImageWidth+'%', sm:imageWidth}, 
                                 aspectRatio: imageHeight,
                             }}
                             >
@@ -147,10 +148,10 @@ export default function Page() {
                     <Fade in timeout={{enter:750}}>
                         <Box 
                             sx={{
-                                borderRadius:3, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
-                                position:'absolute', width: cyclesRanWidth+'%', 
+                                borderRadius:{xs:2, sm:3}, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
+                                position:'absolute', width: {xs:cyclesRanWidth(xsImageWidth)+'%', sm:Number(cyclesRanWidth(imageWidth))}, 
                                 aspectRatio: cyclesRanHeight,
-                                mr:cyclesMr+'%', mt:cyclesMt+'%'
+                                mr:{xs:cyclesMr(xsImageWidth)+'%', sm:Number(cyclesMr(imageWidth))}, mt:{xs:cyclesMt(xsImageWidth)+'%', sm:Number(cyclesMt(imageWidth))}
                             }}
                             >
                             <Image src={'/cycles-ran.png'} alt={'demo'} fill />
@@ -160,10 +161,10 @@ export default function Page() {
                     <Fade in timeout={{enter:750}}>
                         <Box 
                             sx={{
-                                borderRadius:3, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
-                                position:'absolute', width: editEventWidth+'%', 
+                                borderRadius:{xs:2, sm:3}, overflow:'hidden', border: '1px solid', borderColor:'divider', boxShadow: 15,
+                                position:'absolute', width: {xs:editEventWidth(xsImageWidth)+'%', sm:Number(editEventWidth(imageWidth))}, 
                                 aspectRatio: editEventHeight,
-                                ml:editEventMl+'%', mt:editEventMt+'%'
+                                ml:{xs:editEventMl(xsImageWidth)+'%', sm:Number(editEventMl(imageWidth))}, mt:{xs:editEventMt(xsImageWidth)+'%', sm:Number(editEventMt(imageWidth))}
                             }}
                             >
                             <Image src={'/edit-event.png'} alt={'demo'} fill />

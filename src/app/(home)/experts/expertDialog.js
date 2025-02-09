@@ -18,7 +18,7 @@ import NextLink from 'next/link';
 
 
 export default function ExportDialog({expert, open, setOpen}) {
-    const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const linkedInIconWidth = 25;
     const linkedInIconHeight = 0.85039370078 * linkedInIconWidth;
@@ -58,13 +58,13 @@ export default function ExportDialog({expert, open, setOpen}) {
                 
                 {/* frame */}
                 <DialogContent sx={{p:'2rem'}}>
-                    <Box sx={{display:'flex'}}>
+                    <Box sx={{display:'flex', flexDirection:{xs:'column', md:'row'}, justifyContent:'center', alignItems:'center'}}>
                         {/* thumbnail */}
-                        <Box sx={{width:345, justifyContent:'center', alignItems:'center', display:'flex', mr:'2rem'}}>
+                        <Box sx={{width:{xs:'70%', sm:345}, justifyContent:'center', alignItems:'center', display:'flex', mr:{xs:0, md:'2rem'}, mb:{xs:'2rem', md:0}}}>
                             <Box 
                                 sx={{
-                                    width:345, 
-                                    height:345, 
+                                    width:'100%', 
+                                    aspectRatio:1,
                                     display:'flex', alignItems:'center', justifyContent:'center',
                                     position:'relative',
                                     borderRadius:9999,
@@ -73,10 +73,10 @@ export default function ExportDialog({expert, open, setOpen}) {
                                     borderColor:'grey.300',
                                 }}
                                 >
-                                <Image src={expert.thumbnail} alt={'icon'} width={expert.aspectRatio*345} height={345} />
+                                <Image src={expert.thumbnail} alt={'icon'} fill />
                             </Box>
                         </Box>
-                        <Box sx={{width:520, justifyContent:'center', alignItems:'center', display:'flex'}}>
+                        <Box sx={{width:{xs:'90%', sm:520}, justifyContent:'center', alignItems:'center', display:'flex'}}>
                             <Box>
                                 <Typography variant="h4" color="primary">{expert.name}</Typography>
                                 <Typography variant="body1" color="primary">{expert.role}</Typography>
