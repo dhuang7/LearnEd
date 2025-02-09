@@ -13,14 +13,14 @@ import { useDroppable } from "@dnd-kit/core";
 
 
 
-export default function Section({sectionTitle, tasks, teamMembers, user, activeTask}) {
+export default function Section({sectionTitle, tasks, teamMembers, user, activeTask, color}) {
     const filteredTasks = tasks.filter(v => v.status === sectionTitle.toLowerCase());
     const {setNodeRef} = useDroppable({id:'droppable-' + sectionTitle.toLowerCase()})
 
     return (
         <Box 
             ref={Boolean(filteredTasks.length) ? null : setNodeRef} 
-            sx={{width:'25%', height:'100%'}}
+            sx={{width:'33.33%', height:'100%'}}
             >
             <SortableContext
                 items={filteredTasks}
@@ -30,7 +30,7 @@ export default function Section({sectionTitle, tasks, teamMembers, user, activeT
                     sx={{boxSizing:'border-box', px:'.5rem', width:'100%', height:'100%', display:'flex', flexDirection:'column'}}
                     >
                     {/* section title */}
-                    <Typography variant="h6" align="center" sx={{fontWeight:'bold'}}>{sectionTitle}</Typography>
+                    <Typography variant="h6" align="center" sx={{fontWeight:'bold', color:color}}>{sectionTitle}</Typography>
                     {/* section container */}
                     <Box sx={{flexGrow:1, overflow:'hidden', width:'100%'}}>
                         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>

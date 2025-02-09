@@ -20,6 +20,8 @@ import { useState, useTransition, useEffect } from "react";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import ButtonTextfield from "@/components/buttonTextfield";
+import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 
 
@@ -33,8 +35,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
     const [descriptionText, setDescriptionText] = useState('');
     const [assignedText, setAssignedText] = useState('');
     const [statusText, setStatusText] = useState(sectionStatus||'to do');
-    // const [calendarIdText, setCalendarIdText] = useState(calendarData?.[0]?.calendars.id);
-    // const [topics, setTopics] = useState([]);
+    const [dueDateText, setDueDateText] = useState(null);
     const CustomButton = customButton;
 
     // makes sure that the info is loaded before finishing.
@@ -62,6 +63,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
         setDescriptionText('');
         setAssignedText('');
         setStatusText(sectionStatus||'to do');
+        setDueDateText(dayjs());
     }
 
     function handleTitleText({target}) {
@@ -80,6 +82,10 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
         setStatusText(target.value);
     }
 
+    function handleDueDateText(newValue) {
+        setDueDateText(newValue);
+    }
+
     async function handleSubmit(e) {
         // handle submit
         e.preventDefault();
@@ -95,6 +101,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                 assigned_id: assignedText||null,
                 status: statusText,
                 order_num: tasks.filter(v => v.status === statusText).length,
+                due_date: dueDateText && dueDateText.toISOString(),
             })
 
         console.log(error);
@@ -104,6 +111,11 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
         })
     }
 
+    const statusColors = {
+        'to do': 'chocolate',
+        'in progress': 'royalblue',
+        'done': 'forestgreen'
+    }
 
     return (
         <>
@@ -180,6 +192,46 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                                 value={descriptionText}
                                 onChange={handleDescriptionText}
                                 />
+                            {/* Status */}
+                            <TextField
+                                // disabled
+                                select
+                                label='Status'
+                                value={statusText}
+                                onChange={handleStatusText}
+                                sx={{mt:'1rem'}}
+                                slotProps={{
+                                    htmlInput: {
+                                        sx: {
+                                            color:statusColors[statusText]
+                                        }
+                                    }
+                                }}
+                                >
+                                {['To do', 'In progress', 'Done'].map((v, i) => (
+                                    <MenuItem key={i} value={v.toLowerCase()} sx={{color:statusColors[v.toLowerCase()]}}>
+                                        {v}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            {/* due date */}
+                            <DateTimePicker
+                                label="Due Date"
+                                disabled={loading}
+                                value={dueDateText}
+                                onChange={handleDueDateText}
+                                viewRenderers={{
+                                    hours: renderTimeViewClock,
+                                    minutes: renderTimeViewClock,
+                                    seconds: renderTimeViewClock,
+                                }}
+                                slotProps={{
+                                    actionBar: {
+                                        actions:['today']
+                                    },
+                                }}
+                                sx={{width:'100%', mt:'1rem'}}
+                                />
                             {/* select assigned */}
                             <TextField
                                 select
@@ -194,20 +246,6 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                                 {teamMembers.map((v, i) => (
                                     <MenuItem key={i} value={v.id}>
                                         {v.email}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            {/* Status */}
-                            <TextField
-                                select
-                                label='Status'
-                                value={statusText}
-                                onChange={handleStatusText}
-                                sx={{mt:'1rem'}}
-                                >
-                                {['To do', 'In progress', 'Review', 'Done'].map((v, i) => (
-                                    <MenuItem key={i} value={v.toLowerCase()}>
-                                        {v}
                                     </MenuItem>
                                 ))}
                             </TextField>

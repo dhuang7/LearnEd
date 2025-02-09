@@ -19,30 +19,46 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
     const isDone = task.status==='done';
     const [open, setOpen] = useState(false);
 
+    // handles checking
     async function handleChecked(e) {
         e.stopPropagation();
+
+        const statuses = {
+            'to do': 0,
+            'in progress': 0,
+            'done': 0,
+        }
+
+        // reorder order nums
+        tasks.forEach((v, i) => {
+            let currStatus = v.status;
+            if (v.id === task.id) {
+                currStatus = isDone ? 'in progress' : 'done';
+            }
+
+            v.order_num = statuses[currStatus];
+            v.status = currStatus;
+            statuses[currStatus]++;
+        })
+
         const {data, error} = await supabase
             .from('tasks')
-            .update({status: isDone ? 'review' : 'done'})
-            .eq('id', task.id);
+            .upsert(tasks);
 
         router.refresh();
     }
 
+    // node kit stuffs
     const {
         listeners,
         setNodeRef,
         transform,
-        transition,
-        isSorting
     } = useSortable({
         id: task.id
     });
     
     const style = {
         transform: CSS.Transform.toString(transform),
-        // transform: isSorting ? undefined : CSS.Translate.toString(transform), 
-        // transition: transition + (activeTask?.id === task.id ? '' : ', border-color 0.25s'),
         transition: (activeTask?.id === task.id ? '' : ', border-color 0.25s'),
     };
 
@@ -57,10 +73,9 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
                     width:'100%',
                     pb:'.5rem', pt:'.2rem',pr:'1rem', boxSizing:'border-box', 
                     border:'1px solid', borderColor:'grey.300', borderRadius:3,
-                    // transition: 'border-color 0.25s',
+                    cursor:'pointer',
                     '&:hover': activeTask?.id === task.id || {
                         borderColor: 'info.main', // Change the border color on hover
-                        cursor:'pointer',
                     },
                     mt:'1rem',
                     ...style,

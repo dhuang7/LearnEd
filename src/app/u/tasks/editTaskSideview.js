@@ -21,6 +21,8 @@ import { useState, useTransition, useEffect } from "react";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import ButtonTextfield from "@/components/buttonTextfield";
+import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 
 
@@ -34,6 +36,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
     const [descriptionText, setDescriptionText] = useState(task.description);
     const [assignedText, setAssignedText] = useState(task.assigned_id||'');
     const [statusText, setStatusText] = useState(task.status);
+    const [dueDateText, setDueDateText] = useState(task.due_date && dayjs(task.due_date));
 
 
     // makes sure that the info is loaded before finishing.
@@ -62,6 +65,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
         setDescriptionText(task.description);
         setAssignedText(task.assigned_id||'');
         setStatusText(task.status);
+        setDueDateText(dayjs());
     }
 
     function handleTitleText({target}) {
@@ -80,22 +84,41 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
         setStatusText(target.value);
     }
 
+    function handleDueDateText(newValue) {
+        setDueDateText(newValue);
+    }
+
     async function handleSubmit(e) {
         // handle submit
         e.preventDefault();
         setLoading(true);
-       
+
+        const statuses = {
+            'to do': 0,
+            'in progress': 0,
+            'done': 0,
+        }
+
+        // reorder order nums
+        tasks.forEach((v, i) => {
+            let currStatus = v.status;
+            if (v.id === task.id) {
+                currStatus = statusText;
+                v.title = titleText;
+                v.description = descriptionText;
+                v.priority = 4;
+                v.user_id = user.id;
+                v.assigned_id = assignedText||null;
+            }
+
+            v.order_num = statuses[currStatus];
+            v.status = currStatus;
+            statuses[currStatus]++;
+        })
+
         const {data, error} = await supabase
             .from('tasks')
-            .update({
-                title: titleText,
-                description: descriptionText,
-                priority: 4,
-                user_id: user.id,
-                assigned_id: assignedText||null,
-                status: statusText,
-            })
-            .eq('id', task.id)
+            .upsert(tasks);
 
         console.log(error);
         // reset everything
@@ -115,6 +138,12 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
         startTransition(() => {
             router.refresh();
         })
+    }
+
+    const statusColors = {
+        'to do': 'chocolate',
+        'in progress': 'royalblue',
+        'done': 'forestgreen'
     }
 
 
@@ -153,6 +182,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                 {/* close arrow button */}
                 <Box sx={{px:'.25rem', boxSizing:'border-box'}}>
                     <IconButton size='small' onClick={handleClose} sx={{mt:'1.1rem', borderRadius:1}}><LastPageRoundedIcon /></IconButton>
+                    
                 </Box>
                 {/* form */}
                 <form onSubmit={handleSubmit} style={{height:'100%', width:'100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
@@ -179,6 +209,46 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                                 value={descriptionText}
                                 onChange={handleDescriptionText}
                                 />
+                            {/* Status */}
+                            <TextField
+                                // disabled
+                                select
+                                label='Status'
+                                value={statusText}
+                                onChange={handleStatusText}
+                                sx={{mt:'1rem'}}
+                                slotProps={{
+                                    htmlInput: {
+                                        sx: {
+                                            color:statusColors[statusText]
+                                        }
+                                    }
+                                }}
+                                >
+                                {['To do', 'In progress', 'Done'].map((v, i) => (
+                                    <MenuItem key={i} value={v.toLowerCase()} sx={{color:statusColors[v.toLowerCase()]}}>
+                                        {v}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            {/* due date */}
+                            <DateTimePicker
+                                label="Due Date"
+                                disabled={loading}
+                                value={dueDateText}
+                                onChange={handleDueDateText}
+                                viewRenderers={{
+                                    hours: renderTimeViewClock,
+                                    minutes: renderTimeViewClock,
+                                    seconds: renderTimeViewClock,
+                                }}
+                                slotProps={{
+                                    actionBar: {
+                                        actions:['today']
+                                    },
+                                }}
+                                sx={{width:'100%', mt:'1rem'}}
+                                />
                             {/* select assigned */}
                             <TextField
                                 select
@@ -193,21 +263,6 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                                 {teamMembers.map((v, i) => (
                                     <MenuItem key={i} value={v.id}>
                                         {v.email}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            {/* Status */}
-                            <TextField
-                                disabled
-                                select
-                                label='Status'
-                                value={statusText}
-                                onChange={handleStatusText}
-                                sx={{mt:'1rem'}}
-                                >
-                                {['To do', 'In progress', 'Review', 'Done'].map((v, i) => (
-                                    <MenuItem key={i} value={v.toLowerCase()}>
-                                        {v}
                                     </MenuItem>
                                 ))}
                             </TextField>

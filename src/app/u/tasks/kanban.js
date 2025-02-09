@@ -6,17 +6,19 @@ import Paper from "@mui/material/Paper";
 
 import Section from "./section";
 import { useEffect, useState } from "react";
-import { closestCenter, DndContext, DragOverlay, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import TaskItem from "./taskItem";
+import { snapCenterToCursor } from "@dnd-kit/modifiers";
 
 export default function Kanban({originalTasks, teamMembers, user}) {
     const supabase = createClient();
-    const router = useRouter();
     const [activeTask, setActiveTask] = useState(null);
     const [tasks, setTasks] = useState(originalTasks);
+
+    // console.log(activeTask)
 
     useEffect(() => {
         setTasks(originalTasks);
@@ -29,9 +31,6 @@ export default function Kanban({originalTasks, teamMembers, user}) {
                 distance:2.5,
             }
         }),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
     );
 
     // handlers
@@ -84,31 +83,26 @@ export default function Kanban({originalTasks, teamMembers, user}) {
             over = active;
         }
 
-        ///////////////////////////////// DOES IT HAVE TO BE FILTERED?
-        // filter tasks
-        const filteredTasks = tasks.filter(v => activeTask.status === v.status);
-
         // create new order of the filter task
-        const oldIndex = filteredTasks.map(v => v.id).indexOf(active.id);
-        const newIndex = filteredTasks.map(v => v.id).indexOf(over.id);
-        const newOrderTasks = arrayMove(filteredTasks, oldIndex, newIndex);
+        const oldIndex = tasks.map(v => v.id).indexOf(active.id);
+        const newIndex = tasks.map(v => v.id).indexOf(over.id);
+        const newOrderTasks = arrayMove(tasks, oldIndex, newIndex);
 
-        
-        ////////////////// WELL THIS MAKES IT SEEM IT HAS TO BE FILTERED
-        ////////////// BUT I AM GOING THROUGH EACH ONE. I COULD JUST PROGRAM AND SET THE CORRECT ORDER_NUMS
-        ////////////// ESPECIALLY NOT BOTH COLUMNS WOULD BE ORGANIZED CORRECTLY?
-        // change the order_num
+        const statuses = {
+            'to do': 0,
+            'in progress': 0,
+            'done': 0,
+        }
+
         newOrderTasks.forEach((v, i) => {
-            v.order_num = i;
+            v.order_num = statuses[v.status];
+            statuses[v.status]++;
         })
 
         const saveOld = tasks;
 
         // update on front end
-        setTasks(t => {
-            const unchangedTasks = t.filter(v => activeTask.status !== v.status);
-            return [...unchangedTasks, ...newOrderTasks];
-        });
+        setTasks(newOrderTasks)
 
         setActiveTask(null);
 
@@ -146,21 +140,24 @@ export default function Kanban({originalTasks, teamMembers, user}) {
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'To do'} 
                         tasks={tasks} activeTask={activeTask}
+                        color={'chocolate'}
                         />
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'In progress'} 
                         tasks={tasks} activeTask={activeTask}
+                        color={'royalblue'}
                         />
-                    <Section 
+                    {/* <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'Review'} 
                         tasks={tasks} activeTask={activeTask}
-                        />
+                        /> */}
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'Done'} 
                         tasks={tasks} activeTask={activeTask}
+                        color={'forestgreen'}
                         />
                     {/* overlay to drag */}
-                    <DragOverlay>
+                    <DragOverlay modifiers={[snapCenterToCursor]}>
                         <TaskItem task={activeTask} teamMembers={teamMembers} tasks={tasks}  />
                     </DragOverlay>
                 </DndContext>
