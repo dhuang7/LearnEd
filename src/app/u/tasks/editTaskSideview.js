@@ -65,7 +65,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
         setDescriptionText(task.description);
         setAssignedText(task.assigned_id||'');
         setStatusText(task.status);
-        setDueDateText(dayjs());
+        setDueDateText(task.due_date && dayjs(task.due_date));
     }
 
     function handleTitleText({target}) {
@@ -109,6 +109,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                 v.priority = 4;
                 v.user_id = user.id;
                 v.assigned_id = assignedText||null;
+                v.due_date = dueDateText;
             }
 
             v.order_num = statuses[currStatus];
@@ -244,7 +245,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                                 }}
                                 slotProps={{
                                     actionBar: {
-                                        actions:['today']
+                                        actions:['clear', 'today']
                                     },
                                 }}
                                 sx={{width:'100%', mt:'1rem'}}

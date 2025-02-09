@@ -6,12 +6,15 @@ import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import Checkbox from '@mui/material/Checkbox';
 import RadioButtonUncheckedRoundedIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
 import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded';
+import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
+
 import { useState } from "react";
 import EditTaskSideview from "./editTaskSideview";
 import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import dayjs from "dayjs";
 
 export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
     const supabase = createClient();
@@ -125,9 +128,15 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
                             >
                             {task.description}
                         </Typography>
+                        {/* due date */}
+                        {task.due_date && (
+                            <Typography noWrap color="success" variant="body2" sx={{display:'flex', alignItems:'center', textDecoration: isDone && 'line-through'}}>
+                                <TodayRoundedIcon fontSize="inherit" sx={{mr:'.5rem'}} /> {dayjs(task.due_date).format('DD/MM/YYYY h:mma')}
+                            </Typography>
+                        )}
                         {/* person assigned */}
                         {task.assigned_id && (
-                            <Typography noWrap color='textSecondary' sx={{display:'flex', alignItems:'center', mt:'.5rem'}}>
+                            <Typography noWrap color='textSecondary' sx={{display:'flex', alignItems:'center', mt:'.5rem', textDecoration: isDone && 'line-through'}}>
                                 <AccountCircleRoundedIcon color="info" sx={{mx:'.5rem'}} />
                                 <Typography noWrap color="textPrimary" component={'span'}>
                                     {teamMembers.filter(v => v.id === task.assigned_id)[0].email}

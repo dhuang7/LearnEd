@@ -120,7 +120,7 @@ export default function Kanban({originalTasks, teamMembers, user}) {
     }
 
     return (
-        <Box sx={{width:'100%', height:'100%', display:'flex', boxSizing:'border-box', px:'1rem'}}>
+        <Box sx={{width:'100%', height:'100%', display:'flex', boxSizing:'border-box', px:'1rem', pl:'.5rem'}}>
             <Paper 
                 elevation={0} 
                 sx={{

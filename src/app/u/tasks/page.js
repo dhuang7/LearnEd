@@ -10,6 +10,8 @@ import createClient from "@/utils/supabase/server";
 export default async function Tasks({users}) {
     const supabase = await createClient();
 
+    
+
     const {data, error} = await supabase
         .from('tasks')
         .select()
@@ -35,10 +37,20 @@ export default async function Tasks({users}) {
             </Box>
             {/* paper */}
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
-                <Box sx={{width:'100%', height:'100%', pb:'1rem', pt:'.5rem', boxSizing: 'border-box'}}>
-                    <Kanban originalTasks={data} teamMembers={teamMembers} user={user} />
+                <Box sx={{width:'100%', height:'100%', display:'flex'}}>
+                    {/* side dash */}
+                    {/* <Box sx={{width:'17.5rem', minWidth:'17.5rem', height:'100%', pt:'.5rem', pb:'1rem', pl:'1rem', pr:'.5rem', boxSizing:'border-box'}}>
+                        
+                    </Box> */}
+                    {/* Main calendar */}
+                    <Box sx={{flexGrow:1, height:'100%', overflow:'hidden'}}>
+                        <Box sx={{width:'100%', height:'100%', pt:'.5rem', boxSizing:'border-box', pb:'1rem'}}>
+                            <Kanban originalTasks={data} teamMembers={teamMembers} user={user} />
+                        </Box>
+                    </Box>
                 </Box>
             </Box>
+            
         </Box>
     )
 }

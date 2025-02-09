@@ -63,7 +63,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
         setDescriptionText('');
         setAssignedText('');
         setStatusText(sectionStatus||'to do');
-        setDueDateText(dayjs());
+        setDueDateText(null);
     }
 
     function handleTitleText({target}) {
@@ -227,7 +227,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                                 }}
                                 slotProps={{
                                     actionBar: {
-                                        actions:['today']
+                                        actions:['clear', 'today']
                                     },
                                 }}
                                 sx={{width:'100%', mt:'1rem'}}
