@@ -6,13 +6,14 @@ import Articles from "./articles";
 import HeadArticleCard from "./headArticleCard";
 
 import {info as wiisInfo} from './what-is-improvement-science/page';
+import { info as hctefcsiInfo } from "./harnessing-collective-teacher-efficacy-for-continuous-school-improvement/page";
 
 
 export default function Page() {
     const searchBarHeight = 7.5;
 
     const articles = [
-        wiisInfo,
+        wiisInfo, hctefcsiInfo,
     ];
 
     return (
