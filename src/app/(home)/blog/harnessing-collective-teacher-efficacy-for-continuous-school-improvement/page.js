@@ -25,7 +25,7 @@ export default function Page() {
             </Header>
             <Paragraph>
                 In the pursuit of improved student outcomes, schools continuously seek strategies that have the
-                greatest impact on learning. Research by John Hattie has identified Collective Teacher Efficacy
+                greatest impact on learning. <ArticleLink href={'https://www.visiblelearningmetax.com/influences/view/collective_teacher_efficacy'}>Research by John Hattie</ArticleLink> has identified Collective Teacher Efficacy
                 (CTE) as the most influential factor in student achievement, with an effect size of
                 1.57—significantly higher than many other educational interventions. When teachers share the
                 belief that their collective efforts can lead to meaningful student success, schools see enhanced

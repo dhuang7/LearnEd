@@ -5,9 +5,10 @@ import NextLink from 'next/link';
 import Image from "next/image";
 import Footer from "../footer";
 import { Divider } from "@mui/material";
+import AuthorInfo from "./authorInfo";
 
 
-export default function ArticleFormat({children, aspectRatio, title, author, length, description, href, thumbnail}) {
+export default function ArticleFormat({children, aspectRatio, title, author, length, description, thumbnail}) {
 
     return (
         <Box sx={{width:'100%', height:'100%', overflow:'scroll', backgroundColor:'grey.100'}}>
@@ -41,9 +42,7 @@ export default function ArticleFormat({children, aspectRatio, title, author, len
                     {/* Divider */}
                     <Divider sx={{borderColor:'common.white', my:'1rem'}} />
                     {/* author */}
-                    <Typography variant="h5" align="left" sx={{color:'primary.contrastText', overflowWrap:'break-word'}}>
-                        By {author}
-                    </Typography>
+                    <AuthorInfo author={author} />
                     {/* time */}
                     <Typography variant="body1" align="left" sx={{color:'primary.contrastText', overflowWrap:'break-word', mb:'1rem'}}>
                         {length} mins
