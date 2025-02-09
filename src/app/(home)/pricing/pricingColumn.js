@@ -10,7 +10,7 @@ export default function PricingColumn({href, width, noBorder, title, description
         <Box 
             sx={{
                 width:width, display:'flex', flexDirection:'column', 
-                boxSizing:'border-box', py:'2rem', px:'4rem', 
+                boxSizing:'border-box', py:'2rem', px:{xs:'2rem', sm:'4rem'}, 
                 borderRight:{xs:0, lg:noBorder||'1px solid'}, 
                 borderBottom: {xs:noBorder||'1px solid', lg:0}, borderColor:{xs:'grey.300', lg:'grey.300'},
             }}

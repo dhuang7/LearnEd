@@ -13,9 +13,10 @@ export default function Page() {
         <Box sx={{width:'100%', height:'100%', overflow:'scroll', backgroundColor:'grey.100'}}>
             <Box 
                 sx={{
-                    width:'100%', height:'80%', boxSizing:'border-box',
+                    width:'100%', minHeight:'80%', boxSizing:'border-box',
                     display:'flex', alignItems:'center', flexDirection:'column', 
                     backgroundColor:'primary.main', 
+                    pb:'12rem', px:'1rem',
                     }}
                 >
                 {/* Slogan */}
