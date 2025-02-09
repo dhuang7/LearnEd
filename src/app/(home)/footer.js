@@ -17,7 +17,7 @@ export default function Footer() {
     return (
         <>
             {/* Ending login */}
-            <Box sx={{width:'100%', height:'50%', backgroundColor: 'grey.300'}}>
+            <Box sx={{width:'100%', py:'5rem', backgroundColor: 'grey.300'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column', boxSizing:'border-box', px:'.5rem'}}>
                     <Typography variant="h4" color="primary" align="center" sx={{fontWeight:'bold', display:'flex', justifyContent:'center', flexWrap:'wrap'}}>
                         Start making

@@ -40,8 +40,8 @@ export default function Page() {
                 </Button>
             </Box>
             {/* image carousel */}
-            <Box sx={{width:'100%', height:'100%'}}>
-                <Box sx={{width:'100%', height:'100%', alignItems:'center', display:'flex', justifyContent:'center'}}>
+            <Box sx={{width:'100%'}}>
+                <Box sx={{width:'100%', alignItems:'center', display:'flex', justifyContent:'center'}}>
                     <DemoCarousel />
                 </Box>
             </Box>
@@ -105,8 +105,8 @@ export default function Page() {
                 </Box>
             </Box>
             {/* Title reason */}
-            <Box sx={{width:'100%', minHeight:'50%', boxSizing:'border-box', py:'5rem'}}>
-                <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+            <Box sx={{width:'100%', boxSizing:'border-box', py:'5rem'}}>
+                <Box sx={{width:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
                     <Box sx={{width:{xs:'80%', md:'40%'}}}>
                         <Typography variant="h3" color="primary" align="center" sx={{fontWeight:'bold', mb:'1rem'}}>Save time and learn more.</Typography>
                         <Typography variant="h6" color="textSecondary" align="center">
