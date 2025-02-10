@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 
 
 import Section from "./section";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import createClient from "@/utils/supabase/client";
@@ -18,11 +18,6 @@ export default function Kanban({tasks, setTasks, teamMembers, user, teamId, filt
     const supabase = createClient();
     const router = useRouter();
     const [activeTask, setActiveTask] = useState(null);
-    // const [tasks, setTasks] = useState(originalTasks);
-
-    // useEffect(() => {
-    //     setTasks(originalTasks);
-    // }, [originalTasks]);
 
     // drag sensors
     const sensors = useSensors(

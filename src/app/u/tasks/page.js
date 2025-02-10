@@ -1,11 +1,8 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-import Kanban from "./kanban";
 import AddTaskSideview from "./addTaskSideview";
 import createClient from "@/utils/supabase/server";
-import TaskData from "./taskData";
-import TaskFilters from "./taskFilters";
 import PageClient from "./pageClient";
 
 
