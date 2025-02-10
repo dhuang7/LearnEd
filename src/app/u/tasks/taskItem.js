@@ -106,12 +106,12 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask, te
                         <Typography 
                             variant="h6" 
                             noWrap 
-                            color={isDone ? 'textSecondary' : 'info' }
+                            color={isDone||!task.title ? 'textSecondary' : 'info' }
                             sx={{
                                 textDecoration: isDone && 'line-through'
                             }}
                             >
-                            {task.title}
+                            {task.title||'(No title)'}
                         </Typography>
                         {/* description */}
                         <Typography 
@@ -133,7 +133,12 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask, te
                         </Typography>
                         {/* due date */}
                         {task.due_date && (
-                            <Typography noWrap color="success" variant="body2" sx={{display:'flex', alignItems:'center', textDecoration: isDone && 'line-through'}}>
+                            <Typography 
+                                noWrap 
+                                color={dayjs(task.due_date).diff(dayjs()) >= 0 ? 'success' : 'error'} 
+                                variant="body2" 
+                                sx={{display:'flex', alignItems:'center', textDecoration: isDone && 'line-through'}}
+                                >
                                 <TodayRoundedIcon fontSize="inherit" sx={{mr:'.5rem'}} /> {dayjs(task.due_date).format('MM/DD/YYYY h:mma')}
                             </Typography>
                         )}

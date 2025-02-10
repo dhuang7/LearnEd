@@ -26,7 +26,7 @@ export default function PageClient({tasks, teamMembers, user, teamId, teams}) {
                 </Box>
                 <Box sx={{flexGrow:1, overflow:'hidden'}}>
                     <Box sx={{width:'100%', height:'100%'}}>
-                        <TaskFilters tasks={stateTasks} setFilteredTasks={setFilteredTasks} />
+                        <TaskFilters tasks={stateTasks} setFilteredTasks={setFilteredTasks} teamMembers={teamMembers} teams={teams} teamId={teamId} />
                     </Box>
                 </Box>
             </Box>
