@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 
 
 
-export default function AddTaskSideview({customButton, teamMembers, sectionStatus, user, tasks}) {
+export default function AddTaskSideview({customButton, teamMembers, sectionStatus, user, tasks, teamId}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -37,6 +37,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
     const [statusText, setStatusText] = useState(sectionStatus||'to do');
     const [dueDateText, setDueDateText] = useState(null);
     const CustomButton = customButton;
+
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -102,6 +103,8 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                 status: statusText,
                 order_num: tasks.filter(v => v.status === statusText).length,
                 due_date: dueDateText && dueDateText.toISOString(),
+                date_completed: statusText === 'done' ? dayjs() : null,
+                team_id: teamId,
             })
 
         console.log(error);

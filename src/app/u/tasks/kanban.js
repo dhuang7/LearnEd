@@ -12,17 +12,17 @@ import createClient from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import TaskItem from "./taskItem";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
+import dayjs from "dayjs";
 
-export default function Kanban({originalTasks, teamMembers, user}) {
+export default function Kanban({tasks, setTasks, teamMembers, user, teamId, filteredTasks}) {
     const supabase = createClient();
+    const router = useRouter();
     const [activeTask, setActiveTask] = useState(null);
-    const [tasks, setTasks] = useState(originalTasks);
+    // const [tasks, setTasks] = useState(originalTasks);
 
-    // console.log(activeTask)
-
-    useEffect(() => {
-        setTasks(originalTasks);
-    }, [originalTasks]);
+    // useEffect(() => {
+    //     setTasks(originalTasks);
+    // }, [originalTasks]);
 
     // drag sensors
     const sensors = useSensors(
@@ -59,6 +59,7 @@ export default function Kanban({originalTasks, teamMembers, user}) {
             setTimeout(() => {
                 setActiveTask(t => {
                     t.status = newStatus;
+                    t.date_completed = newStatus === 'done' ? dayjs() : null;
                     return {...t};
                 });
             }, 0);
@@ -67,6 +68,7 @@ export default function Kanban({originalTasks, teamMembers, user}) {
                 t.forEach(v => {
                     if (v.id === activeTask.id) {
                         v.status = newStatus;
+                        t.date_completed = newStatus === 'done' ? dayjs() : null;
                     }
                 })
 
@@ -88,6 +90,9 @@ export default function Kanban({originalTasks, teamMembers, user}) {
         const newIndex = tasks.map(v => v.id).indexOf(over.id);
         const newOrderTasks = arrayMove(tasks, oldIndex, newIndex);
 
+        console.log(oldIndex)
+        console.log(newIndex)
+
         const statuses = {
             'to do': 0,
             'in progress': 0,
@@ -106,15 +111,21 @@ export default function Kanban({originalTasks, teamMembers, user}) {
 
         setActiveTask(null);
 
+        const newTasks = newOrderTasks.map(v => {
+            const newObj = {...v};
+            delete newObj.teams;
+            return newObj
+        })
+
         // update on backend
         const {data, error} = await supabase
             .from('tasks')
-            .upsert(newOrderTasks);
+            .upsert(newTasks);
 
 
         // make sure front end is up to date
         if (error) setTasks(saveOld);
-        // // router.refresh();
+        router.refresh();
         
         
     }
@@ -140,12 +151,14 @@ export default function Kanban({originalTasks, teamMembers, user}) {
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'To do'} 
                         tasks={tasks} activeTask={activeTask}
-                        color={'chocolate'}
+                        color={'chocolate'} teamId={teamId}
+                        filteredTasks={filteredTasks}
                         />
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'In progress'} 
                         tasks={tasks} activeTask={activeTask}
-                        color={'royalblue'}
+                        color={'royalblue'} teamId={teamId}
+                        filteredTasks={filteredTasks}
                         />
                     {/* <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'Review'} 
@@ -154,7 +167,8 @@ export default function Kanban({originalTasks, teamMembers, user}) {
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'Done'} 
                         tasks={tasks} activeTask={activeTask}
-                        color={'forestgreen'}
+                        color={'forestgreen'} teamId={teamId}
+                        filteredTasks={filteredTasks}
                         />
                     {/* overlay to drag */}
                     <DragOverlay modifiers={[snapCenterToCursor]}>

@@ -7,33 +7,30 @@ import Typography from "@mui/material/Typography";
 
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
 import theme from "@/app/theme";
+import dayjs from "dayjs";
 
 
 
 
-export default function CyclesTasks({tasks}) {
-    const color = {
-        'to do': 'Chocolate',
-        'in progress': 'RoyalBlue',
-    }
+export default function TaskData({tasks}) {
 
-    let completedCount;
+    const data = [
+        {
+            id: 0,
+            value: tasks.filter(v => v.status === 'to do').length,
+            label: 'To do',
+            color: 'chocolate',
+        },
+        {
+            id: 1,
+            value: tasks.filter(v => v.status === 'in progress').length,
+            label: 'In progress',
+            color: 'royalblue',
+        },
+    ];
 
-    const data = cycles.filter(v => {
-        if (v.status !== 'done') return true;
-        completedCount = v.count;
-        return false;
-    }).map((v,i) => ({
-        id: i,
-        value: v.count,
-        label: capitalizeFirstLetter(v.stage),
-        color: color[v.stage],
-    }));
-
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-    
+    // completed in the last week
+    let doneTasks = tasks.filter(v => v.status === 'done' && dayjs().diff(dayjs(v.date_completed)) <= 604800000).length
 
     return (
         <Paper 
@@ -47,49 +44,49 @@ export default function CyclesTasks({tasks}) {
             {/* Title section */}
             <Box sx={{display:'flex', alignItems:'center'}}>
                 {/* title */}
-                <Typography variant="h6">Cycles Ran:</Typography>
+                <Typography variant="h6">Tasks Done:</Typography>
             </Box>
             {/* pie chart */}
             <Box sx={{flexGrow:1, overflow:'hidden'}}>
                 <Box sx={{height:'100%'}}>
-                <PieChart
-                    series={[
-                        {
-                            innerRadius: '60%',
-                            cornerRadius:5,
-                            paddingAngle:5,
-                            arcLabel:'value',
-                            highlightScope: { fade: 'global', highlight: 'item' },
-                            data: data,
-                        },
-                    ]}
-                    margin={{ top: 0, bottom: 75, left: 0, right: 0 }}
-                    slotProps={{
-                        legend: {
-                            direction: 'row',
-                            position: { vertical: 'bottom', horizontal: 'middle' },
-                        },
-                    }}
-                    sx={{
-                        [`& .${pieArcLabelClasses.root}`]: {
-                            fill: 'white',
-                        },
-                    }}
-                    >
-                    {/* center label */}
-                    <text
-                        x={'50%'}
-                        y={'32.5%'}
-                        style={{
-                            textAnchor: 'middle',
-                            dominantBaseline: 'central',
-                            dominantBaseline:"middle"
+                    <PieChart
+                        series={[
+                            {
+                                innerRadius: '60%',
+                                cornerRadius:5,
+                                paddingAngle:5,
+                                arcLabel:'value',
+                                highlightScope: { fade: 'global', highlight: 'item' },
+                                data: data,
+                            },
+                        ]}
+                        margin={{ top: 0, bottom: 50, left: 0, right: 0 }}
+                        slotProps={{
+                            legend: {
+                                direction: 'row',
+                                position: { vertical: 'bottom', horizontal: 'middle' },
+                            },
+                        }}
+                        sx={{
+                            [`& .${pieArcLabelClasses.root}`]: {
+                                fill: 'white',
+                            },
                         }}
                         >
-                        <tspan x="50%" dy="0" fontSize={theme.typography.h4.fontSize}>{completedCount}</tspan>
-                        <tspan x="50%" dy="1.75rem" style={{fill: theme.palette.text.secondary}}>Completed</tspan>
-                    </text>
-                </PieChart>
+                        {/* center label */}
+                        <text
+                            x={'50%'}
+                            y={'32.5%'}
+                            style={{
+                                textAnchor: 'middle',
+                                dominantBaseline: 'central',
+                                dominantBaseline:"middle"
+                            }}
+                            >
+                            <tspan x="50%" dy="0" fontSize={theme.typography.h4.fontSize}>{doneTasks}</tspan>
+                            <tspan x="50%" dy="1.75rem" style={{fill: theme.palette.text.secondary}}>Done</tspan>
+                        </text>
+                    </PieChart>
                 </Box>
             </Box>
         </Paper>

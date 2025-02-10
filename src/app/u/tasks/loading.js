@@ -33,9 +33,9 @@ export default function Tasks({users}) {
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex'}}>
                     {/* side dash */}
-                    {/* <Box sx={{width:'17.5rem', height:'100%', pt:'.5rem', pb:'1rem', pl:'1rem', pr:'.5rem', boxSizing:'border-box'}}>
+                    <Box sx={{width:'17.5rem', height:'100%', pt:'.5rem', pb:'1rem', pl:'1rem', pr:'.5rem', boxSizing:'border-box'}}>
                         
-                    </Box> */}
+                    </Box>
                     {/* Main calendar */}
                     <Box sx={{flexGrow:1, height:'100%', overflow:'hidden'}}>
                         <Box sx={{width:'100%', height:'100%', pt:'.5rem', boxSizing:'border-box', pb:'1rem'}}>

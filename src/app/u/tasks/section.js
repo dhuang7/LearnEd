@@ -13,17 +13,17 @@ import { useDroppable } from "@dnd-kit/core";
 
 
 
-export default function Section({sectionTitle, tasks, teamMembers, user, activeTask, color}) {
-    const filteredTasks = tasks.filter(v => v.status === sectionTitle.toLowerCase());
+export default function Section({sectionTitle, tasks, teamMembers, user, activeTask, color, teamId, filteredTasks}) {
+    const sectionTasks = filteredTasks.filter(v => v.status === sectionTitle.toLowerCase());
     const {setNodeRef} = useDroppable({id:'droppable-' + sectionTitle.toLowerCase()})
 
     return (
         <Box 
-            ref={Boolean(filteredTasks.length) ? null : setNodeRef} 
+            ref={Boolean(sectionTasks.length) ? null : setNodeRef} 
             sx={{width:'33.33%', height:'100%'}}
             >
             <SortableContext
-                items={filteredTasks}
+                items={sectionTasks}
                 strategy={verticalListSortingStrategy}
                 >
                 <Box 
@@ -38,8 +38,8 @@ export default function Section({sectionTitle, tasks, teamMembers, user, activeT
                             <Box sx={{width:'100%', maxHeight:'100%', overflow:'hidden'}}>
                                 <Box sx={{width:'100%', maxHeight:'100%', overflow:'scroll'}}>
                                     {/* tasks */}
-                                    {filteredTasks.map((v, i) => (
-                                        <TaskItem key={i} task={v} teamMembers={teamMembers} user={user} tasks={tasks} activeTask={activeTask} />
+                                    {sectionTasks.map((v, i) => (
+                                        <TaskItem key={i} task={v} teamMembers={teamMembers} user={user} tasks={tasks} activeTask={activeTask} teamId={teamId} />
                                     ))}
                                 </Box>
                             </Box>
@@ -47,13 +47,14 @@ export default function Section({sectionTitle, tasks, teamMembers, user, activeT
                             <AddTaskSideview 
                                 user={user}
                                 teamMembers={teamMembers}
-                                tasks={filteredTasks}
+                                tasks={tasks.filter(v => v.status === sectionTitle.toLowerCase())}
                                 sectionStatus={sectionTitle.toLowerCase()}
                                 customButton={(props) => (
                                     <Button {...props} color="info" sx={{mt:'.5rem', borderRadius:3, textTransform:'none'}} startIcon={<AddRoundedIcon />}>
                                         Add task
                                     </Button>
                                 )}
+                                teamId={teamId}
                                 />
                         </Box>
                     </Box>

@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import Checkbox from '@mui/material/Checkbox';
+import Icon from '@mui/material/Icon';
 import RadioButtonUncheckedRoundedIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
 import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded';
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
@@ -15,8 +16,9 @@ import { useRouter } from "next/navigation";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import dayjs from "dayjs";
+import Image from "next/image";
 
-export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
+export default function TaskItem({task, teamMembers, user, tasks, activeTask, teamId}) {
     const supabase = createClient();
     const router = useRouter();
     const isDone = task.status==='done';
@@ -37,6 +39,7 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
             let currStatus = v.status;
             if (v.id === task.id) {
                 currStatus = isDone ? 'in progress' : 'done';
+                v.date_completed = currStatus === 'done' ? dayjs() : null;
             }
 
             v.order_num = statuses[currStatus];
@@ -131,7 +134,18 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask}) {
                         {/* due date */}
                         {task.due_date && (
                             <Typography noWrap color="success" variant="body2" sx={{display:'flex', alignItems:'center', textDecoration: isDone && 'line-through'}}>
-                                <TodayRoundedIcon fontSize="inherit" sx={{mr:'.5rem'}} /> {dayjs(task.due_date).format('DD/MM/YYYY h:mma')}
+                                <TodayRoundedIcon fontSize="inherit" sx={{mr:'.5rem'}} /> {dayjs(task.due_date).format('MM/DD/YYYY h:mma')}
+                            </Typography>
+                        )}
+                        {/* team */}
+                        {!teamId && task.teams && (
+                            <Typography noWrap color='textSecondary' sx={{display:'flex', alignItems:'center', mt:'.5rem', textDecoration: isDone && 'line-through'}}>
+                                <Icon fontSize="small" sx={{position:'relative', mr:'.5rem'}}>
+                                    <Image src={'/icon.svg'} alt={'icon'} fill />
+                                </Icon>
+                                <Typography noWrap color="textPrimary" component={'span'}>
+                                    {task.teams?.name}
+                                </Typography>
                             </Typography>
                         )}
                         {/* person assigned */}

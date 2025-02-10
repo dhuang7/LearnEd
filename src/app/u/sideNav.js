@@ -81,8 +81,8 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                         {/* renames the Teams to a Team name when a team is selected */}
                         {(teamInfo)
                             ? <>
-                                <Icon sx={{px:'.5rem', pr:'.75rem'}}>
-                                    <Image src={'/icon.svg'} alt={'icon'} width={1} height={1} style={{width:'100%', height:'100%'}} />
+                                <Icon sx={{px:'.5rem', pr:'.75rem', position:'relative'}}>
+                                    <Image src={'/icon.svg'} alt={'icon'} fill/>
                                 </Icon>
                                 <Typography noWrap>
                                     {teamInfo.name}
@@ -118,12 +118,12 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                                     Calendar
                                 </Typography>
                             </CustomNavButton>
-                            {/* <CustomNavButton path={`/u/t/${teamInfo.id}/tasks`} tip='Tasks'>
+                            <CustomNavButton path={`/u/t/${teamInfo.id}/tasks`} tip='Tasks'>
                                 <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
                                 <Typography noWrap>
                                     Tasks
                                 </Typography>
-                            </CustomNavButton> */}
+                            </CustomNavButton>
                             <CustomNavButton 
                                 path={`/u/t/${teamInfo.id}/projects`} 
                                 addpath={aimInfo ? `/${aimInfo}/drivers` : ''} 

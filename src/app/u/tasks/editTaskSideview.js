@@ -100,26 +100,34 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
         }
 
         // reorder order nums
-        tasks.forEach((v, i) => {
-            let currStatus = v.status;
-            if (v.id === task.id) {
+        const newTasks = tasks.map((v, i) => {
+            const newObj = {...v};
+            let currStatus = newObj.status;
+            if (newObj.id === task.id) {
                 currStatus = statusText;
-                v.title = titleText;
-                v.description = descriptionText;
-                v.priority = 4;
-                v.user_id = user.id;
-                v.assigned_id = assignedText||null;
-                v.due_date = dueDateText;
+                newObj.title = titleText;
+                newObj.description = descriptionText;
+                newObj.priority = 4;
+                newObj.user_id = user.id;
+                newObj.assigned_id = assignedText||null;
+                newObj.due_date = dueDateText;
+                if (statusText === 'done') {
+                    newObj.date_completed = dayjs();
+                } else {
+                    newObj.date_completed = null;
+                }
             }
 
-            v.order_num = statuses[currStatus];
-            v.status = currStatus;
+            newObj.order_num = statuses[currStatus];
+            newObj.status = currStatus;
+            delete newObj.teams;
             statuses[currStatus]++;
+            return newObj;
         })
 
         const {data, error} = await supabase
             .from('tasks')
-            .upsert(tasks);
+            .upsert(newTasks);
 
         console.log(error);
         // reset everything
@@ -168,8 +176,6 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                 }}
                 onClose={handleClose}
                 elevation={5}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
                 PaperProps={{
                     sx: {
                         width:{xs:'100%', md:'35rem'},
