@@ -13,7 +13,7 @@ import { useDroppable } from "@dnd-kit/core";
 
 
 
-export default function Section({sectionTitle, tasks, teamMembers, user, activeTask, color, teamId, filteredTasks}) {
+export default function Section({sectionTitle, tasks, teamMembers, user, activeTask, color, teamId, filteredTasks, teams}) {
     const sectionTasks = filteredTasks.filter(v => v.status === sectionTitle.toLowerCase());
     const {setNodeRef} = useDroppable({id:'droppable-' + sectionTitle.toLowerCase()})
 
@@ -39,7 +39,7 @@ export default function Section({sectionTitle, tasks, teamMembers, user, activeT
                                 <Box sx={{width:'100%', maxHeight:'100%', overflow:'scroll'}}>
                                     {/* tasks */}
                                     {sectionTasks.map((v, i) => (
-                                        <TaskItem key={i} task={v} teamMembers={teamMembers} user={user} tasks={tasks} activeTask={activeTask} teamId={teamId} />
+                                        <TaskItem key={i} task={v} teamMembers={teamMembers} user={user} tasks={tasks} activeTask={activeTask} teamId={teamId} teams={teams} />
                                     ))}
                                 </Box>
                             </Box>
@@ -49,6 +49,7 @@ export default function Section({sectionTitle, tasks, teamMembers, user, activeT
                                 teamMembers={teamMembers}
                                 tasks={tasks.filter(v => v.status === sectionTitle.toLowerCase())}
                                 sectionStatus={sectionTitle.toLowerCase()}
+                                teams={teams}
                                 customButton={(props) => (
                                     <Button {...props} color="info" sx={{mt:'.5rem', borderRadius:3, textTransform:'none'}} startIcon={<AddRoundedIcon />}>
                                         Add task

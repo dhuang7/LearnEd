@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 
 
-export default function PageClient({tasks, teamMembers, user, teamId}) {
+export default function PageClient({tasks, teamMembers, user, teamId, teams}) {
     const [filteredTasks, setFilteredTasks] = useState(tasks);
     const [stateTasks, setStateTasks] = useState(tasks);
 
@@ -33,7 +33,7 @@ export default function PageClient({tasks, teamMembers, user, teamId}) {
             {/* Main calendar */}
             <Box sx={{flexGrow:1, height:'100%', overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', pt:'.5rem', boxSizing:'border-box', pb:'1rem'}}>
-                    <Kanban tasks={stateTasks} setTasks={setStateTasks} teamMembers={teamMembers} user={user} teamId={teamId} filteredTasks={filteredTasks} />
+                    <Kanban tasks={stateTasks} setTasks={setStateTasks} teamMembers={teamMembers} user={user} teamId={teamId} filteredTasks={filteredTasks} teams={teams} />
                 </Box>
             </Box>
         </>

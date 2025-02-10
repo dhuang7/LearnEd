@@ -18,7 +18,7 @@ import { CSS } from "@dnd-kit/utilities";
 import dayjs from "dayjs";
 import Image from "next/image";
 
-export default function TaskItem({task, teamMembers, user, tasks, activeTask, teamId}) {
+export default function TaskItem({task, teamMembers, user, tasks, activeTask, teamId, teams}) {
     const supabase = createClient();
     const router = useRouter();
     const isDone = task.status==='done';
@@ -163,7 +163,7 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask, te
 
 
             {/* dialog */}
-            <EditTaskSideview task={task} user={user} setOpen={setOpen} open={open} teamMembers={teamMembers} tasks={tasks} />
+            <EditTaskSideview task={task} user={user} setOpen={setOpen} open={open} teamMembers={teamMembers} tasks={tasks} teams={teams} />
         </>
     );
 }

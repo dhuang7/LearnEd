@@ -13,6 +13,9 @@ import PageClient from "./pageClient";
 export default async function Tasks({teamId, users}) {
     const supabase = await createClient();
     let data;
+    let {data: teams} = await supabase
+        .from('teams')
+        .select();
 
     
     if (teamId) {
@@ -46,13 +49,13 @@ export default async function Tasks({teamId, users}) {
                 <Box sx={{width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                     <Typography variant='h4'>Tasks</Typography>
                     {/* Add task button */}
-                    <AddTaskSideview teamMembers={teamMembers} user={user} tasks={data} teamId={teamId} />
+                    <AddTaskSideview teamMembers={teamMembers} user={user} tasks={data} teamId={teamId} teams={teams} />
                 </Box>
             </Box>
             {/* paper */}
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
                 <Box sx={{width:'100%', height:'100%', display:'flex'}}>
-                    <PageClient tasks={data} teamId={teamId} teamMembers={teamMembers} user={user} />
+                    <PageClient tasks={data} teamId={teamId} teamMembers={teamMembers} user={user} teams={teams} />
                 </Box>
             </Box>
             

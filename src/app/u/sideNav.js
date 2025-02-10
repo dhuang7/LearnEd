@@ -71,7 +71,7 @@ export default function SideNav({open, teamInfo, aimInfo}) {
                     </CustomNavButton>
                     <CustomNavButton path='/u/tasks' tip='Tasks'>
                         <FormatListBulletedRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />
-                        Tasks
+                        My Tasks
                     </CustomNavButton>
                     <CustomNavButton path='/u/change-ideas' divider tip='Search Ideas'>
                         <LightbulbRoundedIcon sx={{px:'.5rem', pr:'.75rem'}} />

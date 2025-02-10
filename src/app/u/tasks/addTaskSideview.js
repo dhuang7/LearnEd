@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 
 
 
-export default function AddTaskSideview({customButton, teamMembers, sectionStatus, user, tasks, teamId}) {
+export default function AddTaskSideview({customButton, teamMembers, sectionStatus, user, tasks, teamId, teams}) {
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -36,6 +36,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
     const [assignedText, setAssignedText] = useState('');
     const [statusText, setStatusText] = useState(sectionStatus||'to do');
     const [dueDateText, setDueDateText] = useState(null);
+    const [selectedTeam, setSelectedTeam] = useState(teamId);
     const CustomButton = customButton;
 
 
@@ -87,6 +88,10 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
         setDueDateText(newValue);
     }
 
+    function handleSelectedTeam({target}) {
+        setSelectedTeam(target.value);
+    }
+
     async function handleSubmit(e) {
         // handle submit
         e.preventDefault();
@@ -104,7 +109,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                 order_num: tasks.filter(v => v.status === statusText).length,
                 due_date: dueDateText && dueDateText.toISOString(),
                 date_completed: statusText === 'done' ? dayjs() : null,
-                team_id: teamId,
+                team_id: selectedTeam,
             })
 
         console.log(error);
@@ -256,6 +261,34 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                     </DialogContent>
                     {/* buttons */}
                     <DialogActions>
+                        {/* choose team */}
+                        <Box sx={{mr:'auto', width:'10rem'}}>
+                            <TextField
+                                label='Team'
+                                select
+                                fullWidth
+                                value={selectedTeam||''}
+                                onChange={handleSelectedTeam}
+                                slotProps={{
+                                    // select: {
+                                    //     renderValue:(v) => v.name,
+                                    // },
+                                    htmlInput: {
+                                        sx: {
+                                            py:'.5rem'
+                                        }
+                                    },
+                                    inputLabel: {
+                                        shrink: true,
+                                    }
+                                }}
+                                >
+                                <MenuItem value={null}>None</MenuItem>
+                                {teams?.map((v, i) => (
+                                    <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
+                                ))}
+                            </TextField>
+                        </Box>
                         <Button disabled={loading} onClick={handleCancel}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)
