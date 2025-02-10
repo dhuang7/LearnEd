@@ -251,11 +251,14 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                                 <MenuItem value={''}>
                                     None
                                 </MenuItem>
-                                {teamMembers.map((v, i) => (
+                                {teamId && teamMembers.map((v, i) => (
                                     <MenuItem key={i} value={v.id}>
                                         {v.email}
                                     </MenuItem>
                                 ))}
+                                {!teamId && (
+                                    <MenuItem value={user.id}>{user.email}</MenuItem>
+                                )}
                             </TextField>
                         </Box>
                     </DialogContent>
