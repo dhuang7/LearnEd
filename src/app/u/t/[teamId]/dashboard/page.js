@@ -89,7 +89,7 @@ export default async function Dashboard({params}) {
             </Box>
             {/* norms */}
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
-                <Box sx={{width:'100%', height:'100%', overflow:'scroll'}}>
+                <Box sx={{width:'100%', height:'100%', overflow:'scroll', boxSizing:'border-box', pt:'.5rem'}}>
                     {/* top dash */}
                     <Box sx={{width:'100%', display:'flex', height:'20rem', boxSizing:'border-box', px:'.5rem'}}>
                         <Box sx={{width:'33.33%', boxSizing:'border-box', px:'.5rem'}}>
@@ -106,7 +106,7 @@ export default async function Dashboard({params}) {
                         <Box sx={{width:'50%', boxSizing:'border-box', px:'.5rem'}}>
                             <CalendarList calendarData={calendarData} user={user} />
                         </Box>
-                        <Box sx={{width:'50%', height:'100%', boxSizing:'border-box', pl:'.5rem', overflowX:'scroll'}}>
+                        <Box sx={{width:'50%', height:'100%', boxSizing:'border-box', overflowX:'scroll'}}>
                             <TaskClient tasks={taskData} teamMembers={teamMembers} user={user} teamId={teamId} teams={teams} />
                         </Box>
                     </Box>

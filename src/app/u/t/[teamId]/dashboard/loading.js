@@ -20,7 +20,7 @@ export default async function LoadingAgenda() {
             </Box>
             {/* norms */}
             <Box sx={{width:'100%',  flexGrow:1, overflow:'hidden'}}>
-                <Box sx={{width:'100%', height:'100%'}}>
+                <Box sx={{width:'100%', height:'100%', boxSizing:'border-box', pt:'.5rem'}}>
                     {/* top dash */}
                     <Box sx={{width:'100%', display:'flex', height:'20rem', boxSizing:'border-box', px:'.5rem'}}>
                         <Box sx={{width:'33.33%', boxSizing:'border-box', px:'.5rem'}}>
