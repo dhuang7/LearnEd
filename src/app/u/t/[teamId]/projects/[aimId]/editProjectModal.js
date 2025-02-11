@@ -109,7 +109,7 @@ export default function EditProjectModal({project, setAimInfo}) {
                     {/* title */}
                     <DialogTitle id="alert-dialog-title">
                         <Box sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                            <Typography variant='inherit'>Create Project</Typography>
+                            <Typography variant='inherit'>Edit Project</Typography>
                             <IconButton size="small" onClick={handleDelete}><DeleteRoundedIcon /></IconButton>
                         </Box>
                     </DialogTitle>
