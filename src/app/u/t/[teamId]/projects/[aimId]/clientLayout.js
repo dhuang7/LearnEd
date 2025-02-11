@@ -15,6 +15,7 @@ import NextLink from 'next/link';
 import { useEffect, useState } from "react";
 import AddProjectModal from "./addProjectModal";
 import { useTeamContext } from "@/app/u/layout";
+import EditProjectModal from "./editProjectModal";
 
 
 export default function ClientPage({children, aimId, projects, teamId}) {
@@ -32,7 +33,8 @@ export default function ClientPage({children, aimId, projects, teamId}) {
 
     useEffect(() => {
         setAimInfo(aimId);
-    }, []);
+        setProject(projects.filter(v=>v.id===aimId)[0]);
+    }, [projects]);
 
     function handleSelectProject({target}) {
         if (target.value === 'button') return true;
@@ -49,6 +51,8 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                     <Typography variant='h4'>Projects</Typography>
                     {/* tabs and select */}
                     <Box sx={{ml:'auto', display:'flex', alignItems:'center'}}>
+                        {/* edit project */}
+                        <EditProjectModal project={project} setAimInfo={setAimInfo} />
                         {/* select project */}
                         <Box sx={{width:'10rem', boxSizing:'border-box', pr:'.5rem'}}>
                             <TextField
