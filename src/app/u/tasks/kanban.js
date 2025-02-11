@@ -85,9 +85,6 @@ export default function Kanban({tasks, setTasks, teamMembers, user, teamId, filt
         const newIndex = tasks.map(v => v.id).indexOf(over.id);
         const newOrderTasks = arrayMove(tasks, oldIndex, newIndex);
 
-        console.log(oldIndex)
-        console.log(newIndex)
-
         const statuses = {
             'to do': 0,
             'in progress': 0,

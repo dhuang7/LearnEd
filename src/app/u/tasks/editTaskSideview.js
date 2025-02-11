@@ -38,7 +38,6 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
     const [dueDateText, setDueDateText] = useState(task.due_date && dayjs(task.due_date));
     const [selectedTeam, setSelectedTeam] = useState(task.team_id);
 
-
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
         if (!isPending && loading) {
@@ -48,10 +47,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
     }, [isPending]);
 
     useEffect(() => {
-        setTitleText(task.title);
-        setDescriptionText(task.description);
-        setAssignedText(task.assigned_id||'');
-        setStatusText(task.status);
+        handleCancel();
     }, [task]);
 
     function handleClose(e) {
@@ -66,6 +62,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
         setAssignedText(task.assigned_id||'');
         setStatusText(task.status);
         setDueDateText(task.due_date && dayjs(task.due_date));
+        setSelectedTeam(task.team_id)
     }
 
     function handleTitleText({target}) {
@@ -272,7 +269,9 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                                 <MenuItem value={''}>
                                     None
                                 </MenuItem>
-                                {teamMembers.map((v, i) => (
+                                {teamMembers.filter(u => (
+                                    teams?.filter(t => t.id === selectedTeam)[0]?.team_memberships.filter(tm => tm.user_id === u.id)[0]
+                                )).map((v, i) => (
                                     <MenuItem key={i} value={v.id}>
                                         {v.email}
                                     </MenuItem>
@@ -283,33 +282,35 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                     {/* buttons */}
                     <DialogActions>
                         {/* choose team */}
-                        <Box sx={{mr:'auto', width:'10rem'}}>
-                            <TextField
-                                label='Team'
-                                select
-                                fullWidth
-                                value={selectedTeam||''}
-                                onChange={handleSelectedTeam}
-                                slotProps={{
-                                    // select: {
-                                    //     renderValue:(v) => v.name,
-                                    // },
-                                    htmlInput: {
-                                        sx: {
-                                            py:'.5rem'
+                        {task.teams && (
+                            <Box sx={{mr:'auto', width:'10rem'}}>
+                                <TextField
+                                    label='Team'
+                                    select
+                                    fullWidth
+                                    value={selectedTeam||''}
+                                    onChange={handleSelectedTeam}
+                                    slotProps={{
+                                        // select: {
+                                        //     renderValue:(v) => v.name,
+                                        // },
+                                        htmlInput: {
+                                            sx: {
+                                                py:'.5rem'
+                                            }
+                                        },
+                                        inputLabel: {
+                                            shrink: true,
                                         }
-                                    },
-                                    inputLabel: {
-                                        shrink: true,
-                                    }
-                                }}
-                                >
-                                <MenuItem value={null}>None</MenuItem>
-                                {teams?.map((v, i) => (
-                                    <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
-                                ))}
-                            </TextField>
-                        </Box>
+                                    }}
+                                    >
+                                    <MenuItem value={null}>None</MenuItem>
+                                    {teams?.map((v, i) => (
+                                        <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
+                                    ))}
+                                </TextField>
+                            </Box>
+                        )}
                         <Button disabled={loading} onClick={handleCancel}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)

@@ -66,6 +66,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
         setAssignedText('');
         setStatusText(sectionStatus||'to do');
         setDueDateText(null);
+        setSelectedTeam('');
     }
 
     function handleTitleText({target}) {
@@ -251,47 +252,48 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                                 <MenuItem value={''}>
                                     None
                                 </MenuItem>
-                                {teamId && teamMembers.map((v, i) => (
+                                {teamMembers.filter(u => (
+                                    teams.filter(t => t.id === selectedTeam)[0]?.team_memberships.filter(tm => tm.user_id === u.id)[0]
+                                )).map((v, i) => (
                                     <MenuItem key={i} value={v.id}>
                                         {v.email}
                                     </MenuItem>
                                 ))}
-                                {!teamId && (
-                                    <MenuItem value={user.id}>{user.email}</MenuItem>
-                                )}
                             </TextField>
                         </Box>
                     </DialogContent>
                     {/* buttons */}
                     <DialogActions>
                         {/* choose team */}
-                        <Box sx={{mr:'auto', width:'10rem'}}>
-                            <TextField
-                                label='Team'
-                                select
-                                fullWidth
-                                value={selectedTeam||''}
-                                onChange={handleSelectedTeam}
-                                slotProps={{
-                                    // select: {
-                                    //     renderValue:(v) => v.name,
-                                    // },
-                                    htmlInput: {
-                                        sx: {
-                                            py:'.5rem'
+                        {!teamId && (
+                            <Box sx={{mr:'auto', width:'10rem'}}>
+                                <TextField
+                                    label='Team'
+                                    select
+                                    fullWidth
+                                    value={selectedTeam||''}
+                                    onChange={handleSelectedTeam}
+                                    slotProps={{
+                                        // select: {
+                                        //     renderValue:(v) => v.name,
+                                        // },
+                                        htmlInput: {
+                                            sx: {
+                                                py:'.5rem'
+                                            }
+                                        },
+                                        inputLabel: {
+                                            shrink: true,
                                         }
-                                    },
-                                    inputLabel: {
-                                        shrink: true,
-                                    }
-                                }}
-                                >
-                                <MenuItem value={null}>None</MenuItem>
-                                {teams?.map((v, i) => (
-                                    <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
-                                ))}
-                            </TextField>
-                        </Box>
+                                    }}
+                                    >
+                                    <MenuItem value={null}>None</MenuItem>
+                                    {teams?.map((v, i) => (
+                                        <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
+                                    ))}
+                                </TextField>
+                            </Box>
+                        )}
                         <Button disabled={loading} onClick={handleCancel}>Cancel</Button>
                         <Button disabled={loading} type='submit'>
                             {(loading)

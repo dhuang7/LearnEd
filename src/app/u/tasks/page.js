@@ -12,7 +12,10 @@ export default async function Tasks({teamId, users}) {
     let data;
     let {data: teams} = await supabase
         .from('teams')
-        .select();
+        .select(`
+            *,
+            team_memberships(*)
+        `);
 
     
     if (teamId) {
