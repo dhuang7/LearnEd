@@ -13,14 +13,15 @@ import { useDroppable } from "@dnd-kit/core";
 
 
 
-export default function Section({sectionTitle, tasks, teamMembers, user, activeTask, color, teamId, filteredTasks, teams}) {
+export default function Section({sectionTitle, tasks, teamMembers, user, activeTask, color, teamId, filteredTasks, teams, width}) {
     const sectionTasks = filteredTasks.filter(v => v.status === sectionTitle.toLowerCase());
     const {setNodeRef} = useDroppable({id:'droppable-' + sectionTitle.toLowerCase()})
+    
 
     return (
         <Box 
             ref={Boolean(sectionTasks.length) ? null : setNodeRef} 
-            sx={{width:'33.33%', height:'100%'}}
+            sx={{width:width, height:'100%'}}
             >
             <SortableContext
                 items={sectionTasks}

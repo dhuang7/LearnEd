@@ -109,7 +109,7 @@ export default async function LoadingAgenda() {
                                     display:'flex', flexDirection:'column'
                                 }}
                                 >
-                                (Under construction)
+                                {Array(10).fill(0).map((v, i) => <Skeleton key={i} height='20%' />)}
                             </Paper>
                         </Box>
                     </Box>

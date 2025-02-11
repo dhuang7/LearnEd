@@ -14,7 +14,7 @@ import TaskItem from "./taskItem";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
 import dayjs from "dayjs";
 
-export default function Kanban({tasks, setTasks, teamMembers, user, teamId, filteredTasks, teams}) {
+export default function Kanban({tasks, setTasks, teamMembers, user, teamId, filteredTasks, teams, hideDone}) {
     const supabase = createClient();
     const router = useRouter();
     const [activeTask, setActiveTask] = useState(null);
@@ -145,23 +145,26 @@ export default function Kanban({tasks, setTasks, teamMembers, user, teamId, filt
                         tasks={tasks} activeTask={activeTask}
                         color={'chocolate'} teamId={teamId}
                         filteredTasks={filteredTasks} teams={teams}
+                        width={hideDone ? '50%' : '33.33%'}
                         />
                     <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'In progress'} 
                         tasks={tasks} activeTask={activeTask}
                         color={'royalblue'} teamId={teamId}
                         filteredTasks={filteredTasks} teams={teams}
+                        width={hideDone ? '50%' : '33.33%'}
                         />
                     {/* <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'Review'} 
                         tasks={tasks} activeTask={activeTask}
                         /> */}
-                    <Section 
+                    {!hideDone && <Section 
                         user={user} teamMembers={teamMembers} sectionTitle={'Done'} 
                         tasks={tasks} activeTask={activeTask}
                         color={'forestgreen'} teamId={teamId}
                         filteredTasks={filteredTasks} teams={teams}
-                        />
+                        width={'33.33%'}
+                        />}
                     {/* overlay to drag */}
                     <DragOverlay modifiers={[snapCenterToCursor]}>
                         <TaskItem task={activeTask} teamMembers={teamMembers} tasks={tasks}  />

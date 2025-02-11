@@ -1,6 +1,5 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 
 
 import MemberList from "./memberList";
@@ -9,13 +8,13 @@ import NormsList from "./normsList";
 import createClient from "@/utils/supabase/server";
 import CyclesTasks from "./cyclesTasks";
 import CalendarList from "./calendarList";
+import TaskClient from "./taskClient";
 
 
 
 
-export default async function Agenda({params}) {
+export default async function Dashboard({params}) {
     const teamId = (await params).teamId;
-
     const supabase = await createClient();
 
     let { data: normsList, error: normsError } = await supabase
@@ -63,7 +62,21 @@ export default async function Agenda({params}) {
         .not('calendars', 'is', null)
         .order('calendar_id');
 
-    console.log(calendarData);
+    // task data
+    const {data: teamMembers, error: teamMembersError} = await supabase.rpc('get_team_members_emails', {tid: teamId});
+    const {data: teams} = await supabase
+        .from('teams')
+        .select(`
+            *,
+            team_memberships(*)
+        `);
+    const {data: taskData} = await supabase
+        .from('tasks')
+        .select()
+        .order('status')
+        .order('order_num')
+        .eq('team_id', teamId);
+
 
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
@@ -89,21 +102,12 @@ export default async function Agenda({params}) {
                             <NormsList teamId={teamId} normsList={normsList} />
                         </Box>
                     </Box>
-                    <Box sx={{width:'100%', height:'100%', display:'flex', boxSizing:'border-box', px:'.5rem', py:'1rem'}}>
+                    <Box sx={{width:'100%', height:'100%', display:'flex', boxSizing:'border-box', pl:'.5rem', py:'1rem'}}>
                         <Box sx={{width:'50%', boxSizing:'border-box', px:'.5rem'}}>
                             <CalendarList calendarData={calendarData} user={user} />
                         </Box>
-                        <Box sx={{width:'50%', height:'100%', boxSizing:'border-box', px:'.5rem'}}>
-                            <Paper
-                                elevation={0} 
-                                sx={{
-                                    borderRadius:3, boxSizing:'border-box', border:'1px solid', borderColor: 'grey.300',
-                                    p:'1rem', height:'100%', 
-                                    display:'flex', flexDirection:'column'
-                                }}
-                                >
-                                (Under construction)
-                            </Paper>
+                        <Box sx={{width:'50%', height:'100%', boxSizing:'border-box', pl:'.5rem', overflowX:'scroll'}}>
+                            <TaskClient tasks={taskData} teamMembers={teamMembers} user={user} teamId={teamId} teams={teams} />
                         </Box>
                     </Box>
                 </Box>

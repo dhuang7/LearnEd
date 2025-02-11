@@ -3,7 +3,7 @@ import createClient from "@/utils/supabase/server";
 
 
 
-export default async function Page({params}) {
+export default async function TeamTasks({params}) {
     const supabase = await createClient();
     const teamId = (await params).teamId;
     
