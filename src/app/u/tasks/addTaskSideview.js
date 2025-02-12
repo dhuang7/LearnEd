@@ -91,6 +91,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
 
     function handleSelectedTeam({target}) {
         setSelectedTeam(target.value);
+        setAssignedText('');
     }
 
     async function handleSubmit(e) {
@@ -105,7 +106,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                 description: descriptionText,
                 priority: 4,
                 user_id: user.id,
-                assigned_id: assignedText||null,
+                assigned_id: assignedText===""? null : assignedText,
                 status: statusText,
                 order_num: tasks.filter(v => v.status === statusText).length,
                 due_date: dueDateText && dueDateText.toISOString(),

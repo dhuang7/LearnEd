@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 
 
 
-export default function EditTaskSideview({teamMembers, task, open, setOpen, user, tasks, teams}) {
+export default function EditTaskSideview({teamMembers, task, open, setOpen, user, tasks, teams, teamId}) {
     const supabase = createClient();
     const router = useRouter();
     const filteredTasks = tasks.filter(v => v.status === task.status);
@@ -87,6 +87,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
 
     function handleSelectedTeam({target}) {
         setSelectedTeam(target.value);
+        setAssignedText('');
     }
 
     async function handleSubmit(e) {
@@ -282,7 +283,7 @@ export default function EditTaskSideview({teamMembers, task, open, setOpen, user
                     {/* buttons */}
                     <DialogActions>
                         {/* choose team */}
-                        {task.teams && (
+                        {!teamId && (
                             <Box sx={{mr:'auto', width:'10rem'}}>
                                 <TextField
                                     label='Team'

@@ -35,21 +35,26 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask, te
         }
 
         // reorder order nums
-        tasks.forEach((v, i) => {
+        const newObjList = tasks.map((v, i) => {
+            let newObj = {...v}
             let currStatus = v.status;
             if (v.id === task.id) {
                 currStatus = isDone ? 'in progress' : 'done';
-                v.date_completed = currStatus === 'done' ? dayjs() : null;
+                newObj.date_completed = currStatus === 'done' ? dayjs() : null;
             }
 
-            v.order_num = statuses[currStatus];
-            v.status = currStatus;
+            newObj.order_num = statuses[currStatus];
+            newObj.status = currStatus;
             statuses[currStatus]++;
+            delete newObj.teams;
+            return newObj
         })
 
         const {data, error} = await supabase
             .from('tasks')
-            .upsert(tasks);
+            .upsert(newObjList);
+
+        console.log(error);
 
         router.refresh();
     }
@@ -168,7 +173,7 @@ export default function TaskItem({task, teamMembers, user, tasks, activeTask, te
 
 
             {/* dialog */}
-            <EditTaskSideview task={task} user={user} setOpen={setOpen} open={open} teamMembers={teamMembers} tasks={tasks} teams={teams} />
+            <EditTaskSideview task={task} user={user} setOpen={setOpen} open={open} teamMembers={teamMembers} tasks={tasks} teams={teams} teamId={teamId} />
         </>
     );
 }
