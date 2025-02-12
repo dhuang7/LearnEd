@@ -105,11 +105,13 @@ export default function TaskFilters({tasks, setFilteredTasks, teamMembers, teams
     // filter functions
     function handleSearchByTeam(t) {
         if (teamText === '') return t;
+        if (teamText === 'no team') return t.filter(v => v.team_id === null);
         return t.filter(v => v.team_id === teamText);
     }
 
     function handleSearchByTeamMember(t) {
         if (teamMemberText === '') return t;
+        if (teamMemberText === 'unassigned') return t.filter(v => v.assigned_id === null);
         return t.filter(v => v.assigned_id === teamMemberText);
     }
 
@@ -195,6 +197,7 @@ export default function TaskFilters({tasks, setFilteredTasks, teamMembers, teams
                     sx={{mt:'1rem'}}
                     >
                     <MenuItem value={''}>Clear</MenuItem>
+                    <MenuItem value={'no team'}>No team</MenuItem>
                     {teams.map((v, i) => (
                         <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
                     ))}
@@ -220,6 +223,7 @@ export default function TaskFilters({tasks, setFilteredTasks, teamMembers, teams
                 sx={{mt:'1rem'}}
                 >
                 <MenuItem value={''}>Clear</MenuItem>
+                <MenuItem value={'unassigned'}>Unassigned</MenuItem>
                 {teamMembers.map((v, i) => (
                     <MenuItem key={i} value={v.id}>{v.email}</MenuItem>
                 ))}
