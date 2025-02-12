@@ -63,7 +63,7 @@ export default function Kanban({tasks, setTasks, teamMembers, user, teamId, filt
                 t.forEach(v => {
                     if (v.id === activeTask.id) {
                         v.status = newStatus;
-                        t.date_completed = newStatus === 'done' ? dayjs() : null;
+                        v.date_completed = newStatus === 'done' ? dayjs() : null;
                     }
                 })
 

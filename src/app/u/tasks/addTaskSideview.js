@@ -98,7 +98,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
         // handle submit
         e.preventDefault();
         setLoading(true);
-       
+
         const {data, error} = await supabase
             .from('tasks')
             .insert({
@@ -106,12 +106,12 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
                 description: descriptionText,
                 priority: 4,
                 user_id: user.id,
-                assigned_id: assignedText===""? null : assignedText,
+                assigned_id: assignedText||null,
                 status: statusText,
                 order_num: tasks.filter(v => v.status === statusText).length,
                 due_date: dueDateText && dueDateText.toISOString(),
                 date_completed: statusText === 'done' ? dayjs() : null,
-                team_id: selectedTeam,
+                team_id: selectedTeam||null,
             })
 
         console.log(error);

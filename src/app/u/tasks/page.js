@@ -42,8 +42,6 @@ export default async function Tasks({teamId, users}) {
 
     const teamMembers = users || (await supabase.rpc('get_users_on_same_team')).data;
 
-    console.log(teams);
-
     return (
         <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
             {/* title */}
