@@ -75,9 +75,17 @@ export default function ArticleFormat({children, aspectRatio, title, author, len
     );
 }
 
-export function Header({children}) {
+export function Header({children, inline}) {
     return (
-        <Typography variant="h4" sx={{fontWeight:'bold', my:'1rem'}}>
+        <Typography variant="h4" sx={{fontWeight:'bold', my:'1rem', mb:inline?0:'1rem'}}>
+            {children}
+        </Typography>
+    );
+}
+
+export function SubHeader({children, inline}) {
+    return (
+        <Typography sx={{fontSize:'1.25rem', lineHeight:'2.5rem', mb:0, fontWeight:'bold', fontStyle:'italic'}}>
             {children}
         </Typography>
     );

@@ -1,5 +1,3 @@
-'use client'
-
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -8,19 +6,11 @@ import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 
 
 import Image from "next/image";
-import { useState } from "react";
-import theme from "@/app/theme";
 import NextLink from 'next/link';
 
 
 
 export default function HeadArticleCard({article}) {
-    const [open, setOpen] = useState();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
-
-    // article size ratios
-    const width = 750;
-    const height = width * 270/480;
 
     return (
         <>

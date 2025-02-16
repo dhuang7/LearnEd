@@ -4,7 +4,7 @@ import ArticleFormat, { ArticleLink, Header, LIParagraph, Paragraph } from "../a
 export const info = {
     title: 'Harnessing Collective Teacher Efficacy for Continuous School Improvement',
     author: 'Ryoji Bunden',
-    length: '5',
+    length: '3',
     description: 'John Hattie identifies Collective Teacher Efficacy (CTE) as the most powerful driver of student achievement. Discover how CTE fosters a culture of innovation and lasting success.',
     href:'/blog/harnessing-collective-teacher-efficacy-for-continuous-school-improvement',
     thumbnail:'/thumbnails/harnessing-collective-teacher-efficacy-for-continuous-school-improvement.png',

@@ -7,13 +7,14 @@ import HeadArticleCard from "./headArticleCard";
 
 import {info as wiisInfo} from './what-is-improvement-science/page';
 import { info as hctefcsiInfo } from "./harnessing-collective-teacher-efficacy-for-continuous-school-improvement/page";
+import { info as tsoplcInfo } from "./the-science-of-professional-learning-communities/page";
 
 
 export default function Page() {
     const searchBarHeight = 7.5;
 
     const articles = [
-        wiisInfo, hctefcsiInfo,
+        wiisInfo, hctefcsiInfo, tsoplcInfo,
     ];
 
     return (
@@ -38,7 +39,7 @@ export default function Page() {
                 </Box>
                 <Box sx={{width:{xs:'100%', md:'80%', lg:'50%'}, display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', pt:{xs:'3rem', lg:0}, pb:{xs:'5rem', lg:0}, boxSizing:'border-box'}}>
                     <HeadArticleCard 
-                        article={articles.filter(v=>v.title==='What is Improvement Science?')[0]} 
+                        article={tsoplcInfo} 
                         />
                 </Box>
                 
