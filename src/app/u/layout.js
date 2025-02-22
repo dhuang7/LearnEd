@@ -17,9 +17,11 @@ import theme from "@/app/theme";
 import {createProfile} from './createProfileAction';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useRouter } from "next/navigation";
 
 
 export default function Navbars({children}) {
+    const router = useRouter();
     const [open, setOpen] = useState(true);
     const [hasProfile, setHasProfile] = useState(true);
     const [firstName, setFirstName] = useState('');
@@ -65,12 +67,17 @@ export default function Navbars({children}) {
             // checks if user has a profile
             const supabase = createClient();
             const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                router.push('/login');
+                return;
+            }
+
             let { data: profiles, error } = await supabase
                 .from('profiles')
                 .select('*')
-                .eq('user_id', user.id);
+                .eq('user_id', user?.id);
 
-            setHasProfile(profiles.length > 0);
+            setHasProfile(profiles?.length > 0);
         }
 
         getProfile();
