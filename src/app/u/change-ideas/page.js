@@ -46,15 +46,22 @@ export default async function Page() {
     //     `)
     //     .eq('stage', 'completed');
 
-    const {data: changePackages, error: changePackagesError} = await supabase.rpc('get_completed_change_packages');
+    // const {data: changePackages, error: changePackagesError} = await supabase.rpc('get_completed_change_packages');
+    // const changePackages = await getCompletedChangePackages(supabase);
 
-    const {data: projects, error: projectsError} = await supabase
-        .from('projects')
-        .select(`
-            *,
-            teams (name)
-        `)
-        .not('teams', 'is', null);
+    // const {data: projects, error: projectsError} = await supabase
+    //     .from('projects')
+    //     .select(`
+    //         *,
+    //         teams (name)
+    //     `)
+    //     .not('teams', 'is', null);
+    // const projects = await getProjects(supabase);
+
+    const [changePackages, projects] = await Promise.all([
+        getCompletedChangePackages(supabase),
+        getProjects(supabase),
+    ]);
     
 
     return (
@@ -74,4 +81,23 @@ export default async function Page() {
             </Box>
         </Box>
     )
+}
+
+
+async function getCompletedChangePackages(supabase) {
+    const {data, error} = await supabase.rpc('get_completed_change_packages');
+
+    return data;
+}
+
+async function getProjects(supabase) {
+    const {data, error} = await supabase
+        .from('projects')
+        .select(`
+            *,
+            teams (name)
+        `)
+        .not('teams', 'is', null);
+
+    return data;
 }
