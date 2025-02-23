@@ -215,6 +215,8 @@ export default function CustomNode({
                     display:'flex', flexDirection:'column',
                     backgroundColor:backgroundColor[title],
                     color:'common.white',
+                    border:'.5px solid',
+                    borderColor:'grey.300',
                 }}
                 >
                     <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
