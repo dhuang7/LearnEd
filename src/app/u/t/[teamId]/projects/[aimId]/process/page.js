@@ -1,5 +1,6 @@
 import Paper from "@mui/material/Paper";
 import createClient from "@/utils/supabase/server";
+import ProcessMap from "./processMap";
 
 
 
@@ -7,6 +8,14 @@ export default async function Drivers({params}) {
     const {teamId, aimId} = await params
     const supabase = await createClient();
 
+    const processMap = await getProcessMap(supabase, aimId);
+
+    const [nodes, edges] = await Promise.all([
+        getNodes(supabase, processMap),
+        getEdges(supabase, processMap),
+    ])
+
+    
 
     return (
         <Paper 
@@ -17,8 +26,35 @@ export default async function Drivers({params}) {
                 display:'flex', flexDirection:'column', position:'relative'
             }}
             >
-                
+            <ProcessMap processMap={processMap} processNodes={nodes} processEdges={edges} />
         </Paper>
     )
 }
 
+async function getProcessMap(supabase, aimId) {
+    const {data, error} = await supabase
+        .from('process_maps')
+        .select()
+        .eq('aim_id', aimId)
+        .is('change_idea_id', null);
+
+    return data[0];
+}
+
+async function getNodes(supabase, process) {
+    const {data, error} = await supabase
+        .from('process_nodes')
+        .select()
+        .eq('map_id', process.id);
+
+    return data;
+}
+
+async function getEdges(supabase, process) {
+    const {data, error} = await supabase
+        .from('process_edges')
+        .select()
+        .eq('map_id', process.id);
+
+    return data;
+}
