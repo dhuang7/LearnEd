@@ -31,7 +31,7 @@ export default function ProcessMap(params) {
 function ProcessMapLayout({processMap, processEdges, processNodes}) {
     const supabase = createClient();
     const router = useRouter();
-    const { fitView } = useReactFlow();
+    // const { fitView } = useReactFlow();
     const [isPending, startTransition] = useTransition();
     const [loading, setLoading] = useState(false);
 
