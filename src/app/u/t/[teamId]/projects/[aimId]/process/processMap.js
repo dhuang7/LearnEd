@@ -4,13 +4,13 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
+// import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 
 
 import { addEdge, Background, ConnectionLineType, Controls, MarkerType, Panel, ReactFlow, ReactFlowProvider, SelectionMode, useEdgesState, useNodesState, useReactFlow } from "@xyflow/react";
-import Dagre from '@dagrejs/dagre';
+// import Dagre from '@dagrejs/dagre';
 import '@xyflow/react/dist/style.css';
 import { useEffect, useState, useTransition } from "react";
 import createClient from "@/utils/supabase/client";
@@ -205,34 +205,34 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
     }
 
     // handle auto layout
-    async function handleLayout(direction) {
-        const layouted = getLayoutedElements(nodes, edges, { direction });
+    // async function handleLayout(direction) {
+    //     const layouted = getLayoutedElements(nodes, edges, { direction });
     
-        // update the nodes on the backend
-        layouted.nodes.forEach(async v => {
-            const {data, error} = await supabase
-                .from('process_nodes')
-                .update({
-                    position_x: v.position.x,
-                    position_y: v.position.y,
-                })
-                .eq('id', v.id)
-                .select();
+    //     // update the nodes on the backend
+    //     layouted.nodes.forEach(async v => {
+    //         const {data, error} = await supabase
+    //             .from('process_nodes')
+    //             .update({
+    //                 position_x: v.position.x,
+    //                 position_y: v.position.y,
+    //             })
+    //             .eq('id', v.id)
+    //             .select();
 
-            if (error) {
-                console.log(error);
-                router.refresh();
-            }
-        });
+    //         if (error) {
+    //             console.log(error);
+    //             router.refresh();
+    //         }
+    //     });
 
-        // update front end nodes
-        setNodes([...layouted.nodes]);
-        setEdges([...layouted.edges]);
+    //     // update front end nodes
+    //     setNodes([...layouted.nodes]);
+    //     setEdges([...layouted.edges]);
     
-        window.requestAnimationFrame(() => {
-            fitView();
-        });
-    }
+    //     window.requestAnimationFrame(() => {
+    //         fitView();
+    //     });
+    // }
     
     return (
         <>
@@ -253,7 +253,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
                 >
                 <Panel position="top-right">
                     <Stack direction={'row'} spacing={'.5rem'}>
-                        <Button 
+                        {/* <Button 
                             color='info'
                             variant='contained' disableElevation 
                             startIcon={<AccountTreeRoundedIcon />}
@@ -262,7 +262,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
                             sx={{borderRadius:3, textTransform:'none', justifyContent:'left'}}
                             >
                                 Auto
-                        </Button>
+                        </Button> */}
                         <Button  
                             color='info'
                             variant='contained' disableElevation 
@@ -311,36 +311,36 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
     );
 }
 
-const getLayoutedElements = (nodes, edges, options) => {
-    const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-    g.setGraph({ 
-        rankdir: options.direction,
-        align: 'UL',
-    });
+// const getLayoutedElements = (nodes, edges, options) => {
+//     const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
+//     g.setGraph({ 
+//         rankdir: options.direction,
+//         align: 'UL',
+//     });
 
-    edges.forEach((edge) => g.setEdge(edge.source, edge.target));
-    nodes.forEach((node) =>
-    g.setNode(node.id, {
-        ...node,
-        width: node.measured?.width ?? 0,
-        height: node.measured?.height ?? 0,
-    }),
-    );
+//     edges.forEach((edge) => g.setEdge(edge.source, edge.target));
+//     nodes.forEach((node) =>
+//     g.setNode(node.id, {
+//         ...node,
+//         width: node.measured?.width ?? 0,
+//         height: node.measured?.height ?? 0,
+//     }),
+//     );
 
-    Dagre.layout(g);
+//     Dagre.layout(g);
 
-    console.log
+//     console.log
 
-    return {
-        nodes: nodes.map((node) => {
-            const position = g.node(node.id);
-            // We are shifting the dagre node position (anchor=center center) to the top left
-            // so it matches the React Flow node anchor point (top left).
-            const x = position.x - (node.measured?.width ?? 0) / 2;
-            const y = position.y - (node.measured?.height ?? 0) / 2;
+//     return {
+//         nodes: nodes.map((node) => {
+//             const position = g.node(node.id);
+//             // We are shifting the dagre node position (anchor=center center) to the top left
+//             // so it matches the React Flow node anchor point (top left).
+//             const x = position.x - (node.measured?.width ?? 0) / 2;
+//             const y = position.y - (node.measured?.height ?? 0) / 2;
 
-            return { ...node, position: { x, y } };
-        }),
-        edges,
-    };
-};
+//             return { ...node, position: { x, y } };
+//         }),
+//         edges,
+//     };
+// };
