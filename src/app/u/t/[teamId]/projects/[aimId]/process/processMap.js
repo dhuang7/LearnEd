@@ -50,6 +50,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
 
     const formattedEdges = processEdges.map(v => ({
         id: v.id,
+        // label:v.label,
         source: v.source_id,
         target: v.target_id,
         sourceHandle: v.source_handle,
