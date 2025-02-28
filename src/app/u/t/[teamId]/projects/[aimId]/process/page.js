@@ -40,6 +40,10 @@ async function getProcessMap(supabase, aimId) {
         .eq('aim_id', aimId)
         .is('change_idea_id', null);
 
+    if (!data[0]) {
+        const {data: newData, error: newError} = await supabase
+    }
+
     return data[0];
 }
 
