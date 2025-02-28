@@ -9,6 +9,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 
 import { Handle, Position } from "@xyflow/react";
+import EditNodeSideView from "./editNodeSideView";
 
 
 
@@ -45,17 +46,8 @@ export default function TerminalNode({data}) {
                 <Box sx={{width:'100%', height:'100%', display:'flex', flexDirection:'column'}}>
                     {/* title */}
                     <Box sx={{display:'flex', alignItems:'center'}}>
-                        <Typography variant="body1" align="left">Terminal</Typography>
-                        <IconButton 
-                            size='small'
-                            color='inherit'
-                            // onClick={handleOpen}
-                            sx={{
-                                ml:'auto',
-                            }}
-                            >
-                                <EditRoundedIcon fontSize='small' />
-                        </IconButton>
+                        <Typography variant="body1" align="left" sx={{mr:'auto'}}>Terminal</Typography>
+                        <EditNodeSideView />
                     </Box>
                     {/* divider */}
                     <Divider sx={{borderColor:'inherit'}} />

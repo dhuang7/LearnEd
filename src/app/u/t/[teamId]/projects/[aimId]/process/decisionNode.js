@@ -9,6 +9,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 
 import { Handle, Position } from "@xyflow/react";
+import EditNodeSideView from "./editNodeSideView";
 
 
 
@@ -44,17 +45,8 @@ export default function DecisionNode({data}) {
                         >
                         {/* title */}
                         <Box sx={{display:'flex', alignItems:'center', width:'100%', boxSizing:'border-box'}}>
-                            <Typography variant="body1" align="left">Decision</Typography>
-                            <IconButton 
-                                size='small'
-                                color='inherit'
-                                // onClick={handleOpen}
-                                sx={{
-                                    ml:'auto',
-                                }}
-                                >
-                                    <EditRoundedIcon fontSize='small' />
-                            </IconButton>
+                            <Typography variant="body1" align="left" sx={{mr:'auto'}}>Decision</Typography>
+                            <EditNodeSideView />
                         </Box>
                         {/* divider */}
                         <Divider sx={{borderColor:'inherit', width:'100%'}} />
