@@ -47,7 +47,7 @@ export default function ProcessNode({data}) {
                     {/* title */}
                     <Box sx={{display:'flex', alignItems:'center'}}>
                         <Typography variant="body1" align="left" sx={{mr:'auto'}}>Process</Typography>
-                        <EditNodeSideView />
+                        <EditNodeSideView nodeInfo={data}/>
                     </Box>
                     {/* divider */}
                     <Divider sx={{borderColor:'inherit'}} />

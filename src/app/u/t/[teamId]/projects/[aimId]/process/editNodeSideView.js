@@ -10,6 +10,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+
 
 import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -19,20 +22,26 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition, useEffect } from 'react';
 import createClient from '@/utils/supabase/client';
 import { useTeamContext } from '@/app/u/layout';
+import ButtonTextfield from '@/components/buttonTextfield';
  
  
-export default function EditNodeSideView() {
+export default function EditNodeSideView({nodeInfo}) {
     const [_, __, ___, setAimInfo] = useTeamContext();
     const supabase = createClient();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    const [nameText, setNameText] = useState('');
+    const [descriptionText, setDescriptionText] = useState('');
+    const [typeText, setTypeText] = useState('');
 
     // initialize values
     useEffect(() => {
-
-    }, [])
+        setNameText(nodeInfo.name);
+        setDescriptionText(nodeInfo.description);
+        setTypeText(nodeInfo.type);
+    }, [nodeInfo])
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -52,9 +61,21 @@ export default function EditNodeSideView() {
 
     function handleCancel() {
         handleClose();
-        setNameText(name);
-        setDescriptionText(description);
-        setMeasuresList(measures);
+        setNameText(nodeInfo.name);
+        setDescriptionText(nodeInfo.description);
+        setTypeText(nodeInfo.type);
+    }
+
+    function handleNameText({target}) {
+        setNameText(target.value);
+    }
+    
+    function handleDescriptionText({target}) {
+        setDescriptionText(target.value);
+    }
+
+    function handleTypeText({target}) {
+        setTypeText(target.value);
     }
 
     async function handleSubmit(e) {
@@ -62,7 +83,14 @@ export default function EditNodeSideView() {
         setLoading(true);
 
         // insert data
-        
+        const {data, error} = await supabase
+            .from('process_nodes')
+            .update({
+                name: nameText,
+                description: descriptionText,
+                type: typeText,
+            })
+            .eq('id', nodeInfo.id);
 
 
         // reset everything
@@ -74,6 +102,10 @@ export default function EditNodeSideView() {
     async function handleDelete() {
         setLoading(true);
         
+        const {error} = await supabase
+            .from('process_nodes')
+            .delete()
+            .eq('id', nodeInfo.id);
 
         startTransition(() => {
             router.refresh();
@@ -138,7 +170,34 @@ export default function EditNodeSideView() {
                     {/* content */}
                     <DialogContent sx={{pb:0, pl:0}}>
                         <Box sx={{pt:1, display:'flex', flexDirection:'column', height:'100%', boxSizing:'border-box',}}>
-                            
+                            {/* name */}
+                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                {/* title */}
+                                <Typography variant="h6">Name:</Typography>
+                                {/* writing box and button */}
+                                <ButtonTextfield value={nameText} onChange={handleNameText} color='primary' />
+                            </Box>
+                            {/* description */}
+                            <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
+                                {/* title */}
+                                <Typography variant="h6">Description:</Typography>
+                                {/* writing box and button */}
+                                <ButtonTextfield value={descriptionText} onChange={handleDescriptionText} color='primary' />
+                            </Box>
+                            {/* type */}
+                            <TextField 
+                                select
+                                value={typeText}
+                                onChange={handleTypeText}
+                                label='Node Type'
+                                sx={{
+                                    mt:'1rem'
+                                }}
+                                >
+                                {['Terminal', 'Process', 'Decision'].map((v, i) => (
+                                    <MenuItem key={i} value={v.toLowerCase()}>{v}</MenuItem>
+                                ))}
+                            </TextField>
                         </Box>
                     </DialogContent>
                     {/* buttons */}

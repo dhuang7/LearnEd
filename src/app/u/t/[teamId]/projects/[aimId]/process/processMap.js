@@ -217,6 +217,12 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
         // set new edge
         setEdges((eds) => addEdge(newEdge, eds));
     }
+    
+
+    function handleDelete(objs) {
+        if (objs.nodes.length > 0) return false;
+        return objs;
+    }
 
     // handle auto layout
     // async function handleLayout(direction) {
@@ -258,6 +264,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
                 onNodesChange={handleNodesChange}
                 onEdgesChange={handleEdgesChange}
                 onConnect={handleConnect}
+                onBeforeDelete={handleDelete}
                 maxZoom={5}
                 minZoom={.1}
                 fitView

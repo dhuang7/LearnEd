@@ -342,6 +342,11 @@ function GraphFlowLayout({
         });
     }
 
+    function handleDelete(objs) {
+        if (objs.nodes.length > 0) return false;
+        return objs;
+    }
+
     return (
         <>
             <ReactFlow 
@@ -352,6 +357,7 @@ function GraphFlowLayout({
                 minZoom={.1}
                 onNodesChange={handleNodesChange}
                 onEdgesChange={handleEdgesChange}
+                onBeforeDelete={handleDelete}
                 onConnect={handleConnect}
                 fitView
                 panOnScroll
