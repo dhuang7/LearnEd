@@ -18,6 +18,7 @@ import TerminalNode from "./terminalNode";
 import { useRouter } from 'next/navigation';
 import ProcessNode from './processNode';
 import DecisionNode from './decisionNode';
+import EditableEdge from './editableEdge';
 
 
 export default function ProcessMap(params) {
@@ -35,12 +36,19 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
     const [isPending, startTransition] = useTransition();
     const [loading, setLoading] = useState(false);
 
+    // node types 
     const nodeTypes = {
         terminal: TerminalNode,
         process: ProcessNode,
         decision: DecisionNode,
     }
 
+    // edge types
+    const edgeTypes = {
+        'editableEdge': EditableEdge,
+    }
+
+    // formatted nodes and edges
     const formattedNodes = processNodes.map(v => ({
         id: v.id,
         position: {x: v.position_x, y: v.position_y},
@@ -50,7 +58,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
 
     const formattedEdges = processEdges.map(v => ({
         id: v.id,
-        // label:v.label,
+        label:v.label,
         source: v.source_id,
         target: v.target_id,
         sourceHandle: v.source_handle,
@@ -65,7 +73,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
             strokeWidth: '.25rem',
             // stroke:'#000000',
         },
-        type:ConnectionLineType.SmoothStep,
+        type:'editableEdge',
     }));
 
     // manage edge and node states
@@ -85,6 +93,11 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
         }
     }, [isPending])
 
+
+
+
+    // Handlers //////////////////
+    
     // add terminal node
     async function handleAddTerminal() {
         setLoading(true);
@@ -239,6 +252,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
         <>
             <ReactFlow 
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 nodes={nodes} 
                 edges={edges}
                 onNodesChange={handleNodesChange}
@@ -253,6 +267,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
                 connectionLineType={ConnectionLineType.SmoothStep}
                 >
                 <Panel position="top-right">
+                    {/* buttons on the graph */}
                     <Stack direction={'row'} spacing={'.5rem'}>
                         {/* <Button 
                             color='info'

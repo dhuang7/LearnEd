@@ -8,8 +8,10 @@ export default async function Drivers({params}) {
     const {teamId, aimId} = await params
     const supabase = await createClient();
 
+    // get process map first
     const processMap = await getProcessMap(supabase, aimId);
 
+    // get nodes and edges
     const [nodes, edges] = await Promise.all([
         getNodes(supabase, processMap),
         getEdges(supabase, processMap),
