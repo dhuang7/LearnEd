@@ -108,7 +108,8 @@ export default function AddProjectModal({component, modalOnly, teamId}) {
             .insert({
                 aim_id: data[0].id,
                 name:'',
-                description:''
+                description:'',
+                isDefaultMap: true,
             })
 
         startTransition(() => {
