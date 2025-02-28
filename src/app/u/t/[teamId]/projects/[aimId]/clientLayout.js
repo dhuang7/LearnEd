@@ -24,7 +24,8 @@ export default function ClientPage({children, aimId, projects, teamId}) {
     const router = useRouter();
     const pathIndex = {
         'drivers':0,
-        'cycles':1,
+        'process':1,
+        'cycles':2,
     }
     const currentPath = pathname.split('/');
     const currentRelativePath = currentPath[currentPath.length-1];
@@ -92,6 +93,7 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                             aria-label="basic tabs example"
                             >
                             <Tab label="Drivers" component={NextLink} href='drivers' />
+                            <Tab label="Process" component={NextLink} href='process' />
                             <Tab label="Cycles"  component={NextLink} href='cycles' />
                         </Tabs>
                     </Box>

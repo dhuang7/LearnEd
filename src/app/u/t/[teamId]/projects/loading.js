@@ -52,6 +52,7 @@ export default async function LoadingPage() {
                             aria-label="basic tabs example"
                             >
                             <Tab label="Drivers"  />
+                            <Tab label="Process"  />
                             <Tab label="Cycles"   />
                         </Tabs>
                     </Box>
