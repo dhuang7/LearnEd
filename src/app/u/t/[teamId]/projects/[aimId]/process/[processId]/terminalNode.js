@@ -6,10 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 
 
 import { Handle, Position } from "@xyflow/react";
 import EditNodeSideView from "./editNodeSideView";
+import NextLink from "next/link";
 
 
 
@@ -47,6 +49,21 @@ export default function TerminalNode({data}) {
                     {/* title */}
                     <Box sx={{display:'flex', alignItems:'center'}}>
                         <Typography variant="body1" align="left" sx={{mr:'auto'}}>Terminal</Typography>
+                        <IconButton 
+                            size='small' 
+                            color='inherit' 
+                            sx={{mr:'.1rem'}} 
+                            component={NextLink} 
+                            href={{
+                                pathname: data.this_map_id,
+                                query: {
+                                    bcNames:data.breadcrumbs.map(v => v.name).concat(data.this_map_id&&[data.curr_map.name]),
+                                    bcIds:data.breadcrumbs.map(v => v.id).concat(data.this_map_id&&[data.curr_map.id]),
+                                }
+                            }}
+                            >
+                            <VisibilityRoundedIcon fontSize="small" />
+                        </IconButton>
                         <EditNodeSideView nodeInfo={data} />
                     </Box>
                     {/* divider */}

@@ -35,12 +35,14 @@ export default function EditNodeSideView({nodeInfo}) {
     const [nameText, setNameText] = useState('');
     const [descriptionText, setDescriptionText] = useState('');
     const [typeText, setTypeText] = useState('');
+    const [processMapText, setProcessMapText] = useState('');
 
     // initialize values
     useEffect(() => {
         setNameText(nodeInfo.name);
         setDescriptionText(nodeInfo.description);
         setTypeText(nodeInfo.type);
+        setProcessMapText(nodeInfo.this_map_id);
     }, [nodeInfo])
 
     // makes sure that the info is loaded before finishing.
@@ -64,6 +66,7 @@ export default function EditNodeSideView({nodeInfo}) {
         setNameText(nodeInfo.name);
         setDescriptionText(nodeInfo.description);
         setTypeText(nodeInfo.type);
+        setProcessMapText(nodeInfo.this_map_id);
     }
 
     function handleNameText({target}) {
@@ -78,6 +81,10 @@ export default function EditNodeSideView({nodeInfo}) {
         setTypeText(target.value);
     }
 
+    function handleProcessMapText({target}) {
+        setProcessMapText(target.value);
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true);
@@ -89,6 +96,7 @@ export default function EditNodeSideView({nodeInfo}) {
                 name: nameText,
                 description: descriptionText,
                 type: typeText,
+                this_map_id: processMapText,
             })
             .eq('id', nodeInfo.id);
 
@@ -196,6 +204,22 @@ export default function EditNodeSideView({nodeInfo}) {
                                 >
                                 {['Terminal', 'Process', 'Decision'].map((v, i) => (
                                     <MenuItem key={i} value={v.toLowerCase()}>{v}</MenuItem>
+                                ))}
+                            </TextField>
+
+                            {/* process_map */}
+                            <TextField 
+                                select
+                                value={processMapText||'null'}
+                                onChange={handleProcessMapText}
+                                label='Process Map'
+                                sx={{
+                                    mt:'1rem'
+                                }}
+                                >
+                                <MenuItem value={'null'}>None</MenuItem>
+                                {nodeInfo.process_maps.map((v, i) => (
+                                    <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
                                 ))}
                             </TextField>
                         </Box>

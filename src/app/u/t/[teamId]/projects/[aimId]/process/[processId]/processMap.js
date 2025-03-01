@@ -4,9 +4,12 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import Link from '@mui/material/Link';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Typography from '@mui/material/Typography';
 // import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 
 
 import { addEdge, Background, ConnectionLineType, Controls, MarkerType, Panel, ReactFlow, ReactFlowProvider, SelectionMode, useEdgesState, useNodesState, useReactFlow } from "@xyflow/react";
@@ -19,6 +22,8 @@ import { useRouter } from 'next/navigation';
 import ProcessNode from './processNode';
 import DecisionNode from './decisionNode';
 import EditableEdge from './editableEdge';
+import NextLink from 'next/link';
+import { IconButton } from '@mui/material';
 
 
 export default function ProcessMap(params) {
@@ -29,12 +34,13 @@ export default function ProcessMap(params) {
     );
 }
 
-function ProcessMapLayout({processMap, processEdges, processNodes}) {
+function ProcessMapLayout({processMap, processEdges, processNodes, breadcrumbs, processMaps}) {
     const supabase = createClient();
     const router = useRouter();
     // const { fitView } = useReactFlow();
     const [isPending, startTransition] = useTransition();
     const [loading, setLoading] = useState(false);
+
 
     // node types 
     const nodeTypes = {
@@ -52,7 +58,12 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
     const formattedNodes = processNodes.map(v => ({
         id: v.id,
         position: {x: v.position_x, y: v.position_y},
-        data: v,
+        data: {
+            ...v,
+            process_maps: processMaps,
+            breadcrumbs: breadcrumbs,
+            curr_map: processMap,
+        },
         type: v.type
     }));
 
@@ -273,6 +284,44 @@ function ProcessMapLayout({processMap, processEdges, processNodes}) {
                 selectionMode={SelectionMode.Partial}
                 connectionLineType={ConnectionLineType.SmoothStep}
                 >
+                {/* breadcrumb */}
+                <Panel position="top-left">
+                    <Box
+                        sx={{
+                            borderRadius:3,
+                            boxSizing:'border-box',
+                            pl:'.5rem',
+                            pr:'1rem',
+                            py:'.15rem',
+                            border:'1px solid', borderColor:'divider',
+                            backgroundColor:'common.white',
+                        }}
+                        >
+                        <Breadcrumbs maxItems={5} separator='›' aria-label="breadcrumb">
+                            <IconButton size='small' component={NextLink} href='../process' sx={{color:'inherit'}}><HomeRoundedIcon fontSize='small' /></IconButton>
+                            {breadcrumbs?.map((v, i) => (
+                                <Link 
+                                    key={i} 
+                                    underline='hover' 
+                                    component={NextLink} 
+                                    href={{
+                                        pathname: v.id,
+                                        query: {
+                                            bcNames:breadcrumbs.map(v => v.name).slice(0, i),
+                                            bcIds:breadcrumbs.map(v => v.id).slice(0, i),
+                                        }
+                                    }} 
+                                    sx={{color:'inherit'}}
+                                    >
+                                    {v.name}
+                                </Link>
+                            ))}
+                            <Typography sx={{ color: 'text.primary' }}>{processMap.name}</Typography>
+                        </Breadcrumbs>
+                    </Box>
+                </Panel>
+
+                {/* adding buttons */}
                 <Panel position="top-right">
                     {/* buttons on the graph */}
                     <Stack direction={'row'} spacing={'.5rem'}>

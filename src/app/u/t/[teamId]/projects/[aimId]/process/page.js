@@ -21,12 +21,14 @@ async function getProcessMaps(supabase, aimId) {
         .from('process_maps')
         .select(`
             *,
-            process_nodes(
+            process_nodes!process_node_map_id_fkey(
                 type,
                 id.count()
             )
         `)
         .eq('aim_id', aimId);
+
+        console.log(error)
 
     return data;
 }

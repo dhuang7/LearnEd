@@ -4,20 +4,23 @@ import ProcessMap from "./processMap";
 
 
 
-export default async function Page({params}) {
+export default async function Page({params, searchParams}) {
     const {teamId, aimId, processId} = await params
+    const {bcNames, bcIds} = await searchParams;
     const supabase = await createClient();
+
+    // format breadcrumbs
+    const breadcrumbs = bcNames && [].concat(bcNames)?.map((v, i) => ({name: v, id: [].concat(bcIds)[i]})) || [];
 
     // get process map first
     const processMap = await getProcessMap(supabase, processId);
 
     // get nodes and edges
-    const [nodes, edges] = await Promise.all([
+    const [nodes, edges, processMaps] = await Promise.all([
         getNodes(supabase, processMap),
         getEdges(supabase, processMap),
+        getProcessMaps(supabase, aimId),
     ])
-
-    
 
     return (
         <Paper 
@@ -28,7 +31,7 @@ export default async function Page({params}) {
                 display:'flex', flexDirection:'column', position:'relative'
             }}
             >
-            <ProcessMap processMap={processMap} processNodes={nodes} processEdges={edges} />
+            <ProcessMap processMap={processMap} processMaps={processMaps} processNodes={nodes} processEdges={edges} breadcrumbs={breadcrumbs} />
         </Paper>
     )
 }
@@ -56,6 +59,15 @@ async function getEdges(supabase, process) {
         .from('process_edges')
         .select()
         .eq('map_id', process.id);
+
+    return data;
+}
+
+async function getProcessMaps(supabase, aimId) {
+    const {data, error} = await supabase
+        .from('process_maps')
+        .select()
+        .eq('aim_id', aimId)
 
     return data;
 }
