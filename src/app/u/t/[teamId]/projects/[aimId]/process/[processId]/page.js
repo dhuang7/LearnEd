@@ -5,15 +5,18 @@ import ProcessMap from "./processMap";
 
 
 export default async function Page({params, searchParams}) {
+    console.log('0')
     const {teamId, aimId, processId} = await params
     const {bcNames, bcIds} = await searchParams;
     const supabase = await createClient();
+    console.log('1')
 
     // format breadcrumbs
     const breadcrumbs = bcNames && [].concat(bcNames)?.map((v, i) => ({name: v, id: [].concat(bcIds)[i]})) || [];
 
     // get process map first
     const processMap = await getProcessMap(supabase, processId);
+    console.log('2')
 
     // get nodes and edges
     const [nodes, edges, processMaps] = await Promise.all([
@@ -21,6 +24,8 @@ export default async function Page({params, searchParams}) {
         getEdges(supabase, processMap),
         getProcessMaps(supabase, aimId),
     ])
+
+    console.log('3');
 
     return (
         <Paper 
