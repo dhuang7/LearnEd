@@ -18,8 +18,7 @@ import NextLink from "next/link";
 
 
 export default function DecisionNode({data}) {
-    console.log(data.name)
-    console.log(data.this_map_id)
+    
     return (
         <>
             {/* actual node */}
@@ -57,8 +56,8 @@ export default function DecisionNode({data}) {
                                 href={{
                                     pathname: data.this_map_id,
                                     query: {
-                                        bcNames:data.breadcrumbs.map(v => v.name).concat(data.this_map_id&&[data.curr_map.name]),
-                                        bcIds:data.breadcrumbs.map(v => v.id).concat(data.this_map_id&&[data.curr_map.id]),
+                                        bcNames:data.this_map_id ? data.breadcrumbs.map(v => v.name).concat([data.curr_map.name]) : data.breadcrumbs.map(v => v.name),
+                                        bcIds:data.this_map_id ? data.breadcrumbs.map(v => v.id).concat([data.curr_map.id]) : data.breadcrumbs.map(v => v.id),
                                     }
                                 }}
                                 >
