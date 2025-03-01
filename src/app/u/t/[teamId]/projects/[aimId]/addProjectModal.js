@@ -102,15 +102,6 @@ export default function AddProjectModal({component, modalOnly, teamId}) {
                 goal: goalText,
             })
             .select();
-            
-        const {data: newProcess, error: newProcessError} = await supabase
-            .from('process_maps')
-            .insert({
-                aim_id: data[0].id,
-                name:'',
-                description:'',
-                isDefaultMap: true,
-            })
 
         startTransition(() => {
             router.refresh();

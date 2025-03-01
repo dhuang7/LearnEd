@@ -28,7 +28,8 @@ export default function ClientPage({children, aimId, projects, teamId}) {
         'cycles':2,
     }
     const currentPath = pathname.split('/');
-    const currentRelativePath = currentPath[currentPath.length-1];
+    const currentRelativePath = currentPath.filter(v => pathIndex[v] !== undefined)[0];
+    // const currentRelativePath = currentPath[currentPath.length-1];
 
     const [project, setProject] = useState(projects.filter(v=>v.id===aimId)[0]);
 
@@ -40,7 +41,7 @@ export default function ClientPage({children, aimId, projects, teamId}) {
     function handleSelectProject({target}) {
         if (target.value === 'button') return true;
         setProject(target.value);
-        router.push(`../${target.value.id}/${currentRelativePath}`);
+        router.push(`${currentPath.length === 7 ? '..' : '../..'}/${target.value.id}/${currentRelativePath}`);
     }
 
     return (
@@ -92,9 +93,9 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                             value={pathIndex[currentRelativePath]||0} 
                             aria-label="basic tabs example"
                             >
-                            <Tab label="Drivers" component={NextLink} href='drivers' />
-                            <Tab label="Process" component={NextLink} href='process' />
-                            <Tab label="Cycles"  component={NextLink} href='cycles' />
+                            <Tab label="Drivers" component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'} />
+                            <Tab label="Process" component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'} />
+                            <Tab label="Cycles"  component={NextLink} href={currentPath.length === 7 ? 'cycles' : '../cycles'} />
                         </Tabs>
                     </Box>
                 </Box>
