@@ -82,7 +82,7 @@ export default function ProcessList({processMaps, aimId}) {
                 columns={columns} rows={rows} 
                 // checkboxSelection
                 autoPageSize
-                onRowClick={handleEditProcess}
+                onRowClick={(params) => handleEditProcess(params.row)}
                 slots={{ toolbar: () => <CustomToolbar aimId={aimId} /> }}
                 slotProps={{
                     toolbar: {

@@ -7,6 +7,7 @@ import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
+import MediationRoundedIcon from '@mui/icons-material/MediationRounded';
 import Fade from '@mui/material/Fade';
 
 import Image from "next/image";
@@ -46,7 +47,8 @@ export default function DemoCarousel() {
                 {/* tabs */}
                 {/* MAKE THESE TABS SCROLLABLE */}
                 <Tabs value={tab} onChange={handleChange}  sx={{width:{sx:'70%', md:'45%'}, maxWidth:'70%'}} scrollButtons='auto' allowScrollButtonsMobile variant="scrollable">
-                    <Tab label="Driver Diagram" icon={<AccountTreeRoundedIcon fontSize="large" />} sx={{width:'25%'}} />
+                    <Tab label="Driver Diagram" icon={<MediationRoundedIcon fontSize="large" />} sx={{width:'25%'}} />
+                    <Tab label="Process Maps" icon={<AccountTreeRoundedIcon fontSize="large" />} sx={{width:'25%'}}/>
                     <Tab label="Cycles" icon={<PublishedWithChangesRoundedIcon fontSize="large" />} sx={{width:'25%'}}/>
                     <Tab label="Calendar" icon={<CalendarMonthRoundedIcon fontSize="large" />} sx={{width:'25%'}}/>
                     <Tab label="Tasks" icon={<FormatListBulletedRoundedIcon fontSize="large" />} sx={{width:'25%'}}/>
@@ -54,9 +56,10 @@ export default function DemoCarousel() {
             </Box>
             {/* demos to be shown */}
             <BoxImage src={'/driver-demo.png'} show={tab===0} />
-            <BoxImage src={'/cycle-demo.png'} show={tab===1} />
-            <BoxImage src={'/calendar-demo.png'} show={tab===2} />
-            <BoxImage src={'/tasks-demo.png'} show={tab===3} />
+            <BoxImage src={'/process-demo.png'} show={tab===1} />
+            <BoxImage src={'/cycle-demo.png'} show={tab===2} />
+            <BoxImage src={'/calendar-demo.png'} show={tab===3} />
+            <BoxImage src={'/tasks-demo.png'} show={tab===4} />
         </Box>
         
     );
