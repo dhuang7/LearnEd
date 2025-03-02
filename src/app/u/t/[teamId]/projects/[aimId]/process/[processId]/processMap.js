@@ -46,6 +46,7 @@ function ProcessMapLayout({processMap, processEdges, processNodes, breadcrumbs, 
             router.refresh();
         }
 
+
         const channel = supabase
             .channel('map_changes')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'process_maps' }, handleGraphUpdates)
@@ -181,8 +182,6 @@ function ProcessMapLayout({processMap, processEdges, processNodes, breadcrumbs, 
                     })
                     .eq('id', v.id)
                     .select();
-
-                console.log(error);
             }
         })
     }

@@ -3,6 +3,7 @@
 import createClient from "@/utils/supabase/client";
 import Box from "@mui/material/Box";
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 
 
 import {
@@ -44,8 +45,13 @@ export default function ProcessList({processMaps, aimId}) {
         {
             field: 'actions',
             type: 'actions',
-            width:15,
+            flex:0,
             getActions: (params) => [
+                <GridActionsCellItem
+                    icon={<VisibilityRoundedIcon />}
+                    label="View map"
+                    onClick={() => handleGoToProcess(params)}
+                    />,
                 <GridActionsCellItem
                     icon={<EditRoundedIcon />}
                     label="Edit"
@@ -76,7 +82,7 @@ export default function ProcessList({processMaps, aimId}) {
                 columns={columns} rows={rows} 
                 // checkboxSelection
                 autoPageSize
-                onRowClick={handleGoToProcess}
+                onRowClick={handleEditProcess}
                 slots={{ toolbar: () => <CustomToolbar aimId={aimId} /> }}
                 slotProps={{
                     toolbar: {
