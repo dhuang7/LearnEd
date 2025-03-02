@@ -8,7 +8,7 @@ export const info = {
     description: 'Understanding the challenges that prevent teams from developing collective responsibility and collective efficacy can help us mitigate the barriers.',
     href:'/blog/overcoming-challenges-in-plc',
     thumbnail:'/thumbnails/overcoming-challenges-in-plc.webp',
-    aspectRatio: 1594/1084, 
+    aspectRatio: 2121/1414, 
 };
 
 export default function Page() {
