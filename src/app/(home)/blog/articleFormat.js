@@ -91,9 +91,9 @@ export function SubHeader({children, inline}) {
     );
 }
 
-export function Paragraph({children, inline, bolded}) {
+export function Paragraph({children, inline, bolded, sx, ...params}) {
     return (
-        <Typography sx={{fontSize:'1.25rem', lineHeight:'2.5rem', mb:inline?0:'2rem', fontWeight:bolded&&'bold'}}>
+        <Typography {...params} sx={{fontSize:'1.25rem', lineHeight:'2.5rem', mb:inline?0:'2rem', fontWeight:bolded&&'bold', ...sx}}>
             {children}
         </Typography>
     );

@@ -8,13 +8,14 @@ import HeadArticleCard from "./headArticleCard";
 import {info as wiisInfo} from './what-is-improvement-science/page';
 import { info as hctefcsiInfo } from "./harnessing-collective-teacher-efficacy-for-continuous-school-improvement/page";
 import { info as tsoplcInfo } from "./the-science-of-professional-learning-communities/page";
+import { info as ocipInfo } from "./overcoming-challenges-in-plc/page";
 
 
 export default function Page() {
     const searchBarHeight = 7.5;
 
     const articles = [
-        wiisInfo, hctefcsiInfo, tsoplcInfo,
+        wiisInfo, hctefcsiInfo, tsoplcInfo, ocipInfo,
     ];
 
     return (
