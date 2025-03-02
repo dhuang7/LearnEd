@@ -96,11 +96,11 @@ export default function EditNodeSideView({nodeInfo}) {
                 name: nameText,
                 description: descriptionText,
                 type: typeText,
-                this_map_id: processMapText,
+                this_map_id: processMapText||null,
             })
             .eq('id', nodeInfo.id);
 
-
+        console.log(error);
         // reset everything
         startTransition(() => {
             router.refresh();
@@ -210,14 +210,14 @@ export default function EditNodeSideView({nodeInfo}) {
                             {/* process_map */}
                             <TextField 
                                 select
-                                value={processMapText||'null'}
+                                value={processMapText||''}
                                 onChange={handleProcessMapText}
                                 label='Process Map'
                                 sx={{
                                     mt:'1rem'
                                 }}
                                 >
-                                <MenuItem value={'null'}>None</MenuItem>
+                                <MenuItem value={''}>None</MenuItem>
                                 {nodeInfo.process_maps.map((v, i) => (
                                     <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
                                 ))}
