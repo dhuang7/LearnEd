@@ -24,4 +24,15 @@ export const expertsList = [
         email:'rbunden@achievemetrics.com',
         website:'https://www.achievemetrics.com/'
     },
+    {
+        name: 'Douglas Fisher',
+        role: 'Professor',
+        company: 'San Diego State University',
+        description: `Douglas Fisher, Ph.D., is professor and chair of educational leadership at San Diego State University. Doug is a credentialed teacher and administrator in California. He has published over 250 books, chapters, and articles focused on visible learning, literacy, leadership, PLCs, school improvement, and more. Doug was elected into the Reading Hall of Fame in 2022.`,
+        thumbnail:'/expert-profile-pic/douglasfisher.jpeg',
+        aspectRatio: 1,
+        linkedIn: 'https://www.linkedin.com/in/douglasfishersdsu/',
+        email:'dfisher@mail.sdsu.edu',
+        website:'https://fisherandfrey.com/'
+    },
 ];
