@@ -39,7 +39,8 @@ export default function Page() {
                         backgroundColor:'common.white',
                         top:'-10rem', position:'relative',
                         display:'flex', 
-                        flexDirection:{xs:'column', lg:'row'}
+                        flexDirection:{xs:'column', lg:'row'},
+                        // overflow:'hidden',
                     }}
                     >
                     <PricingColumn 
@@ -52,32 +53,45 @@ export default function Page() {
                         buttonText='Free Forever'
                         featureTitle='Key Features:'
                         features={[
-                            'Create up to 2 teams', 'Unlimited cycles', 'Collaborative diagrams', 'Manage calendars', 'Help Center'
+                            'Individual Team', 'Unlimited cycles', 'Collaborative diagrams', 'Manage calendars', 'Create to-do lists', 'Help Center'
                         ]}
                         />
                     <PricingColumn 
                         width={{xs:'100%', lg:'33.33%'}} 
                         href='/login'
                         color='RoyalBlue'
-                        title='Unlimited'
+                        title='Starter'
                         description='Best for instructional leads.'
                         price='$10'
                         buttonText='Get started'
-                        featureTitle='Everything in Free forever, plus:'
+                        featureTitle='Everything in Starter, plus:'
                         features={[
-                            'Unlimited Teams', 'On-demand support', 'Remote trainings'
+                            'Create up to 2 teams', 'On-demand support', 'New feature support', 'AI Assistant Lite',
+                        ]}
+                        />
+                    <PricingColumn 
+                        width={{xs:'100%', lg:'33.33%'}} 
+                        href='/login'
+                        color='ForestGreen'
+                        title='Unlimited'
+                        description='Best for instructional teams.'
+                        price='$10'
+                        buttonText='Get started'
+                        featureTitle='Everything in Teams, plus:'
+                        features={[
+                            'Unlimited teams', 'Remote trainings', 'Unlimited AI assistance',
                         ]}
                         />
                     <PricingColumn 
                         width={{xs:'100%', lg:'33.33%'}} 
                         noBorder
                         href='/login'
-                        color='ForestGreen'
-                        title='School and District'
-                        description='Best for organizations.'
+                        color='Crimson'
+                        title='Enterprise'
+                        description='Best for schools and districts.'
                         price="Let's talk"
-                        priceSize='h3'
-                        buttonText='Contact sales'
+                        priceSize='h4'
+                        buttonText='Contact us'
                         featureTitle='Everything in Unlimited, plus:'
                         features={[
                             'Unlimited Teams for all users', 'Central hub for organization', 'Professional Development', 
