@@ -41,6 +41,21 @@ function ProcessMapLayout({processMap, processEdges, processNodes, breadcrumbs, 
     const [isPending, startTransition] = useTransition();
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        function handleGraphUpdates() {
+            router.refresh();
+        }
+
+        const channel = supabase
+            .channel('map_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'process_maps' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'process_nodes' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'process_edges' }, handleGraphUpdates)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'projects' }, handleGraphUpdates)
+            .subscribe();
+
+        return () => supabase.removeChannel(channel);
+    }, []);
 
     // node types 
     const nodeTypes = {
