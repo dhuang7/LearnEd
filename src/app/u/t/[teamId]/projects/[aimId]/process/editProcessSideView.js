@@ -29,6 +29,7 @@ export default function EditProcessSideView({processMap, setOpen, open}) {
     // const [open, setOpen] = useState(false);
     const [nameText, setNameText] = useState('');
     const [descriptionText, setDescriptionText] = useState('');
+    const [error, setError] = useState(false);
 
     // initialize values
     useEffect(() => {
@@ -62,6 +63,7 @@ export default function EditProcessSideView({processMap, setOpen, open}) {
 
     function handleNameText({target}) {
         setNameText(target.value);
+        if (error) setError(false);
     }
     
     function handleDescriptionText({target}) {
@@ -70,6 +72,10 @@ export default function EditProcessSideView({processMap, setOpen, open}) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        if (!nameText) {
+            setError(true);
+            return;
+        }
         setLoading(true);
 
 
@@ -157,7 +163,7 @@ export default function EditProcessSideView({processMap, setOpen, open}) {
                                 {/* title */}
                                 <Typography variant="h6">Name:</Typography>
                                 {/* writing box and button */}
-                                <ButtonTextfield value={nameText} onChange={handleNameText} color='primary' />
+                                <ButtonTextfield value={nameText} onChange={handleNameText} color={error ? 'error' : 'primary'} />
                             </Box>
                             {/* description */}
                             <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>

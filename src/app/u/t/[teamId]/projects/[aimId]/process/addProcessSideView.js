@@ -32,6 +32,7 @@ export default function AddProcessSideView({aimId}) {
     const [open, setOpen] = useState(false);
     const [nameText, setNameText] = useState('');
     const [descriptionText, setDescriptionText] = useState('');
+    const [error, setError] = useState(false);
 
     // makes sure that the info is loaded before finishing.
     useEffect(() => {
@@ -57,6 +58,7 @@ export default function AddProcessSideView({aimId}) {
 
     function handleNameText({target}) {
         setNameText(target.value);
+        if (error) setError(false);
     }
     
     function handleDescriptionText({target}) {
@@ -65,6 +67,10 @@ export default function AddProcessSideView({aimId}) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        if (!nameText) {
+            setError(true);
+            return;
+        }
         setLoading(true);
 
         // insert data
@@ -151,7 +157,7 @@ export default function AddProcessSideView({aimId}) {
                                 {/* title */}
                                 <Typography variant="h6">Name:</Typography>
                                 {/* writing box and button */}
-                                <ButtonTextfield value={nameText} onChange={handleNameText} color='primary' />
+                                <ButtonTextfield value={nameText} onChange={handleNameText} color={error ? 'error' : 'primary'} />
                             </Box>
                             {/* description */}
                             <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
