@@ -64,7 +64,7 @@ export default function Page() {
                         description='Best for instructional leads.'
                         price='$10'
                         buttonText='Get started'
-                        featureTitle='Everything in Starter, plus:'
+                        featureTitle='Everything in Free Forever, plus:'
                         features={[
                             'Create up to 2 teams', 'On-demand support', 'New feature support', 'AI Assistant Lite',
                         ]}
@@ -77,7 +77,7 @@ export default function Page() {
                         description='Best for instructional teams.'
                         price='$10'
                         buttonText='Get started'
-                        featureTitle='Everything in Teams, plus:'
+                        featureTitle='Everything in Starter, plus:'
                         features={[
                             'Unlimited teams', 'Remote trainings', 'Unlimited AI assistance',
                         ]}
