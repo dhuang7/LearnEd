@@ -9,13 +9,14 @@ import {info as wiisInfo} from './what-is-improvement-science/page';
 import { info as hctefcsiInfo } from "./harnessing-collective-teacher-efficacy-for-continuous-school-improvement/page";
 import { info as tsoplcInfo } from "./the-science-of-professional-learning-communities/page";
 import { info as ocipInfo } from "./overcoming-challenges-in-plc/page";
+import { info as tdotrapInfo } from "./the-disconnect-of-the-researcher-and-practitioner/page";
 
 
 export default function Page() {
     const searchBarHeight = 7.5;
 
     const articles = [
-        wiisInfo, hctefcsiInfo, tsoplcInfo, ocipInfo,
+        wiisInfo, hctefcsiInfo, tsoplcInfo, ocipInfo, tdotrapInfo,
     ];
 
     return (
