@@ -57,7 +57,7 @@ export default function MeasuresList({
                 order_num: l.length,
                 description: '',
                 data: '',
-                date: '',
+                date: dayjs(),
             }
         ])
     }
