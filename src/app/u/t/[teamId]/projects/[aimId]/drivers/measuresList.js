@@ -101,7 +101,7 @@ export default function MeasuresList({
         setMeasuresList(ts => {
             ts[value] = {
                 ...ts[value],
-                date: dayjs(target.value).toISOString(),
+                date: target.value && dayjs(target.value).toISOString(),
             }
 
             return [...ts];
