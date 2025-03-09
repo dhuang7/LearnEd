@@ -58,6 +58,14 @@ export default function MeasuresList({
                 description: '',
                 data: '',
                 date: dayjs(),
+                // dataset: [
+                //     {
+                //         date: dayjs(),
+                //         data: '',
+                //     }
+                // ]
+                date_list: [dayjs()],
+                data_list: [''],
             }
         ])
     }
@@ -82,26 +90,55 @@ export default function MeasuresList({
     }
 
     // handle typing
-    function handleDataText(e, value) {
+    function handleDataText(e, value, index) {
         const {target} = e;
         // if (isNaN(target.value)) return;
         setMeasuresList(ts => {
             ts[value] = {
                 ...ts[value],
-                data: target.value,
+                // data: target.value,
             }
+
+            ts[value].data_list[index] = target.value;
 
             return [...ts];
         })
     }
 
-    function handleDateText(e, value) {
+    function handleDateText(e, value, index) {
         const {target} = e;
         // if (isNaN(target.value)) return;
         setMeasuresList(ts => {
             ts[value] = {
                 ...ts[value],
-                date: target.value && dayjs(target.value).toISOString(),
+                // date: target.value && dayjs(target.value).toISOString(),
+            }
+
+            ts[value].date_list[index] = target.value ? dayjs(target.value).toISOString() : null;
+
+            return [...ts];
+        })
+    }
+
+    function handleAddData(e, value, index) {
+        setMeasuresList(ts => {
+            ts[value] = {
+                ...ts[value],
+                // dataset: [
+                //     ...(ts[value].dataset || []),
+                //     {
+                //         date: dayjs(),
+                //         data: '',
+                //     }
+                // ]
+                date_list: [
+                    ...(ts[value].date_list || []),
+                    dayjs(),
+                ],
+                data_list: [
+                    ...(ts[value].data_list || []),
+                    '',
+                ],
             }
 
             return [...ts];
@@ -153,42 +190,78 @@ export default function MeasuresList({
                                 <DeleteRoundedIcon fontSize='small' />
                             </IconButton>
                         </Box>
-                        {/* date */}
-                        <TextField
-                            label='Date'
-                            type='date'
-                            value={dayjs(v.date).format('YYYY-MM-DD')}
-                            onChange={e => handleDateText(e, i)}
-                            onFocus={handleShowPicker}
-                            fullWidth
-                            slotProps={{
-                                htmlInput: {
-                                    sx: {
-                                        py:'.5rem'
-                                    }
-                                },
-                                inputLabel: {
-                                    shrink: true,
-                                }
-                            }}
-                            sx={{mt:'.5rem'}}
-                            />
-                        {/* Measure Results */}
-                        <Box sx={{display:'flex', alignItems:'center', mt:'.5rem'}}>
-                            <Typography variant='body1' sx={{fontWeight:'bold'}}>Data:</Typography>
-                            <TextField
-                                type='number'
-                                value={v.data||''} data-order={i} onChange={e=>handleDataText(e, i)}
-                                slotProps={{
-                                    htmlInput: {
-                                        sx: {
-                                            py:'.5rem'
+
+
+
+
+                        {/* ////////////////////////////////////// */}
+
+
+
+
+                        {/* Data list */}
+                        {v.date_list?.map((date, data_i) => (
+                            <Box key={data_i} sx={{display:'flex', alignItems:'center', mt:'1rem'}}>
+                                <Typography align='right' fontWeight={'bold'} sx={{mr:'.5rem', minWidth:'2rem', }}>{data_i}</Typography>
+                                {/* date */}
+                                <TextField
+                                    label='Date'
+                                    type='date'
+                                    value={dayjs(date).format('YYYY-MM-DD')}
+                                    onChange={e => handleDateText(e, i, data_i)}
+                                    onFocus={handleShowPicker}
+                                    fullWidth
+                                    slotProps={{
+                                        htmlInput: {
+                                            sx: {
+                                                py:'.5rem'
+                                            }
+                                        },
+                                        inputLabel: {
+                                            shrink: true,
                                         }
-                                    },
-                                }}
-                                sx={{ml:'.5rem'}}
-                                />
+                                    }}
+                                    // sx={{mt:'.5rem'}}
+                                    />
+                                {/* Measure Results */}
+                                {/* <Box sx={{display:'flex', alignItems:'center'}}> */}
+                                    {/* <Typography variant='body1' sx={{fontWeight:'bold'}}>Data:</Typography> */}
+                                    <TextField
+                                        label='Data'
+                                        type='number'
+                                        value={v.data_list[data_i]||''} data-order={i} onChange={e=>handleDataText(e, i, data_i)}
+                                        slotProps={{
+                                            htmlInput: {
+                                                sx: {
+                                                    py:'.5rem'
+                                                }
+                                            },
+                                            inputLabel: {
+                                                shrink: true,
+                                            }
+                                        }}
+                                        sx={{ml:'.5rem'}}
+                                        />
+                                {/* </Box> */}
+                            </Box>
+                        ))}
+                        
+                        <Box sx={{display:'flex', alignItems:'center', mt:'1rem'}}>
+                            <Typography fontWeight={'bold'} sx={{mr:'.5rem', minWidth:'2rem'}}>&nbsp;</Typography>
+                            <Button 
+                                color='info' 
+                                // variant='contained' disableElevation 
+                                sx={{borderRadius:3, textTransform:'none'}} 
+                                startIcon={<AddRoundedIcon />}
+                                onClick={e => handleAddData(e, i)}
+                                // disabled={loading}
+                                >
+                                Data
+                            </Button>
                         </Box>
+
+
+                        {/* //////////////////////////////////////// */}
                         
                     </Box>
                 </ListItem>

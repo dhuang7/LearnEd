@@ -46,6 +46,8 @@ export default async function Cycles({params}) {
         getCycles(supabase, aimId),
     ])
 
+    console.log(cycles);
+
     return (
         <> 
             <CycleList cycles={cycles} changeIdeas={changeIdeas} aimId={aimId} />
