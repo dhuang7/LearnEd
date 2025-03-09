@@ -5,7 +5,6 @@ import ListItem from '@mui/material/ListItem';
 import Button from '@mui/material/Button';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Typography from '@mui/material/Typography';
-import ButtonTextfield from '@/components/buttonTextfield';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
@@ -24,6 +23,7 @@ export default function MeasuresList({
 
     const [measureTypes, setMeasureTypes] = useState([]);
 
+    // get measure types
     useEffect(() => {
         async function getMeasureTypes() {
             const {data, error} = await supabase
@@ -58,12 +58,6 @@ export default function MeasuresList({
                 description: '',
                 data: '',
                 date: dayjs(),
-                // dataset: [
-                //     {
-                //         date: dayjs(),
-                //         data: '',
-                //     }
-                // ]
                 date_list: [dayjs()],
                 data_list: [''],
             }
@@ -124,13 +118,6 @@ export default function MeasuresList({
         setMeasuresList(ts => {
             ts[value] = {
                 ...ts[value],
-                // dataset: [
-                //     ...(ts[value].dataset || []),
-                //     {
-                //         date: dayjs(),
-                //         data: '',
-                //     }
-                // ]
                 date_list: [
                     ...(ts[value].date_list || []),
                     dayjs(),
@@ -191,14 +178,6 @@ export default function MeasuresList({
                             </IconButton>
                         </Box>
 
-
-
-
-                        {/* ////////////////////////////////////// */}
-
-
-
-
                         {/* Data list */}
                         {v.date_list?.map((date, data_i) => (
                             <Box key={data_i} sx={{display:'flex', alignItems:'center', mt:'1rem'}}>
@@ -224,25 +203,22 @@ export default function MeasuresList({
                                     // sx={{mt:'.5rem'}}
                                     />
                                 {/* Measure Results */}
-                                {/* <Box sx={{display:'flex', alignItems:'center'}}> */}
-                                    {/* <Typography variant='body1' sx={{fontWeight:'bold'}}>Data:</Typography> */}
-                                    <TextField
-                                        label='Data'
-                                        type='number'
-                                        value={v.data_list[data_i]||''} data-order={i} onChange={e=>handleDataText(e, i, data_i)}
-                                        slotProps={{
-                                            htmlInput: {
-                                                sx: {
-                                                    py:'.5rem'
-                                                }
-                                            },
-                                            inputLabel: {
-                                                shrink: true,
+                                <TextField
+                                    label='Data'
+                                    type='number'
+                                    value={v.data_list[data_i]||''} data-order={i} onChange={e=>handleDataText(e, i, data_i)}
+                                    slotProps={{
+                                        htmlInput: {
+                                            sx: {
+                                                py:'.5rem'
                                             }
-                                        }}
-                                        sx={{ml:'.5rem'}}
-                                        />
-                                {/* </Box> */}
+                                        },
+                                        inputLabel: {
+                                            shrink: true,
+                                        }
+                                    }}
+                                    sx={{ml:'.5rem'}}
+                                    />
                             </Box>
                         ))}
                         
@@ -259,10 +235,6 @@ export default function MeasuresList({
                                 Data
                             </Button>
                         </Box>
-
-
-                        {/* //////////////////////////////////////// */}
-                        
                     </Box>
                 </ListItem>
             ))}
