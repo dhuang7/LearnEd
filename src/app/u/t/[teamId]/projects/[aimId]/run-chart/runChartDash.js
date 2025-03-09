@@ -45,6 +45,8 @@ export default function RunChartDash({aimId, measureTypes}) {
         getProcesses();
     }, [categoryText]);
 
+    // handlers /////////////
+
     async function handleCategoryText({target}) {
         setCategoryText(target.value);
     }
@@ -66,6 +68,7 @@ export default function RunChartDash({aimId, measureTypes}) {
                 display:'flex', flexDirection:'column', position:'relative'
             }}
             >
+            {/* title */}
             <Typography variant="h6" align="center">Select Chart:</Typography>
             {/* Category */}
             <TextField
