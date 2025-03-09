@@ -5,9 +5,9 @@ import { LineChart } from "@mui/x-charts";
 
 
 
-export default function RunChartGraph() {
+export default function RunChartGraph({category, process, measure, categoryMeasure}) {
     
-
+    ///////////////// USE DATA SET. LOOK AT THE DATA SET IN MUI LINE GRAPH
     return (
         <Paper 
             elevation={0} 
@@ -17,6 +17,7 @@ export default function RunChartGraph() {
                 display:'flex', flexDirection:'column', position:'relative'
             }}
             >
+                
             <LineChart 
                 xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
                 series={[

@@ -9,20 +9,16 @@ import createClient from "@/utils/supabase/client";
 
 
 
-export default function RunChartDash({aimId, measureTypes}) {
+export default function RunChartDash({
+    aimId, measureTypes, 
+    category, process, measure, 
+    setCategory, setProcess, setMeasure
+}) {
     const supabase = createClient();
     const [processes, setProcesses] = useState([]);
-    const [categoryText, setCategoryText] = useState('projects');
-    const [processText, setProcessText] = useState('');
-    const [measureText, setMeasureText] = useState(measureTypes[0].id);
-
-    const measureTables = {
-        'projects': 'aim_measures',
-        'primary_drivers': 'primary_driver_measures',
-        'secondary_drivers': 'secondary_driver_measures',
-        'change_ideas': 'change_idea_measures',
-        'pdsa_cycles': 'cycle_measures',
-    }
+    const [categoryText, setCategoryText] = useState(category);
+    const [processText, setProcessText] = useState(process);
+    const [measureText, setMeasureText] = useState(measure);
 
     // initialize
     useEffect(() => {
@@ -49,14 +45,17 @@ export default function RunChartDash({aimId, measureTypes}) {
 
     async function handleCategoryText({target}) {
         setCategoryText(target.value);
+        setCategory(target.value);
     }
 
     function handleProcessText({target}) {
         setProcessText(target.value);
+        setProcess(target.value);
     }
 
     function handleMeasureText({target}) {
-        setMeasureText(target.value)
+        setMeasureText(target.value);
+        setMeasure(target.value);
     }
 
     return (
