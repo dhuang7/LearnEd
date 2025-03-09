@@ -203,6 +203,9 @@ function ProcessMapLayout({processMap, processEdges, processNodes, breadcrumbs, 
 
     // handle new connection
     async function handleConnect(params) {
+        // check if you are trying to connect with same port
+        if (params.source === params.target && params.sourceHandle === params.targetHandle) return;
+
         // insert edge
         const {data, error} = await supabase
             .from('process_edges')
