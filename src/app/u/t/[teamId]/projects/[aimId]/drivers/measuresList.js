@@ -246,7 +246,7 @@ export default function MeasuresList({
                             </Box>
                         ))}
                         
-                        <Box sx={{display:'flex', alignItems:'center', mt:'1rem'}}>
+                        <Box sx={{display:'flex', alignItems:'center', mt:'.5rem'}}>
                             <Typography fontWeight={'bold'} sx={{mr:'.5rem', minWidth:'2rem'}}>&nbsp;</Typography>
                             <Button 
                                 color='info' 
