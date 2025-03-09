@@ -61,7 +61,7 @@ export default function CycleList({cycles, changeIdeas, aimId}) {
             flex:1
         },
         { field: 'objective', headerName: 'Cycle Objective', flex:2 },
-        { field: 'plan_due_date', headerName: 'Due Date', valueFormatter: v => dayjs(v).format('MM-DD-YYYY'), flex:1 },
+        { field: 'plan_due_date', headerName: 'Due Date', valueFormatter: v => v ? dayjs(v).format('MM-DD-YYYY') : 'No date', flex:1 },
         { field: 'act_choice', headerName: 'Next Step', flex:1 },
     ]
 
