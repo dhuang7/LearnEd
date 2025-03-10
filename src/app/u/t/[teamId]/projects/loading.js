@@ -53,6 +53,7 @@ export default async function LoadingPage() {
                             >
                             <Tab label="Drivers"  />
                             <Tab label="Process"  />
+                            <Tab label="Run Chart"   />
                             <Tab label="Cycles"   />
                         </Tabs>
                     </Box>
