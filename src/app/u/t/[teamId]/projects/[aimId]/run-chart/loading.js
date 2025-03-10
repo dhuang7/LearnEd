@@ -34,7 +34,7 @@ export default function Loading() {
                             elevation={0} 
                             sx={{
                                 borderRadius:3, boxSizing:'border-box', border:'1px solid', borderColor: 'grey.300',
-                                height:'100%', width:'100%', overflow:'hidden',
+                                height:'100%', width:'100%', overflow:'hidden', p:'1rem', py:'.5rem',
                                 display:'flex', flexDirection:'column', position:'relative'
                             }}
                             >
