@@ -2,10 +2,17 @@
 
 import Paper from "@mui/material/Paper";
 import { LineChart } from "@mui/x-charts";
+import dayjs from "dayjs";
 
 
 
-export default function RunChartGraph({category, process, measure, categoryMeasure}) {
+export default function RunChartGraph({measure}) {
+    const measureObjList = measure?.date_list.map((v, i) => ({
+        date: dayjs(v).valueOf(),
+        data: measure.data_list[i]
+    })).sort((a, b) => a.date - b.date) || [];
+
+
     
     ///////////////// USE DATA SET. LOOK AT THE DATA SET IN MUI LINE GRAPH
     return (
@@ -19,13 +26,20 @@ export default function RunChartGraph({category, process, measure, categoryMeasu
             >
                 
             <LineChart 
-                xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                xAxis={[{ 
+                    dataKey:'date',
+                    tickMinStep:86400000,
+                    valueFormatter: v => dayjs(v).format('M/D/YY')
+                }]}
                 series={[
                   {
-                    // curve:'linear',
-                    data: [2, 5.5, 2, 8.5, 1.5, 5],
+                    dataKey:'data',
+                    curve:'linear',
+                    connectNulls: true,
+                    // data: measure?.data_list || [],
                   },
                 ]}
+                dataset={measureObjList}
                 grid={{ vertical: true, horizontal: true }}
                 />
         </Paper>

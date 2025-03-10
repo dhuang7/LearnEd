@@ -8,10 +8,10 @@ import { useState } from "react";
 
 
 
-export default function PageClient({aimId, measureTypes}) {
+export default function PageClient({aimId}) {
     const [category, setCategory] = useState('projects');
     const [process, setProcess] = useState('');
-    const [measure, setMeasure] = useState(measureTypes[0].id);
+    const [measure, setMeasure] = useState(null);
 
     const measureTables = {
         'projects': 'aim_measures',
@@ -30,7 +30,7 @@ export default function PageClient({aimId, measureTypes}) {
                     <Box sx={{width:'16.5rem', height:'100%', pr:'.5rem', boxSizing:'border-box'}}>
                         {/* side */}
                         <RunChartDash 
-                            aimId={aimId} measureTypes={measureTypes} 
+                            aimId={aimId} 
                             category={category} process={process} measure={measure}
                             setCategory={setCategory} setProcess={setProcess} setMeasure={setMeasure} 
                             />

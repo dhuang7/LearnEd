@@ -181,7 +181,7 @@ export default function MeasuresList({
                         {/* Data list */}
                         {v.date_list?.map((date, data_i) => (
                             <Box key={data_i} sx={{display:'flex', alignItems:'center', mt:'1rem'}}>
-                                <Typography align='right' fontWeight={'bold'} sx={{mr:'.5rem', minWidth:'2rem', }}>{data_i}</Typography>
+                                <Typography align='center' fontWeight={'bold'} sx={{mr:'.5rem', minWidth:'2rem', }}>{data_i}</Typography>
                                 {/* date */}
                                 <TextField
                                     label='Date'

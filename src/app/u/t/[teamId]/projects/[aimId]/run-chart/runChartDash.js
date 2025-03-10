@@ -1,6 +1,7 @@
 'use client'
 
 import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -10,17 +11,34 @@ import createClient from "@/utils/supabase/client";
 
 
 export default function RunChartDash({
-    aimId, measureTypes, 
+    aimId, 
     category, process, measure, 
     setCategory, setProcess, setMeasure
 }) {
     const supabase = createClient();
     const [processes, setProcesses] = useState([]);
+    const [measures, setMeasures] = useState([]);
     const [categoryText, setCategoryText] = useState(category);
     const [processText, setProcessText] = useState(process);
     const [measureText, setMeasureText] = useState(measure);
 
-    // initialize
+    const measureTables = {
+        'projects': 'aim_measures',
+        'primary_drivers': 'primary_driver_measures',
+        'secondary_drivers': 'secondary_driver_measures',
+        'change_ideas': 'change_idea_measures',
+        'pdsa_cycles': 'cycle_measures',
+    }
+
+    const measureId = {
+        'projects': 'aim_id',
+        'primary_drivers': 'primary_driver_id',
+        'secondary_drivers': 'secondary_driver_id',
+        'change_ideas': 'change_idea_id',
+        'pdsa_cycles': 'cycle_id',
+    }
+
+    // initialize processes
     useEffect(() => {
         async function getProcesses() {
             const eqProjects = categoryText === 'projects' ? 'id' : 'aim_id';
@@ -40,6 +58,32 @@ export default function RunChartDash({
 
         getProcesses();
     }, [categoryText]);
+
+    // initialize measures
+    useEffect(() => {
+        async function getMeasures() {
+            if (!processText) return;
+            
+            const {data, error} = await supabase
+                .from(measureTables[categoryText])
+                .select(`
+                    *,
+                    ...measure_types(
+                        measure_name:name
+                    )    
+                `)
+                .eq(measureId[categoryText], processText);
+
+            console.log(error);
+            console.log(data);
+
+            setMeasures(data);
+            setMeasureText(data[0]);
+            setMeasure(data[0]);
+        }
+
+        getMeasures();
+    }, [processText]);
 
     // handlers /////////////
 
@@ -121,9 +165,12 @@ export default function RunChartDash({
             <TextField
                 select
                 label="Measure"
-                value={measureText}
+                value={measureText || ''}
                 onChange={handleMeasureText}
                 slotProps={{
+                    select: {
+                        renderValue:(v) => v.measure_name,
+                    },
                     htmlInput: {
                         sx: {
                             py:'.5rem'
@@ -135,8 +182,13 @@ export default function RunChartDash({
                 }}
                 sx={{mt:'1rem'}}
                 >
-                {measureTypes.map((v, i) => (
-                    <MenuItem key={i} value={v.id}>{v.name}</MenuItem>
+                {measures.map((v, i) => (
+                    <MenuItem key={i} value={v}>
+                        <Box sx={{display:'flex', alignItems:'center', width:'100%'}}>
+                            <Typography sx={{mr:'.5rem'}}>{v.measure_name}</Typography>
+                            <Typography color="textSecondary" sx={{ml:'auto'}}>Entries: {v.data_list.length}</Typography>
+                        </Box>
+                    </MenuItem>
                 ))}
             </TextField>
         </Paper>
