@@ -66,7 +66,7 @@ export default function AddTaskSideview({customButton, teamMembers, sectionStatu
         setAssignedText('');
         setStatusText(sectionStatus||'to do');
         setDueDateText(null);
-        setSelectedTeam('');
+        setSelectedTeam(teamId);
     }
 
     function handleTitleText({target}) {
