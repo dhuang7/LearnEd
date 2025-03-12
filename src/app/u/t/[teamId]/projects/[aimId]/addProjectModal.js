@@ -176,7 +176,7 @@ export default function AddProjectModal({component, modalOnly, teamId}) {
                             <TextField
                                 fullWidth
                                 disabled={loading}
-                                label='Problem'
+                                label='Problem Statement'
                                 value={problemText}
                                 onChange={handleProblemText}
                                 onKeyDown={handleCancelKeydownPropagation}
@@ -194,7 +194,7 @@ export default function AddProjectModal({component, modalOnly, teamId}) {
                             <TextField
                                 fullWidth
                                 disabled={loading}
-                                label='Goal'
+                                label='Aim Statement'
                                 value={goalText}
                                 onChange={handleGoalText}
                                 onKeyDown={handleCancelKeydownPropagation}

@@ -341,13 +341,13 @@ export default function CustomNode({
                                     </Box>
                                     <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
                                         {/* title */}
-                                        <Typography variant="h6">Problem:</Typography>
+                                        <Typography variant="h6">Problem Statement:</Typography>
                                         {/* writing box and button */}
                                         <ButtonTextfield value={problemText} onChange={handleProblemText} color='primary' />
                                     </Box>
                                     <Box sx={{width:'100%', boxSizing:'border-box', pt:'.23rem'}}>
                                         {/* title */}
-                                        <Typography variant="h6">Goal:</Typography>
+                                        <Typography variant="h6">Aim Statement:</Typography>
                                         {/* writing box and button */}
                                         <ButtonTextfield value={goalText} onChange={handleGoalText} color='primary' />
                                     </Box>
