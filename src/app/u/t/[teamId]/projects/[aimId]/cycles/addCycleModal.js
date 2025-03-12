@@ -290,7 +290,7 @@ export default function AddCycleModal({changeIdeas, aimId, setCurrCycles}) {
                             {/* objective */}
                             <TextField 
                                 disabled={loading}
-                                label='Objective'
+                                label='Objective/Hypothesis'
                                 value={objectiveText}
                                 onChange={handleObjectiveText}
                                 fullWidth
