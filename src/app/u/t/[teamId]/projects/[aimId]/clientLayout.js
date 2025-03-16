@@ -26,7 +26,8 @@ export default function ClientPage({children, aimId, projects, teamId}) {
         'drivers':0,
         'process':1,
         'run-chart':2,
-        'cycles':3,
+        'measures':3,
+        'cycles':4,
     }
     const currentPath = pathname.split('/');
     const currentRelativePath = currentPath.filter(v => pathIndex[v] !== undefined)[0];
@@ -97,6 +98,7 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                             <Tab label="Drivers" component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'} />
                             <Tab label="Process" component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'} />
                             <Tab label="Run Chart"  component={NextLink} href={currentPath.length === 7 ? 'run-chart' : '../run-chart'} />
+                            <Tab label="Measures"  component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'} />
                             <Tab label="Cycles"  component={NextLink} href={currentPath.length === 7 ? 'cycles' : '../cycles'} />
                         </Tabs>
                     </Box>
