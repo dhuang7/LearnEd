@@ -2,8 +2,6 @@
 
 import createClient from "@/utils/supabase/client";
 import Box from "@mui/material/Box";
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 
 
 import {
@@ -12,11 +10,8 @@ import {
     GridToolbarColumnsButton,
     GridToolbarFilterButton,
     GridToolbarQuickFilter,
-    GridActionsCellItem
 } from '@mui/x-data-grid';
-// import EditProcessSideView from "./editProcessSideView";
 import { useState } from "react";
-// import AddProcessSideView from "./addProcessSideView";
 import { useRouter } from "next/navigation";
 import AddMeasureSideView from "./addMeasureSideView";
 import EditMeasureSideView from "./editMeasureSideView";
