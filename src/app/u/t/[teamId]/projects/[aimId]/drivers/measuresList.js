@@ -10,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+
 import { useEffect, useState } from 'react';
 import createClient from '@/utils/supabase/client';
 import AddMeasureTypeModal from './addMeasureTypeModal';
@@ -170,7 +172,19 @@ export default function MeasuresList({
                                     </MenuItem>
                                 ))}
                                 {/* Add new project */}
-                                <AddMeasureTypeModal aimId={aimId} measureTypes={measureTypes} setMeasureTypes={setMeasureTypes} component={(props) => <MenuItem disableGutters value={'button'} {...props}/>} />
+                                <MenuItem 
+                                    disabled 
+                                    sx={{
+                                        '&.Mui-disabled': {
+                                            opacity:1,
+                                            color:'info.main',
+                                        }
+                                    }}
+                                    >
+                                    <InfoRoundedIcon fontSize='small' sx={{mr:'.5rem'}} />
+                                    Create or edit new measures in the measure tab.
+                                </MenuItem>
+                                {/* <AddMeasureTypeModal aimId={aimId} measureTypes={measureTypes} setMeasureTypes={setMeasureTypes} component={(props) => <MenuItem disableGutters value={'button'} {...props}/>} /> */}
                             </TextField>
                             {/* trash */}
                             <IconButton size='small' data-order={i} onClick={handleDeleteMeasure} sx={{ml:'.5rem'}}>
