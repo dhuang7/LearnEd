@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import FormatQuoteRoundedIcon from '@mui/icons-material/FormatQuoteRounded';
 
 import NextLink from 'next/link';
 import Image from "next/image";
@@ -110,5 +111,36 @@ export function LIParagraph({children, bolded}) {
 export function ArticleLink({children, href}) {
     return (
         <NextLink target="_blank" href={href}>{children}</NextLink>
+    );
+}
+
+export function ArticleImage({src, alt, inline}) {
+    return (
+        <Box sx={{width:'100%', display:'flex', justifyContent:'center', mb:inline?0:'2rem'}}>
+            <Image src={src} alt={alt} style={{width:'100%', height:'auto',}} />
+        </Box>
+    );
+}
+
+export function SubSection({children}) {
+    return (
+        <Box sx={{backgroundColor:'grey.300', p:'1rem', px:'2rem', boxSizing:'border-box', borderRadius:3, mb:'2rem'}}>
+            {children}
+        </Box>
+    )
+}
+
+export function Quote({children, backgroundColor}) {
+    return (
+        <Box sx={{borderLeft:'1rem solid', borderColor:'black', boxSizing:'border-box', py:'.5rem', px:'1rem', backgroundColor:'common.white', borderRadius:3, mb:'2rem'}}>
+            <FormatQuoteRoundedIcon fontSize="large" />
+            {children}
+        </Box>
+    )
+}
+
+export function Italic({children}) {
+    return (
+        <span style={{fontStyle:'italic'}}>{children}</span>
     );
 }

@@ -10,13 +10,14 @@ import { info as hctefcsiInfo } from "./harnessing-collective-teacher-efficacy-f
 import { info as tsoplcInfo } from "./the-science-of-professional-learning-communities/page";
 import { info as ocipInfo } from "./overcoming-challenges-in-plc/page";
 import { info as tdotrapInfo } from "./the-disconnect-of-the-researcher-and-practitioner/page";
+import { info as iaajInfo } from "./improvement-as-a-journey/page";
 
 
 export default function Page() {
     const searchBarHeight = 7.5;
 
     const articles = [
-        wiisInfo, hctefcsiInfo, tsoplcInfo, ocipInfo, tdotrapInfo,
+        wiisInfo, hctefcsiInfo, tsoplcInfo, ocipInfo, tdotrapInfo, iaajInfo,
     ];
 
     return (

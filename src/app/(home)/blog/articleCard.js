@@ -30,21 +30,23 @@ export default function ArticleCard({article}) {
                 href={article.href}
                 >
                 {/* thumbnail */}
-                <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
-                    <Box 
-                        sx={{
-                            width:'100%', 
-                            aspectRatio:article.aspectRatio,
-                            // height:345/2, 
-                            display:'flex', alignItems:'center', justifyContent:'center',
-                            position:'relative',
-                            borderRadius:2,
-                            overflow:'hidden',
-                            border:'1px solid',
-                            borderColor:'grey.300',
-                        }}
-                        >
-                        <Image src={article.thumbnail} alt={'icon'} fill/>
+                <Box sx={{minHeight:194, display:'flex', alignItems:'center'}}>
+                    <Box sx={{width:'100%', justifyContent:'center', display:'flex'}}>
+                        <Box 
+                            sx={{
+                                width:'100%', 
+                                aspectRatio:article.aspectRatio,
+                                // height:345/2, 
+                                display:'flex', alignItems:'center', justifyContent:'center',
+                                position:'relative',
+                                borderRadius:2,
+                                overflow:'hidden',
+                                border:'1px solid',
+                                borderColor:'grey.300',
+                            }}
+                            >
+                            <Image src={article.thumbnail} alt={'icon'} fill/>
+                        </Box>
                     </Box>
                 </Box>
                 {/* text */}
