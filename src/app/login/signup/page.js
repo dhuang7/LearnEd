@@ -9,7 +9,10 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-
+import VisibilityRounded from '@mui/icons-material/VisibilityRounded';
+import VisibilityOffRounded from '@mui/icons-material/VisibilityOffRounded';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 import { useState } from 'react';
 import createClient from '@/utils/supabase/client';
@@ -26,6 +29,7 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [disabled, setDisabled] = useState(false);
 
     // Handlers
@@ -39,6 +43,10 @@ export default function Signup() {
 
     function handleConfirm({target}) {
         setConfirm(target.value);
+    }
+
+    function handleShowPassword() {
+        setShowPassword(s=>!s);
     }
 
     async function signUpNewUser(e) {
@@ -83,21 +91,53 @@ export default function Signup() {
                 <TextField 
                     required
                     label="Password"
-                    type='password'
+                    type={showPassword ? 'text' : 'password'}
                     onChange={handlePassword}
                     value={password}
                     sx={{mb:'1rem', width:'100%'}} 
+                    slotProps={{
+                        input: {
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleShowPassword}
+                                        // onMouseDown={handleMouseDownPassword}
+                                        // onMouseUp={handleMouseUpPassword}
+                                        edge="end"
+                                        >
+                                        {showPassword ? <VisibilityOffRounded /> : <VisibilityRounded />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }
+                    }}
                     />
                 {/* confirm */}
                 <TextField 
                     required
                     label="Confirm" 
-                    type='password'
+                    type={showPassword ? 'text' : 'password'}
                     onChange={handleConfirm}
                     value={confirm}
                     error={password !== confirm}
                     helperText={(password !== confirm) && 'Password does not match'}
                     sx={{mb:'1rem', width:'100%'}} 
+                    slotProps={{
+                        input: {
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleShowPassword}
+                                        // onMouseDown={handleMouseDownPassword}
+                                        // onMouseUp={handleMouseUpPassword}
+                                        edge="end"
+                                        >
+                                        {showPassword ? <VisibilityOffRounded /> : <VisibilityRounded />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }
+                    }}
                     />
                 {/* button signup */}
                 <Box sx={{mb:'1rem', width:'100%', display:'flex', justifyContent:'center'}}>
