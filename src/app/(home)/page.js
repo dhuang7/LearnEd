@@ -4,12 +4,16 @@ import Button from "@mui/material/Button";
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import YoutubeSearchedForRoundedIcon from '@mui/icons-material/YoutubeSearchedForRounded';
+import CorporateFareRoundedIcon from '@mui/icons-material/CorporateFareRounded';
+import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 
 import NextLink from 'next/link';
 import DemoCarousel from "./demoCarousel";
 import Image from "next/image";
 import Footer from "./footer";
 import Reasons from "./reasons";
+import Audience from "./audience";
 
 
 export default function Page() {
@@ -169,6 +173,33 @@ export default function Page() {
                 }}
                 backgroundColor={'grey.100'}
                 />
+
+            {/* Audience */}
+            <Box sx={{py:'5rem', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column'}}>
+                <Typography variant="h3" color="primary" sx={{fontWeight:'bold', mb:'3rem'}}>Who We Serve</Typography>
+                <Box sx={{display:'flex', maxWidth:'100%', flexWrap:'wrap', justifyContent:'center'}}>
+                    <Audience 
+                        title='Districts'
+                        description='Streamline improvement work for schools, coaches, and teams to improve PLC effectiveness and student outcomes.'
+                        icon={<CorporateFareRoundedIcon sx={{fontSize:'7.5rem', color:'text.secondary'}} />}
+                        />
+                    <Audience 
+                        title='Schools'
+                        description='Guide student outcome plans school wide through high-functioning PLCs and coaches.'
+                        icon={<AccountBalanceRoundedIcon sx={{fontSize:'7.5rem', color:'text.secondary'}}/>}
+                        />
+                    <Audience 
+                        title='Coaches'
+                        description='Support teacher teams with individual professional development and data analysis.'
+                        icon={<SchoolRoundedIcon sx={{fontSize:'7.5rem', color:'text.secondary'}}/>}
+                        />
+                    <Audience 
+                        title='Teams'
+                        description='Demonstrate student outcome improvements through highly collaborative and functioning teams.'
+                        icon={<GroupsRoundedIcon sx={{fontSize:'7.5rem', color:'text.secondary'}} />}
+                        />
+                </Box>
+            </Box>
             <Footer />
         </Box>
     );

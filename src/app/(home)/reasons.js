@@ -14,7 +14,7 @@ export default function Reasons({icon, title, description, buttonText, image, re
             {/* titles */}
             <Box sx={{width:'80%'}}>
                 <Typography variant="h3" color="textSecondary" sx={{mb:'.5rem'}}><Icon fontSize="inherit" /></Typography>
-                <Typography variant="h3" color="primary" align="left" sx={{fontWeight:'bold', mb:'1rem', display:'flex', justifyContent:{xs:'center', md:'left'}}}>{title}</Typography>
+                <Typography variant="h3" color="primary" align="left" sx={{fontWeight:'bold', mb:'1rem', display:'flex', justifyContent:'left'}}>{title}</Typography>
                 <Typography variant="h6" color="textSecondary" align="left" sx={{mb:'2rem'}}>
                     {description}
                 </Typography>
