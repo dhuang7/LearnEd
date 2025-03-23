@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import { useEffect, useState } from 'react';
 import createClient from '@/utils/supabase/client';
@@ -134,6 +135,24 @@ export default function MeasuresList({
         })
     }
 
+    function handleDeleteData(e, value, index) {
+        setMeasuresList(ts => {
+            if (ts[value].date_list.length === 1) return [...ts];
+
+            ts[value] = {
+                ...ts[value],
+                date_list: [
+                    ...(ts[value].date_list?.filter((v, i) => i !== index) || []),
+                ],
+                data_list: [
+                    ...(ts[value].data_list?.filter((v, i) => i !== index) || []),
+                ],
+            }
+
+            return [...ts];
+        })
+    }
+
     // handlers various
     function handleShowPicker({target}) {
         target.showPicker?.();
@@ -233,6 +252,9 @@ export default function MeasuresList({
                                     }}
                                     sx={{ml:'.5rem'}}
                                     />
+                                <IconButton size='small' sx={{ml:'.5rem'}} onClick={e => handleDeleteData(e, i, data_i)}>
+                                    <CloseRoundedIcon fontSize='small' />
+                                </IconButton>
                             </Box>
                         ))}
                         
