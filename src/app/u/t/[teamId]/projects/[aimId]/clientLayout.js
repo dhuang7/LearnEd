@@ -24,10 +24,11 @@ export default function ClientPage({children, aimId, projects, teamId}) {
     const router = useRouter();
     const pathIndex = {
         'drivers':0,
-        'process':1,
-        'run-chart':2,
-        'measures':3,
-        'cycles':4,
+        'process':4,
+        'run-chart':5,
+        'measures':1,
+        'change-ideas':2,
+        'cycles':3,
     }
     const currentPath = pathname.split('/');
     const currentRelativePath = currentPath.filter(v => pathIndex[v] !== undefined)[0];
@@ -96,10 +97,11 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                             aria-label="basic tabs example"
                             >
                             <Tab label="Drivers" component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'} />
+                            <Tab label="Measures"  component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'} />
+                            <Tab label="Changes"  component={NextLink} href={currentPath.length === 7 ? 'change-ideas' : '../change-ideas'} />
+                            <Tab label="Cycles"  component={NextLink} href={currentPath.length === 7 ? 'cycles' : '../cycles'} />
                             <Tab label="Process" component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'} />
                             <Tab label="Run Chart"  component={NextLink} href={currentPath.length === 7 ? 'run-chart' : '../run-chart'} />
-                            <Tab label="Measures"  component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'} />
-                            <Tab label="Cycles"  component={NextLink} href={currentPath.length === 7 ? 'cycles' : '../cycles'} />
                         </Tabs>
                     </Box>
                 </Box>

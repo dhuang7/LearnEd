@@ -58,11 +58,8 @@ export default function MeasuresList({
             ...l,
             {
                 order_num: l.length,
-                description: '',
-                data: '',
-                date: dayjs(),
                 date_list: [dayjs()],
-                data_list: [''],
+                data_list: [null],
             }
         ])
     }
@@ -96,7 +93,7 @@ export default function MeasuresList({
                 // data: target.value,
             }
 
-            ts[value].data_list[index] = target.value;
+            ts[value].data_list[index] = Number(target.value);
 
             return [...ts];
         })
