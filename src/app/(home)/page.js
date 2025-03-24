@@ -14,6 +14,7 @@ import Image from "next/image";
 import Footer from "./footer";
 import Reasons from "./reasons";
 import Audience from "./audience";
+import LearnMoreModal from "./learnMoreModal";
 
 
 export default function Page() {
@@ -29,19 +30,24 @@ export default function Page() {
                 </Typography>
                 {/* description */}
                 <Typography variant="h5" color="textSecondary" align="center" sx={{width:'60%', mt:'2rem'}}>
-                    LearnEd makes it easy to collaborate with educators to improve the teaching experience.
+                    LearnEd makes it easy to collaborate with educators to improve the teaching experience. <b>We are currently beta testing, so let's connect to learn more!</b>
                 </Typography>
-                {/* get started button */}
-                <Button 
-                    variant="contained" disableElevation 
-                    sx={{borderRadius:3, textTransform:'none', mt:'2rem', py:'.75rem', px:'2rem'}}
-                    component={NextLink}
-                    href='/login'
-                    >
-                    <Typography variant="h6">
-                        Get started
-                    </Typography>
-                </Button>
+                <Box sx={{mt:'2rem',}}>
+                    {/* learn more button */}
+                    <LearnMoreModal />
+                    {/* get started button */}
+                    <Button 
+                        variant="contained" disableElevation 
+                        sx={{borderRadius:3, textTransform:'none', py:'.75rem', px:'2rem'}}
+                        component={NextLink}
+                        href='/login'
+                        >
+                        <Typography variant="h6">
+                            Get started
+                        </Typography>
+                    </Button>
+                </Box>
+                
             </Box>
             {/* image carousel */}
             <Box sx={{width:'100%'}}>
