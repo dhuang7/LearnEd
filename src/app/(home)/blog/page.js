@@ -17,7 +17,8 @@ export default function Page() {
     const searchBarHeight = 7.5;
 
     const articles = [
-        wiisInfo, hctefcsiInfo, tsoplcInfo, ocipInfo, tdotrapInfo, iaajInfo,
+        wiisInfo, hctefcsiInfo, tsoplcInfo, ocipInfo, tdotrapInfo, 
+        // iaajInfo,
     ];
 
     return (
