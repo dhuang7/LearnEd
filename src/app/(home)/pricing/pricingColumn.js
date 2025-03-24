@@ -5,7 +5,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 import NextLink from 'next/link';
 
-export default function PricingColumn({href, width, noBorder, title, description, color, price, priceSize, buttonText, featureTitle, features}) {
+export default function PricingColumn({href, width, noBorder, title, description, color, price, priceSize, buttonText, featureTitle, features, customButton}) {
     return (
         <Box 
             sx={{
@@ -51,7 +51,7 @@ export default function PricingColumn({href, width, noBorder, title, description
                             filter: 'brightness(1.1)',
                         }
                     }}
-                    component={NextLink}
+                    component={customButton || NextLink}
                     href={href}
                     >
                     <Typography noWrap variant="h5">{buttonText}</Typography>

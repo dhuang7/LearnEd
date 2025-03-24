@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 
 import Footer from "../footer";
 import PricingColumn from "./pricingColumn";
+import ContactUs from "./contactUs";
 
 
 export default function Page() {
@@ -28,7 +29,7 @@ export default function Page() {
                     The tool is completely free for now!
                 </Typography>
                 <Typography variant="h5" align="center" sx={{width:'60%', mt:'1rem', color:'primary.contrastText'}}>
-                    Possible future monthly pricing below:
+                    {/* Possible future monthly pricing below: */}
                 </Typography>
             </Box>
             <Box sx={{position:'relative', width:'100%', minHeight:'40rem', display:'flex', justifyContent:'center'}}>
@@ -56,7 +57,7 @@ export default function Page() {
                             'Individual Team', 'Unlimited cycles', 'Collaborative diagrams', 'Manage calendars', 'Create to-do lists', 'Help Center'
                         ]}
                         />
-                    <PricingColumn 
+                    {/* <PricingColumn 
                         width={{xs:'100%', lg:'33.33%'}} 
                         href='/login'
                         color='RoyalBlue'
@@ -68,18 +69,18 @@ export default function Page() {
                         features={[
                             'Create up to 2 teams', 'On-demand support', 'New feature support', 'AI Assistant Lite',
                         ]}
-                        />
+                        /> */}
                     <PricingColumn 
                         width={{xs:'100%', lg:'33.33%'}} 
                         href='/login'
                         color='ForestGreen'
                         title='Unlimited'
                         description='Best for instructional teams.'
-                        price='$10'
+                        price='FREE'
                         buttonText='Get started'
-                        featureTitle='Everything in Starter, plus:'
+                        featureTitle='Everything in Free Forever, plus:'
                         features={[
-                            'Unlimited teams', 'Remote trainings', 'Unlimited AI assistance',
+                            'Unlimited teams', 'Remote trainings', 'Unlimited AI assistance', 'On-demand support', 'New feature support',
                         ]}
                         />
                     <PricingColumn 
@@ -92,6 +93,7 @@ export default function Page() {
                         price="Let's talk"
                         priceSize='h4'
                         buttonText='Contact us'
+                        customButton={ContactUs}
                         featureTitle='Everything in Unlimited, plus:'
                         features={[
                             'Unlimited Teams for all users', 'Central hub for organization', 'Professional Development', 

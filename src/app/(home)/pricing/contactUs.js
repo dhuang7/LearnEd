@@ -19,7 +19,7 @@ import createClient from "@/utils/supabase/client";
 
 
 
-export default function LearnMoreModal({buttonText, buttonParams}) {
+export default function ContactUs() {
     const supabase = createClient();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [open, setOpen] = useState(false);
@@ -91,17 +91,22 @@ export default function LearnMoreModal({buttonText, buttonParams}) {
 
     return (
         <>
+
+            {/* button */}
             <Button 
-                variant="outlined" disableElevation color="secondary"
-                sx={{borderRadius:3, textTransform:'none', py:'.75rem', px:'2rem', mr:'1rem'}}
+                variant="contained" disableElevation fullWidth
+                sx={{
+                    textTransform:'none', backgroundColor:'crimson', borderRadius:3, minWidth:0,
+                    '&:hover': {
+                        backgroundColor: 'crimson',
+                        filter: 'brightness(1.1)',
+                    }
+                }}
                 onClick={handleOpen}
-                {...buttonParams}
-                // component={NextLink}
-                // href='/login'
+                // component={customButton || NextLink}
+                // href={href}
                 >
-                <Typography variant="h6">
-                    {buttonText || 'Learn more'}
-                </Typography>
+                <Typography noWrap variant="h5">Contact us</Typography>
             </Button>
 
             {/* open dialog */}
