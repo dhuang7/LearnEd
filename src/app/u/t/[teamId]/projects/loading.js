@@ -47,15 +47,26 @@ export default async function LoadingPage() {
                             </TextField>
                         </Box>
                         {/* nav tabs */}
-                        <Tabs 
-                            value={0} 
-                            aria-label="basic tabs example"
-                            >
-                            <Tab label="Drivers"  />
-                            <Tab label="Process"  />
-                            <Tab label="Run Chart"   />
-                            <Tab label="Cycles"   />
-                        </Tabs>
+                        <Box sx={{maxWidth:'30rem'}}>
+                            <Tabs 
+                                value={0} 
+                                aria-label="basic tabs example"
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                sx={{
+                                    [`& .MuiTabs-scrollButtons`]: {
+                                        '&.Mui-disabled': { opacity: 0.3 },
+                                    },
+                                }}
+                                >
+                                <Tab label="Drivers" />
+                                <Tab label="Process" />
+                                <Tab label="Measures"  />
+                                <Tab label="Changes" />
+                                <Tab label="Cycles"  />
+                                <Tab label="Run Chart" />
+                            </Tabs>
+                        </Box>
                     </Box>
                 </Box>
             </Box>
