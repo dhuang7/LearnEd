@@ -48,7 +48,26 @@ export default async function LoadingPage() {
                         </Box>
                         {/* nav tabs */}
                         <Box sx={{width:'30rem'}}>
-                            <Skeleton variant="rectangular" />
+                            <Tab 
+                                label='Aim' 
+                                icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
+                                sx={{
+                                    '&.MuiButtonBase-root': {
+                                        minHeight:0,
+                                    }
+                                }}
+                                />
+                            <Tab 
+                                label='Measure' 
+                                icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
+                                sx={{
+                                    '&.MuiButtonBase-root': {
+                                        minHeight:0,
+                                    }
+                                }}
+                                />
+                            <Tab label="Changes"  />
+                            <Tab label="Cycles"  />
                         </Box>
                     </Box>
                 </Box>

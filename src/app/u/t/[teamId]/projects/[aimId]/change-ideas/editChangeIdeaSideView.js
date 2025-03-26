@@ -211,7 +211,7 @@ export default function EditChangeIdeaSideView({changeIdea, open, setOpen}) {
                                 {/* title */}
                                 <Typography variant="h6">Process Measure:</Typography>
                                 {/* writing box and button */}
-                                <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} aimId={changeIdea.aim_id} />
+                                <MeasuresList measuresList={measuresList} setMeasuresList={setMeasuresList} aimId={changeIdea?.aim_id} />
                             </Box>
                         </Box>
                     </DialogContent>

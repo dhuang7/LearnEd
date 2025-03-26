@@ -6,7 +6,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import Menu from "@mui/material/Menu";
 
 
 
@@ -24,17 +25,19 @@ export default function ClientPage({children, aimId, projects, teamId}) {
     const router = useRouter();
     const pathIndex = {
         'drivers':0,
-        'process':1,
-        'run-chart':5,
-        'measures':2,
-        'change-ideas':3,
-        'cycles':4,
+        'process':0,
+        'run-chart':1,
+        'measures':1,
+        'change-ideas':2,
+        'cycles':3,
     }
     const currentPath = pathname.split('/');
     const currentRelativePath = currentPath.filter(v => pathIndex[v] !== undefined)[0];
     // const currentRelativePath = currentPath[currentPath.length-1];
 
     const [project, setProject] = useState(projects.filter(v=>v.id===aimId)[0]);
+    const [aimEl, setAimEl] = useState(null);
+    const [measureEl, setMeasureEl] = useState(null);
 
     useEffect(() => {
         setAimInfo(aimId);
@@ -45,6 +48,24 @@ export default function ClientPage({children, aimId, projects, teamId}) {
         if (target.value === 'button') return true;
         setProject(target.value);
         router.push(`${currentPath.length === 7 ? '..' : '../..'}/${target.value.id}/${currentRelativePath}`);
+    }
+
+    function handleOpenAim(event) {
+        if (!event.currentTarget) return;
+        setAimEl(event.currentTarget);
+    }
+
+    function handleCloseAim(event) {
+        setAimEl(null);
+    }
+
+    function handleOpenMeasure(event) {
+        if (!event.currentTarget) return;
+        setMeasureEl(event.currentTarget);
+    }
+
+    function handleCloseMeasure(event) {
+        setMeasureEl(null);
     }
 
     return (
@@ -96,22 +117,85 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                             <Tabs 
                                 value={pathIndex[currentRelativePath]||0} 
                                 aria-label="basic tabs example"
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                sx={{
-                                    [`& .MuiTabs-scrollButtons`]: {
-                                        '&.Mui-disabled': { opacity: 0.3 },
-                                    },
-                                }}
+                                // variant="scrollable"
+                                // scrollButtons="auto"
+                                // sx={{
+                                //     [`& .MuiTabs-scrollButtons`]: {
+                                //         '&.Mui-disabled': { opacity: 0.3 },
+                                //     },
+                                // }}
                                 >
-                                <Tab label="Drivers" component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'} />
-                                <Tab label="Process" component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'} />
-                                <Tab label="Measures"  component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'} />
+                                <Tab 
+                                    label='Aim' 
+                                    onClick={handleOpenAim} 
+                                    icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
+                                    sx={{
+                                        '&.MuiButtonBase-root': {
+                                            minHeight:0,
+                                        }
+                                    }}
+                                    />
+                                <Tab 
+                                    label='Measure' 
+                                    onClick={handleOpenMeasure} 
+                                    icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
+                                    sx={{
+                                        '&.MuiButtonBase-root': {
+                                            minHeight:0,
+                                        }
+                                    }}
+                                    />
+                                {/* <Tab label="Drivers" component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'} /> */}
+                                {/* <Tab label="Process" component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'} /> */}
+                                {/* <Tab label="Measures"  component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'} /> */}
                                 <Tab label="Changes"  component={NextLink} href={currentPath.length === 7 ? 'change-ideas' : '../change-ideas'} />
                                 <Tab label="Cycles"  component={NextLink} href={currentPath.length === 7 ? 'cycles' : '../cycles'} />
-                                <Tab label="Run Chart"  component={NextLink} href={currentPath.length === 7 ? 'run-chart' : '../run-chart'} />
+                                {/* <Tab label="Run Chart"  component={NextLink} href={currentPath.length === 7 ? 'run-chart' : '../run-chart'} /> */}
                             </Tabs>
                         </Box>
+                        {/* Menu items */}
+                        {/* aim menu */}
+                        <Menu
+                            anchorEl={aimEl}
+                            open={Boolean(aimEl)}
+                            onClose={handleCloseAim}
+                            >
+                            <MenuItem 
+                                onClick={handleCloseAim}
+                                selected={currentRelativePath==='drivers'} 
+                                component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'}
+                                >
+                                Driver Diagram
+                            </MenuItem>
+                            <MenuItem 
+                                onClick={handleCloseAim}
+                                selected={currentRelativePath==='process'} 
+                                component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'}
+                                >
+                                Process Maps
+                            </MenuItem>
+                        </Menu>
+                        {/* Measure menu */}
+                        <Menu
+                            anchorEl={measureEl}
+                            open={Boolean(measureEl)}
+                            onClose={handleCloseMeasure}
+                            >
+                            <MenuItem 
+                                onClick={handleCloseMeasure}
+                                selected={currentRelativePath==='measures'} 
+                                component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'}
+                                >
+                                Measures
+                            </MenuItem>
+                            <MenuItem 
+                                onClick={handleCloseMeasure}
+                                selected={currentRelativePath==='run-chart'} 
+                                component={NextLink} href={currentPath.length === 7 ? 'run-chart' : '../run-chart'}
+                                >
+                                Run Chart
+                            </MenuItem>
+                        </Menu>
                     </Box>
                 </Box>
             </Box>
