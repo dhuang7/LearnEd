@@ -6,6 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 
 
 export default async function LoadingPage() {
@@ -47,7 +48,7 @@ export default async function LoadingPage() {
                             </TextField>
                         </Box>
                         {/* nav tabs */}
-                        <Box sx={{width:'30rem'}}>
+                        <Tabs value={0}>
                             <Tab 
                                 label='Aim' 
                                 icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
@@ -68,7 +69,7 @@ export default async function LoadingPage() {
                                 />
                             <Tab label="Changes"  />
                             <Tab label="Cycles"  />
-                        </Box>
+                        </Tabs>
                     </Box>
                 </Box>
             </Box>

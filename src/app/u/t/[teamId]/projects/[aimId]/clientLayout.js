@@ -113,46 +113,44 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                             </TextField>
                         </Box>
                         {/* nav tabs */}
-                        <Box sx={{maxWidth:'30rem'}}>
-                            <Tabs 
-                                value={pathIndex[currentRelativePath]||0} 
-                                aria-label="basic tabs example"
-                                // variant="scrollable"
-                                // scrollButtons="auto"
-                                // sx={{
-                                //     [`& .MuiTabs-scrollButtons`]: {
-                                //         '&.Mui-disabled': { opacity: 0.3 },
-                                //     },
-                                // }}
-                                >
-                                <Tab 
-                                    label='Aim' 
-                                    onClick={handleOpenAim} 
-                                    icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
-                                    sx={{
-                                        '&.MuiButtonBase-root': {
-                                            minHeight:0,
-                                        }
-                                    }}
-                                    />
-                                <Tab 
-                                    label='Measure' 
-                                    onClick={handleOpenMeasure} 
-                                    icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
-                                    sx={{
-                                        '&.MuiButtonBase-root': {
-                                            minHeight:0,
-                                        }
-                                    }}
-                                    />
-                                {/* <Tab label="Drivers" component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'} /> */}
-                                {/* <Tab label="Process" component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'} /> */}
-                                {/* <Tab label="Measures"  component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'} /> */}
-                                <Tab label="Changes"  component={NextLink} href={currentPath.length === 7 ? 'change-ideas' : '../change-ideas'} />
-                                <Tab label="Cycles"  component={NextLink} href={currentPath.length === 7 ? 'cycles' : '../cycles'} />
-                                {/* <Tab label="Run Chart"  component={NextLink} href={currentPath.length === 7 ? 'run-chart' : '../run-chart'} /> */}
-                            </Tabs>
-                        </Box>
+                        <Tabs 
+                            value={pathIndex[currentRelativePath]||0} 
+                            aria-label="basic tabs example"
+                            // variant="scrollable"
+                            // scrollButtons="auto"
+                            // sx={{
+                            //     [`& .MuiTabs-scrollButtons`]: {
+                            //         '&.Mui-disabled': { opacity: 0.3 },
+                            //     },
+                            // }}
+                            >
+                            <Tab 
+                                label='Aim' 
+                                onClick={handleOpenAim} 
+                                icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
+                                sx={{
+                                    '&.MuiButtonBase-root': {
+                                        minHeight:0,
+                                    }
+                                }}
+                                />
+                            <Tab 
+                                label='Measure' 
+                                onClick={handleOpenMeasure} 
+                                icon={<ExpandMoreRoundedIcon fontSize="small" />} iconPosition="end" 
+                                sx={{
+                                    '&.MuiButtonBase-root': {
+                                        minHeight:0,
+                                    }
+                                }}
+                                />
+                            {/* <Tab label="Drivers" component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'} /> */}
+                            {/* <Tab label="Process" component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'} /> */}
+                            {/* <Tab label="Measures"  component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'} /> */}
+                            <Tab label="Changes"  component={NextLink} href={currentPath.length === 7 ? 'change-ideas' : '../change-ideas'} />
+                            <Tab label="Cycles"  component={NextLink} href={currentPath.length === 7 ? 'cycles' : '../cycles'} />
+                            {/* <Tab label="Run Chart"  component={NextLink} href={currentPath.length === 7 ? 'run-chart' : '../run-chart'} /> */}
+                        </Tabs>
                         {/* Menu items */}
                         {/* aim menu */}
                         <Menu
