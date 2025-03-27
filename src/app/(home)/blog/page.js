@@ -15,7 +15,7 @@ import { info as iaajInfo } from "./improvement-as-a-journey/page";
 
 export default function Page() {
     const searchBarHeight = 7.5;
-
+    // remove
     const articles = [
         wiisInfo, hctefcsiInfo, tsoplcInfo, ocipInfo, tdotrapInfo, 
         // iaajInfo,
