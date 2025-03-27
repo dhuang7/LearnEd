@@ -112,17 +112,11 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                                 <AddProjectModal teamId={teamId} component={(props) => <MenuItem disableGutters value={'button'} {...props}/>} />
                             </TextField>
                         </Box>
+                        
                         {/* nav tabs */}
                         <Tabs 
                             value={pathIndex[currentRelativePath]||0} 
                             aria-label="basic tabs example"
-                            // variant="scrollable"
-                            // scrollButtons="auto"
-                            // sx={{
-                            //     [`& .MuiTabs-scrollButtons`]: {
-                            //         '&.Mui-disabled': { opacity: 0.3 },
-                            //     },
-                            // }}
                             >
                             <Tab 
                                 label='Aim' 
@@ -144,13 +138,11 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                                     }
                                 }}
                                 />
-                            {/* <Tab label="Drivers" component={NextLink} href={currentPath.length === 7 ? 'drivers' : '../drivers'} /> */}
-                            {/* <Tab label="Process" component={NextLink} href={currentPath.length === 7 ? 'process' : '../process'} /> */}
-                            {/* <Tab label="Measures"  component={NextLink} href={currentPath.length === 7 ? 'measures' : '../measures'} /> */}
                             <Tab label="Changes"  component={NextLink} href={currentPath.length === 7 ? 'change-ideas' : '../change-ideas'} />
                             <Tab label="Cycles"  component={NextLink} href={currentPath.length === 7 ? 'cycles' : '../cycles'} />
-                            {/* <Tab label="Run Chart"  component={NextLink} href={currentPath.length === 7 ? 'run-chart' : '../run-chart'} /> */}
                         </Tabs>
+
+
                         {/* Menu items */}
                         {/* aim menu */}
                         <Menu
@@ -194,6 +186,8 @@ export default function ClientPage({children, aimId, projects, teamId}) {
                                 Run Chart
                             </MenuItem>
                         </Menu>
+
+
                     </Box>
                 </Box>
             </Box>
