@@ -53,7 +53,7 @@ export default function Footer() {
                         <Icon sx={{height:'5rem', width:'5rem', position:'relative', mr:'.5rem'}}>
                             <Image src={'/icon.svg'} alt={'icon'} fill />
                         </Icon>
-                        <Typography variant="h3" color="primary" sx={{fontWeight:'bold'}}>LearnEd</Typography>
+                        <Typography variant="h3" color="primary" sx={{fontWeight:'bold'}}>Praxly</Typography>
                     </Box>
                     {/* social */}
                     <Box sx={{display:'flex', alignItems:'center'}}>

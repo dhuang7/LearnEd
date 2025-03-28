@@ -119,7 +119,7 @@ export default function Page() {
                 </Typography>
                 {/* description */}
                 <Typography variant="h5" align="center" sx={{width:{xs:'90%', md:'60%'}, mt:'2rem', color:'primary.contrastText'}}>
-                    Look below for some of our favorite videos to help you streamline your PLC process!
+                    Look below for some of our favorite videos to help you streamline your PLC process on Praxly!
                 </Typography>
                 {/* image */}
                 <Box 

@@ -26,7 +26,7 @@ export default function Page() {
                 </Typography>
                 {/* description */}
                 <Typography variant="h3" align="center" sx={{width:'60%', mt:'2rem', color:'primary.contrastText'}}>
-                    The tool is completely free for now!
+                    Praxly is completely free for now!
                 </Typography>
                 <Typography variant="h5" align="center" sx={{width:'60%', mt:'1rem', color:'primary.contrastText'}}>
                     {/* Possible future monthly pricing below: */}

@@ -30,7 +30,7 @@ export default function Page() {
                 </Typography>
                 {/* description */}
                 <Typography variant="h5" color="textSecondary" align="center" sx={{width:'60%', mt:'2rem'}}>
-                    LearnEd makes it easy to collaborate with educators to improve the teaching experience. <b>We are currently beta testing, so let's connect to learn more!</b>
+                    Praxly makes it easy to collaborate with educators to improve the teaching experience. <b>We are currently beta testing, so let's connect to learn more!</b>
                 </Typography>
                 <Box sx={{mt:'2rem',}}>
                     {/* learn more button */}
@@ -98,7 +98,7 @@ export default function Page() {
                         <Box sx={{width:'75%', mb:'2rem'}}>
                             <Typography variant="h3" color="secondary" align="center" sx={{fontWeight:'bold'}}>Let's improve.</Typography>
                             <Typography variant="h6" color="textSecondary" align="center">
-                                Organize your work, learning, and collaboration all in one central hub.
+                                Praxly organizes your work, learning, and collaboration all in one central hub.
                             </Typography>
                         </Box>
                         {/* images */}
@@ -120,7 +120,7 @@ export default function Page() {
                     <Box sx={{width:{xs:'80%', md:'40%'}}}>
                         <Typography variant="h3" color="primary" align="center" sx={{fontWeight:'bold', mb:'1rem'}}>Save time and learn more.</Typography>
                         <Typography variant="h6" color="textSecondary" align="center">
-                            Streamline collaboration, manage cycles, and drive improvement effortlessly so that you can focus on what matters most.
+                            Praxly streamlines collaboration, manage cycles, and drive improvement effortlessly so that you can focus on what matters most.
                         </Typography>
                     </Box>
                 </Box>
@@ -131,7 +131,7 @@ export default function Page() {
                 title='Find proven practices.'
                 description={
                     `Streamline professional learning communities using proven change ideas. 
-                    Simplify agenda planning, track progress, and foster continuous improvement—all in one platform.`
+                    Simplify agenda planning, track progress, and foster continuous improvement—all in one platform with Praxly.`
                 }
                 buttonText='Discover now'
                 image='/search-ideas.png'
@@ -149,7 +149,7 @@ export default function Page() {
                 title='Collaborate efficiently.'
                 description={
                     `Empowers educators to streamline teamwork, align goals, and share insights effortlessly. 
-                    From building agendas to tracking progress, everything you need to foster meaningful collaboration is at your fingertips.`
+                    From building agendas to tracking progress, Praxly gives you everything you need to foster meaningful collaboration at your fingertips.`
                 }
                 buttonText='Start Collaborating'
                 image='/collaborate-calendar.png'
@@ -165,7 +165,7 @@ export default function Page() {
                 icon={PublishedWithChangesRoundedIcon}
                 title='Manage cycles.'
                 description={
-                    `Seamlessly organize and track Plan-Do-Study-Act cycles.
+                    `Seamlessly organize and track Plan-Do-Study-Act cycles with Praxly.
                     Monitor progress, document outcomes, and drive continuous improvement with ease. 
                     Simplify the process and stay focused on achieving your goals.`
                 }

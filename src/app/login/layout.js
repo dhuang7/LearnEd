@@ -25,7 +25,7 @@ export default async function Login({children}) {
             <Box>
                 {/* title */}
                 <Typography variant='h2' align='center' color='primary' sx={{mb:'1rem', fontWeight:'bold'}}>
-                    <NextLink href='/' style={{ textDecoration: 'none', color:'inherit' }}>LearnEd</NextLink>
+                    <NextLink href='/' style={{ textDecoration: 'none', color:'inherit' }}>Praxly</NextLink>
                 </Typography>
                 {/* login paper */}
                 <Paper elevation={3} sx={{width:'20rem', p:'1rem', borderRadius:'1rem', display:'flex', flexDirection:'column'}}>

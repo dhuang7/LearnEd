@@ -25,7 +25,7 @@ export default function TopNav({handleOpen}) {
                             <Icon sx={{height:'2.5rem', width:'2.5rem', position:'relative', mr:'.5rem'}}>
                                 <Image src={'/icon.svg'} alt={'icon'} fill />
                             </Icon>
-                            <Typography variant="h6" color="primary" sx={{fontWeight:'bold'}}>LearnEd</Typography>
+                            <Typography variant="h6" color="primary" sx={{fontWeight:'bold'}}>Praxly</Typography>
                         </NextLink>
                         {/* nav */}
                         <Box sx={{display:{xs:'none', md:'flex'}, alignItems:'center', ml:'1rem'}}>
