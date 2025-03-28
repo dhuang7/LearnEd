@@ -120,7 +120,7 @@ export default function Page() {
                     <Box sx={{width:{xs:'80%', md:'40%'}}}>
                         <Typography variant="h3" color="primary" align="center" sx={{fontWeight:'bold', mb:'1rem'}}>Save time and learn more.</Typography>
                         <Typography variant="h6" color="textSecondary" align="center">
-                            Praxly streamlines collaboration, manage cycles, and drive improvement effortlessly so that you can focus on what matters most.
+                            Streamline collaboration, manage cycles, and drive improvement effortlessly with Praxly so that you can focus on what matters most.
                         </Typography>
                     </Box>
                 </Box>
@@ -131,7 +131,7 @@ export default function Page() {
                 title='Find proven practices.'
                 description={
                     `Streamline professional learning communities using proven change ideas. 
-                    Simplify agenda planning, track progress, and foster continuous improvement—all in one platform with Praxly.`
+                    Simplify agenda planning, track progress, and foster continuous improvement—all in one platform on Praxly.`
                 }
                 buttonText='Discover now'
                 image='/search-ideas.png'
