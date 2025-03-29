@@ -22,8 +22,8 @@ const nunito = Nunito({
   });
 
 export const metadata = {
-    title: "LearnEd",
-    description: "LearnEd",
+    title: "Praxly",
+    description: "Praxly",
 };
 
 export default function RootLayout({ children }) {
