@@ -16,73 +16,8 @@ import TaskClient from "./taskClient";
 export default async function Dashboard({params}) {
     const teamId = (await params).teamId;
     const supabase = await createClient();
-
-    // let { data: normsList, error: normsError } = await supabase
-    //     .from('norms')
-    //     .select('*')
-    //     .eq('team_id', teamId);
-    // const normsList = await getNorms(supabase, teamId);
-
-    // const {data: cycles, error: cyclesError} = await supabase
-    //     .from('pdsa_cycles')
-    //     .select(`
-    //         id.count(),
-    //         stage,
-    //         change_ideas(
-    //             projects(
-    //                 team_id
-    //             )
-    //         )
-    //     `)
-    //     .eq('change_ideas.projects.team_id', teamId)
-    //     .not('change_ideas.projects', 'is', null)
-    //     .not('change_ideas', 'is', null)
-    //     .order('stage');
-    // const cycles = await getCycles(supabase, teamId);
-
-    // get user profile
-    // const { data: [user] } = await supabase
-    //     .from('profiles')
-    //     .select();
     const user = await getUser(supabase);
 
-    // get all calendars
-    // const {data: calendarData, error: calendarDataErrors} = await supabase
-    //     .from('calendar_memberships')
-    //     .select(`
-    //         *,
-    //         calendars(
-    //             *,
-    //             teams(name),
-    //             events(
-    //                 *,
-    //                 event_topics(*)
-    //             )
-    //         )
-    //     `)
-    //     .eq('user_id', user.id)
-    //     .eq('calendars.team_id', teamId)
-    //     .not('calendars', 'is', null)
-    //     .order('calendar_id');
-    // const calendarData = await getCalendar(supabase, user, teamId);
-
-    // task data
-    // const {data: teamMembers, error: teamMembersError} = await supabase.rpc('get_team_members_emails', {tid: teamId});
-    // const teamMembers = await getTeamMembers(supabase, teamId);
-    // const {data: teams} = await supabase
-    //     .from('teams')
-    //     .select(`
-    //         *,
-    //         team_memberships(*)
-    //     `);
-    // const teams = await getTeams(supabase);
-    // const {data: taskData} = await supabase
-    //     .from('tasks')
-    //     .select()
-    //     .order('status')
-    //     .order('order_num')
-    //     .eq('team_id', teamId);
-    // const taskData = await getTasks(supabase, teamId);
 
     const [normsList, cycles, calendarData, teamMembers, teams, taskData] = await Promise.all([
         getNorms(supabase, teamId),
@@ -111,7 +46,7 @@ export default async function Dashboard({params}) {
                             <CyclesTasks cycles={cycles} />
                         </Box>
                         <Box sx={{width:'33.33%', boxSizing:'border-box', px:'.5rem'}}>
-                            <MemberList teamId={teamId} />
+                            <MemberList teamId={teamId} teamMembers={teamMembers} />
                         </Box>
                         <Box sx={{width:'33.33%', boxSizing:'border-box', px:'.5rem'}}>
                             <NormsList teamId={teamId} normsList={normsList} />
@@ -217,3 +152,4 @@ async function getTasks(supabase, teamId) {
 
     return taskData;
 }
+

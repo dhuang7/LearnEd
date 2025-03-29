@@ -1,19 +1,20 @@
+'use client'
+
 import Paper from "@mui/material/Paper";
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
 
 import { DataGrid } from '@mui/x-data-grid';
 
-import createClient from "@/utils/supabase/server";
 import AddMemberModal from "./addMemberModal";
 
 
 
-export default async function MemberList({teamId}) {
-    const supabase = await createClient();
+export default function MemberList({teamId, teamMembers}) {
+    // const supabase = await createClient();
 
     // get email of team members
-    const { data, error } = await supabase.rpc('get_team_members_emails', { tid: teamId });
+    // const { data, error } = await supabase.rpc('get_team_members_emails', { tid: teamId });
 
     // rows and columns
     const columns = [
@@ -21,7 +22,7 @@ export default async function MemberList({teamId}) {
         { field: 'email', headerName: 'Email', flex:1, minWidth:150 },
     ];
 
-    const rows = data?.map(({first_name, last_name, email}, i) => ({
+    const rows = teamMembers?.map(({first_name, last_name, email}, i) => ({
         id:i,
         name: `${first_name} ${last_name}`,
         email
@@ -42,7 +43,7 @@ export default async function MemberList({teamId}) {
                 {/* title */}
                 <Typography variant="h6">Members:</Typography>
                 {/* button */}
-                <AddMemberModal profiles={data} teamId={teamId} />
+                <AddMemberModal profiles={teamMembers} teamId={teamId} />
             </Box>
             {/* data grid */}
             <Box sx={{flexGrow:1, overflow:'hidden'}}>

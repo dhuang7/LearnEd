@@ -43,6 +43,7 @@ export default function CalendarAccordian({calendarData, user, title, teamId, de
             {/* title */}
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
+                component={'span'}
                 sx={{
                     minHeight:0,
                     '& .MuiAccordionSummary-content': {
