@@ -46,7 +46,7 @@ export default async function Cycles({params}) {
         getCycles(supabase, aimId),
     ])
 
-    console.log(cycles);
+    // console.log(cycles);
 
     return (
         <> 

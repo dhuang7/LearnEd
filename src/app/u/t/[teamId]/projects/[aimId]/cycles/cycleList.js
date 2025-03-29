@@ -82,7 +82,8 @@ export default function CycleList({cycles, changeIdeas, aimId}) {
             <DataGrid 
                 columns={columns} rows={rows} 
                 // checkboxSelection
-                autoPageSize
+                // autoPageSize
+                pageSizeOptions={[100]}
                 onRowClick={handleOpenCycle}
                 slots={{ toolbar: () => <CustomToolbar setCurrCycles={setCurrCycles} aimId={aimId} changeIdeas={changeIdeas}/> }}
                 slotProps={{
